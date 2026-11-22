@@ -1,0 +1,22 @@
+[project]
+name = "prb-starters"
+version = "0.1.0"
+description = "Command-line trainer for the practical part of a Python exam"
+requires-python = ">=3.14"
+dependencies = ["rich==15.0.0", "ruff==0.17.6"]
+
+[dependency-groups]
+dev = ["pytest==9.2.0"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
+addopts = "-q"
+
+[tool.ruff]
+line-length = 100
+target-version = "py314"
+extend-exclude = ["mes_solutions", "sources"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "N", "I", "B", "UP"]

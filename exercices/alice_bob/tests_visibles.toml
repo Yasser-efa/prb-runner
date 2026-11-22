@@ -1,0 +1,27 @@
+[[tests]]
+appel = "temps_ensemble(14, 17, 15, 19)"
+attendu = "2"
+
+[[tests]]
+appel = "temps_ensemble(9, 12, 14, 18)"
+attendu = "0"
+
+[[tests]]
+appel = "temps_ensemble(10, 18, 12.5, 13.5)"
+attendu = "1.0"
+
+[[tests]]
+appel = "temps_ensemble(8, 10.5, 10.5, 12)"
+attendu = "0"
+
+[[tests]]
+appel = "temps_groupe([(14, 17), (15, 19), (13, 16.5)])"
+attendu = "1.5"
+
+[[tests]]
+appel = "temps_groupe([(14, 17)])"
+attendu = "3"
+
+[[tests]]
+appel = "temps_groupe([])"
+attendu = "0"

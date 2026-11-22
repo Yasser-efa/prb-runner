@@ -1,0 +1,5 @@
+indices = [
+    "Écris a1b2c3d5 sur papier avec l'indice de chaque caractère. Quels indices portent les caractères à répéter ? Quels indices portent les nombres de répétitions ? Que vaut l'écart entre deux couples ?",
+    "Il ne faut pas regarder la nature du caractère (une lettre ? un chiffre ?) mais sa position. Avance de 2 en 2 : range accepte un pas, et une tranche aussi.",
+    "Pour chaque couple, 'b' * 2 donne 'bb' : construis le résultat morceau par morceau. Pour la taille, seuls les chiffres comptent : une tranche avec un pas de 2, qui commence au bon indice, les donne tous.",
+]

@@ -1,0 +1,44 @@
+[[groupes]]
+theme = "cas général"
+appels = [
+    "decompresser('z4')",
+    "decompresser('x1y1z1')",
+    "decompresser('a3b2a1')",
+    "decompresser('B2o1n2j1o1u1r1')",
+    "decompresser('a3a2')",
+]
+
+[[groupes]]
+theme = "caractères quelconques"
+appels = [
+    "decompresser('1122')",
+    "decompresser('é2ç3')",
+    "decompresser('-2 1-2')",
+    "decompresser('a2 3b1')",
+    "decompresser('9281')",
+    "decompresser('0314')",
+    "decompresser('(2)2')",
+]
+
+[[groupes]]
+theme = "valeurs limites"
+appels = [
+    "decompresser('a0')",
+    "decompresser('a0b1c0')",
+    "decompresser('a9')",
+    "decompresser('a9a9a9')",
+    "decompresser('00')",
+    "decompresser('09')",
+]
+
+[[groupes]]
+theme = "taille"
+appels = [
+    "taille_decompressee('')",
+    "taille_decompressee('a0')",
+    "taille_decompressee('99')",
+    "taille_decompressee('a9b9c9')",
+    "taille_decompressee('1122')",
+    "taille_decompressee(' 1 2 3')",
+    "taille_decompressee('a0b0')",
+]

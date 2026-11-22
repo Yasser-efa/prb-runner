@@ -1,0 +1,23 @@
+[[tests]]
+appel = "decompresser('a1b2c3d5')"
+attendu = "'abbcccddddd'"
+
+[[tests]]
+appel = "decompresser('73')"
+attendu = "'777'"
+
+[[tests]]
+appel = "decompresser(' 3!2')"
+attendu = "'   !!'"
+
+[[tests]]
+appel = "decompresser('')"
+attendu = "''"
+
+[[tests]]
+appel = "taille_decompressee('a1b2c3d5')"
+attendu = "11"
+
+[[tests]]
+appel = "taille_decompressee('73')"
+attendu = "3"

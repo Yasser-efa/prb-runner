@@ -1,0 +1,5 @@
+indices = [
+    "Dessine deux lignes du temps l'une sous l'autre, avec trois créneaux pour Alice et deux pour Bob. Combien de couples (un créneau d'Alice, un créneau de Bob) faut-il examiner pour ne rien oublier ? Quelle structure de boucles cela suggère-t-il ?",
+    "Pour un seul couple de créneaux, tu sais déjà calculer le début et la fin de la partie commune : c'est l'exercice alice_bob. À quelle condition sur ce début et cette fin le créneau commun existe-t-il vraiment ?",
+    "Deux boucles for imbriquées, un test avant d'ajouter à la liste résultat, puis un tri à la fin avec sorted() (des tuples se comparent d'abord sur leur premier élément). Pour la lecture : split() sans argument, puis split('-').",
+]

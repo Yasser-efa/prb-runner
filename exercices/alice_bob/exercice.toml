@@ -1,0 +1,19 @@
+titre = "Alice et Bob : temps passé ensemble"
+reference = "n° 6"
+sorte = "fonction"
+duree_minutes = 40
+
+[organisation]
+fichiers = ["rencontre.py"]
+
+[[fonctions]]
+module = "rencontre"
+signature = "temps_ensemble(debut_alice: float, fin_alice: float, debut_bob: float, fin_bob: float) -> float"
+
+[[fonctions]]
+module = "rencontre"
+signature = "temps_groupe(creneaux: list[tuple[float, float]]) -> float"
+preserve_arguments = true
+
+[contraintes]
+interdits = ["break", "continue", "try", "while True"]

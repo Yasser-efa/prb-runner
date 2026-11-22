@@ -1,0 +1,41 @@
+[[tests]]
+appel = "lire_creneaux('9-12 14-17')"
+attendu = "[(9, 12), (14, 17)]"
+
+[[tests]]
+appel = "lire_creneaux('')"
+attendu = "[]"
+
+[[tests]]
+appel = "creneaux_communs([(9, 12), (14, 17)], [(11, 15)])"
+attendu = "[(11, 12), (14, 15)]"
+
+[[tests]]
+appel = "creneaux_communs([(9, 12)], [(12, 14)])"
+attendu = "[]"
+
+[[tests]]
+appel = "creneaux_communs([(14, 17), (9, 12)], [(8, 20)])"
+attendu = "[(9, 12), (14, 17)]"
+
+[[tests]]
+appel = "temps_ensemble([(9, 12), (14, 17)], [(11, 15)])"
+attendu = "2"
+
+[[tests]]
+entree = ["9-12 14-17", "11-15"]
+sortie = """
+Créneaux d'Alice ? 9-12 14-17
+Créneaux de Bob ? 11-15
+Créneaux communs : 11-12 14-15
+Temps ensemble : 2 h
+"""
+
+[[tests]]
+entree = ["9-12", "14-18"]
+sortie = """
+Créneaux d'Alice ? 9-12
+Créneaux de Bob ? 14-18
+Créneaux communs : aucun
+Temps ensemble : 0 h
+"""

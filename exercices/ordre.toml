@@ -1,0 +1,6 @@
+# Ordre dans lequel du_jour propose les nouveaux exercices.
+ordre = [
+    "alice_bob",
+    "alice_bob_listes",
+    "decompresser",
+]

@@ -1,0 +1,13 @@
+# Course material and personal files (not mine to publish)
+/sources/
+/*.pdf
+/mes_solutions/*
+!/mes_solutions/.gitkeep
+/progression.sqlite3*
+
+# Local environment
+/.venv/
+/.idea/
+__pycache__/
+.pytest_cache/
+.ruff_cache/

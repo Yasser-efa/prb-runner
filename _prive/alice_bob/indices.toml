@@ -1,0 +1,5 @@
+indices = [
+    "Dessine les deux créneaux l'un sous l'autre sur une ligne du temps, puis recommence avec au moins quatre dispositions différentes (décalés, inclus, séparés, qui se touchent). Qu'est-ce qui délimite la zone commune à gauche ? Et à droite ?",
+    "Le temps commun commence quand la dernière personne arrive et se termine quand la première s'en va. Quelles fonctions prédéfinies de Python donnent directement ces deux heures ?",
+    "Quand les créneaux sont séparés, la soustraction fin - début donne un nombre négatif : il faut la ramener à 0. Pour le groupe, applique le même raisonnement à tous les débuts, puis à toutes les fins (une compréhension convient), sans oublier la liste vide.",
+]

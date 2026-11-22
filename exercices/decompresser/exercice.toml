@@ -1,0 +1,22 @@
+titre = "Décompresser une chaine"
+reference = "17/11"
+sorte = "fonction"
+duree_minutes = 40
+
+[organisation]
+fichiers = ["decompression.py"]
+
+[[fonctions]]
+module = "decompression"
+signature = "decompresser(compresse: str) -> str"
+
+[[fonctions]]
+module = "decompression"
+signature = "taille_decompressee(compresse: str) -> int"
+
+[contraintes]
+interdits = ["break", "continue", "try", "while True"]
+modules_interdits = ["re"]
+
+[contraintes.fonctions.taille_decompressee]
+fonctions_interdites = ["decompresser"]

@@ -1,0 +1,29 @@
+titre = "Alice et Bob : plusieurs créneaux"
+reference = "n° 6, version plus dure"
+sorte = "programme"
+duree_minutes = 40
+
+[organisation]
+fichiers = ["main.py", "agenda/__init__.py", "agenda/saisie.py", "agenda/creneaux.py"]
+main = "main.py"
+
+[[fonctions]]
+module = "agenda.saisie"
+signature = "lire_creneaux(texte: str) -> list[tuple[int, int]]"
+
+[[fonctions]]
+module = "agenda.creneaux"
+signature = "creneaux_communs(dispos_alice: list[tuple[int, int]], dispos_bob: list[tuple[int, int]]) -> list[tuple[int, int]]"
+preserve_arguments = true
+
+[[fonctions]]
+module = "agenda.creneaux"
+signature = "temps_ensemble(dispos_alice: list[tuple[int, int]], dispos_bob: list[tuple[int, int]]) -> int"
+preserve_arguments = true
+
+[contraintes]
+interdits = ["break", "continue", "try", "while True"]
+appels_imposes = ["lire_creneaux", "temps_ensemble"]
+
+[contraintes.fonctions.temps_ensemble]
+appels_imposes = ["creneaux_communs"]

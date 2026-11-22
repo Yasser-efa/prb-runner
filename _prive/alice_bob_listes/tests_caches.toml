@@ -1,0 +1,60 @@
+[[groupes]]
+theme = "lecture"
+appels = [
+    "lire_creneaux('8-9')",
+    "lire_creneaux('  9-12   14-17 ')",
+    "lire_creneaux('14-17 9-12 0-3 20-24')",
+    "lire_creneaux('   ')",
+]
+
+[[groupes]]
+theme = "créneaux communs"
+appels = [
+    "creneaux_communs([(8, 10), (11, 13), (15, 18)], [(9, 12), (14, 16), (17, 20)])",
+    "creneaux_communs([(0, 24)], [(1, 2), (5, 6), (22, 23)])",
+    "creneaux_communs([(1, 2), (5, 6), (22, 23)], [(0, 24)])",
+    "creneaux_communs([(9, 17)], [(9, 17)])",
+    "creneaux_communs([(8, 12)], [(9, 10)])",
+    "creneaux_communs([(8, 18)], [(16, 20), (6, 9)])",
+]
+
+[[groupes]]
+theme = "ordre quelconque"
+appels = [
+    "creneaux_communs([(20, 22), (8, 10), (14, 16)], [(15, 21), (9, 11)])",
+    "creneaux_communs([(8, 10), (14, 16)], [(15, 18), (9, 12)])",
+    "creneaux_communs([(14, 16), (8, 10)], [(9, 12), (15, 18)])",
+    "creneaux_communs([(22, 24), (12, 14), (2, 4)], [(13, 23), (0, 3)])",
+]
+
+[[groupes]]
+theme = "valeurs limites"
+appels = [
+    "creneaux_communs([], [])",
+    "creneaux_communs([(9, 12)], [])",
+    "creneaux_communs([], [(9, 12)])",
+    "creneaux_communs([(0, 24)], [(0, 24)])",
+    "creneaux_communs([(8, 9), (10, 11)], [(9, 10), (11, 12)])",
+    "creneaux_communs([(0, 1)], [(23, 24)])",
+    "creneaux_communs([(23, 24)], [(0, 24)])",
+]
+
+[[groupes]]
+theme = "temps total"
+appels = [
+    "temps_ensemble([(8, 10), (11, 13), (15, 18)], [(9, 12), (14, 16), (17, 20)])",
+    "temps_ensemble([(0, 24)], [(0, 24)])",
+    "temps_ensemble([], [(9, 12)])",
+    "temps_ensemble([(9, 12)], [(12, 14)])",
+    "temps_ensemble([(20, 22), (8, 10)], [(9, 21)])",
+]
+
+[[groupes]]
+theme = "programme"
+entrees = [
+    ["14-17 9-12", "8-20"],
+    ["", "9-12"],
+    ["9-12", ""],
+    ["8-9 10-11", "9-10 11-12"],
+    ["0-24", "  5-6   1-2 "],
+]

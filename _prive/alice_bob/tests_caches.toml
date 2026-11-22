@@ -1,0 +1,44 @@
+[[groupes]]
+theme = "cas général"
+appels = [
+    "temps_ensemble(15, 19, 14, 17)",
+    "temps_ensemble(8, 12, 10, 11)",
+    "temps_ensemble(10, 11, 8, 12)",
+    "temps_ensemble(9, 17, 9, 17)",
+    "temps_ensemble(13, 15, 14, 18)",
+    "temps_ensemble(9.25, 9.75, 9.5, 10)",
+]
+
+[[groupes]]
+theme = "aucun temps commun"
+appels = [
+    "temps_ensemble(14, 18, 9, 12)",
+    "temps_ensemble(8, 9, 10, 11)",
+    "temps_ensemble(0, 6, 20, 24)",
+    "temps_ensemble(20, 24, 0, 6)",
+]
+
+[[groupes]]
+theme = "valeurs limites"
+appels = [
+    "temps_ensemble(0, 24, 0, 24)",
+    "temps_ensemble(0, 24, 12, 12)",
+    "temps_ensemble(10, 12, 12, 14)",
+    "temps_ensemble(12, 14, 10, 12)",
+    "temps_ensemble(10, 10, 10, 10)",
+    "temps_ensemble(0, 0, 0, 24)",
+    "temps_ensemble(23.5, 24, 0, 24)",
+    "temps_groupe([(10, 10)])",
+    "temps_groupe([(0, 24), (0, 24), (0, 24), (0, 24), (0, 24)])",
+]
+
+[[groupes]]
+theme = "groupe"
+appels = [
+    "temps_groupe([(8, 18), (9, 12), (10, 17)])",
+    "temps_groupe([(10, 17), (9, 12), (8, 18)])",
+    "temps_groupe([(8, 10), (9, 11), (10, 12)])",
+    "temps_groupe([(8, 10), (12, 14), (9, 13)])",
+    "temps_groupe([(0, 24), (6.5, 22), (7.25, 23), (5, 9.75)])",
+    "temps_groupe([(8, 9), (8, 9), (20, 21)])",
+]
