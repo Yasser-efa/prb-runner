@@ -56,6 +56,21 @@ class SourceFile:
         return lines[number - 1].strip()
 
 
+def is_main_guard(node: ast.stmt) -> bool:
+    """Recognize ``if __name__ == '__main__':``.
+
+    :param node: a statement
+    :return: True if it is the guard of a main program
+    """
+    if not (isinstance(node, ast.If) and isinstance(node.test, ast.Compare)):
+        return False
+    test = node.test
+    if len(test.ops) != 1 or not isinstance(test.ops[0], ast.Eq):
+        return False
+    sides = {ast.unparse(test.left), ast.unparse(test.comparators[0])}
+    return sides == {"__name__", "'__main__'"}
+
+
 def list_files(folder: Path) -> list[str]:
     """List the files of a folder with their exact names, recursively.
 

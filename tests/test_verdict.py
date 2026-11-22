@@ -85,11 +85,26 @@ def test_inadmissible_code_is_not_run(check):
     assert verdict.visible == [] and "NON RECEVABLE" in display(verdict)
 
 
-def test_broken_constraint_blocks_the_tests(check):
+def test_broken_constraint_does_not_hide_the_tests(check):
     description = f'{FUNCTION}\n[contraintes]\ninterdits = ["compréhension"]\n'
     verdict = check(SOLUTION, description=description)
-    assert verdict.status is Status.CONSTRAINTS and verdict.visible == []
-    assert "CONTRAINTE" in display(verdict)
+    assert verdict.status is Status.CONSTRAINTS and verdict.tests_passed
+    text = display(verdict)
+    assert "CONTRAINTE NON RESPECTÉE" in text and "ET TESTS RATÉS" not in text
+    verdict = check(SOLUTION.replace("[nombre *", "[2 *"), description=description)
+    assert verdict.status is Status.CONSTRAINTS and not verdict.tests_passed
+    assert "CONTRAINTE NON RESPECTÉE ET TESTS RATÉS" in display(verdict)
+
+
+def test_warnings_do_not_block(check):
+    verdict = check({"tables.py": SOLUTION, "brouillon.py": ""})
+    assert verdict.passed
+    assert "fichier non prévu par l'énoncé" in display(verdict)
+
+
+@pytest.mark.parametrize("code", [SOLUTION, "def table(nombre, taille=3):\n    return inconnu\n"])
+def test_paper_preparation_is_recalled(check, code):
+    assert "phase préparatoire sur papier, à ton nom" in display(check(code))
 
 
 def test_exception_display(check):
@@ -200,7 +215,7 @@ def test_order_must_list_every_exercise(workshop):
 def test_attempts_are_recorded(workshop, check):
     progress = Progress(workshop.paths.database)
     progress.record_attempt(check(SOLUTION), datetime(2026, 11, 23, 8, 30), 600)
-    progress.record_attempt(check("x = 1\n"), datetime(2026, 11, 23, 8, 40), None)
+    progress.record_attempt(check("x = y\n"), datetime(2026, 11, 23, 8, 40), None)
     first, second = progress.history("demo").attempts
     assert first.passed and first.seconds == 600 and first.hidden_ok == first.hidden_total == 2
     assert second.status is Status.NOT_ADMISSIBLE and second.seconds is None

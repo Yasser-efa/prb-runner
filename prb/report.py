@@ -22,6 +22,10 @@ _PANELS = {
     Status.CONSTRAINTS: ("CONTRAINTE NON RESPECTÉE", "red"),
     Status.NOT_ADMISSIBLE: ("NON RECEVABLE : 0 à l'examen", "red"),
 }
+_PREPARATION = (
+    "À l'examen, remets aussi la phase préparatoire sur papier, à ton nom (même vierge) : "
+    "sans elle, c'est 0."
+)
 
 
 def show_verdict(console: Console, verdict: Verdict, footer: str = "") -> None:
@@ -35,6 +39,9 @@ def show_verdict(console: Console, verdict: Verdict, footer: str = "") -> None:
     console.print()
     console.rule(Text(f"{exercise.title} ({exercise.reference})", style="bold"))
     _show_step(console, 1, "Recevabilité", verdict.admissibility)
+    for problem in verdict.warnings:
+        console.print(_bullet(problem, "yellow", "⚠"))
+    console.print(Text(f"   {_PREPARATION}", style="dim"))
     if verdict.status is not Status.NOT_ADMISSIBLE:
         _show_step(console, 2, "Contraintes", verdict.constraints)
     if verdict.visible:
@@ -42,6 +49,8 @@ def show_verdict(console: Console, verdict: Verdict, footer: str = "") -> None:
     if verdict.status is not Status.NOT_ADMISSIBLE:
         _show_quality(console, verdict.remarks)
     title, color = _PANELS[verdict.status]
+    if verdict.status is Status.CONSTRAINTS and not verdict.tests_passed:
+        title += " ET TESTS RATÉS"
     body = Text(title, style=f"bold {color}", justify="center")
     if footer:
         body = Group(body, Text(footer, justify="center"))
@@ -64,8 +73,8 @@ def _show_step(console: Console, number: int, name: str, problems: list[Problem]
         console.print(_bullet(problem, "red"))
 
 
-def _bullet(problem: Problem, color: str) -> Text:
-    text = Text.assemble(("   • ", color), problem.message)
+def _bullet(problem: Problem, color: str, mark: str = "•") -> Text:
+    text = Text.assemble((f"   {mark} ", color), problem.message)
     if problem.location:
         text.append(f"  [{problem.location}]", style="cyan")
     if problem.source:
@@ -76,8 +85,10 @@ def _bullet(problem: Problem, color: str) -> Text:
 def _show_tests(console: Console, verdict: Verdict) -> None:
     visible, hidden = verdict.visible, verdict.hidden
     done = sum(report.ok for report in visible)
-    mark = _OK if all(report.ok for report in [*visible, *hidden]) else _KO
+    mark = _OK if verdict.tests_passed else _KO
     console.print(_title(3, "Tests", mark, f"visibles : {done}/{len(visible)}"))
+    for problem in verdict.absent:
+        console.print(_bullet(problem, "red"))
     table = Table(show_lines=True, expand=False)
     for column in ("Appel", "Attendu", "Obtenu"):
         table.add_column(column, overflow="fold")
@@ -124,6 +135,8 @@ def _hidden_cause(report: CaseReport) -> str:
             return "arrêt brutal de Python"
         case "skipped":
             return "non exécuté"
+        case "absent":
+            return "fonction absente ou signature différente"
     if outcome.modified:
         return "un argument a été modifié"
     if report.case.has_value and not outcome.plain:
@@ -202,6 +215,8 @@ def _describe_failure(outcome: Outcome) -> Text:
     match outcome.status:
         case "skipped":
             return Text("non exécuté (trop de temps dépassés)", style="yellow")
+        case "absent":
+            return Text("non exécuté : fonction absente ou signature différente", style="red")
         case "timeout":
             text = Text("temps dépassé : boucle infinie ?", style="red")
         case "flood":

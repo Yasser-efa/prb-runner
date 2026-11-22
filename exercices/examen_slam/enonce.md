@@ -102,7 +102,8 @@ Le programme joue une partie avec la grille `ENONCE` de `exemples.py` :
    affiche la grille numérotée.
 2. Il demande une proposition de la forme `C MOT`, où `C` est un chiffre de 1 à 9 et `MOT` un mot
    d'au moins deux lettres majuscules, séparés par **une** espace. Le format est vérifié avec une
-   expression régulière. S'il est incorrect, la question est reposée sans consommer d'essai.
+   expression régulière (module `re`). S'il est incorrect, la question est reposée sans consommer
+   d'essai.
 3. Une proposition correcte révèle le mot : la grille est affichée à nouveau. Utilisez
    `positions_mot`.
 4. Une proposition incorrecte affiche `MOT : ce mot n'est pas correct.` C'est aussi le cas si le

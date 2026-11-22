@@ -213,6 +213,7 @@ def _read_constraint_set(data: dict, function: str | None, where: str) -> Constr
         "imposes": "required",
         "fonctions_interdites": "forbidden_functions",
         "modules_interdits": "forbidden_modules",
+        "modules_imposes": "required_modules",
         "appels_imposes": "required_calls",
     }
     _check_keys(data, set(keys), where)

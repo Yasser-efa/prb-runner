@@ -11,7 +11,9 @@ TARGET_VERSION = "py314"
 LINE_LENGTH = 120
 
 # What PyCharm shows as an error: undefined names and misplaced statements.
-BLOCKING_RULES = ("F70", "F82", "F831", "F62")
+BLOCKING_RULES = ("F70", "F82", "F831", "F62", "B012")
+UNDEFINED_RULE = "F821"
+STAR_RULE = "F405"
 QUALITY_RULES = ("E", "W", "N", "A", "F", "PLW1514")
 # E226 and E24 are off by default in pycodestyle; the others duplicate our own checks.
 IGNORED_RULES = ("E226", "E241", "E242", "E741", "E9", "A005", *BLOCKING_RULES)
@@ -29,6 +31,7 @@ class LintMessage:
     line: int
     code: str | None
     message: str
+    name: str = ""
 
     @property
     def is_syntax(self) -> bool:
@@ -74,7 +77,14 @@ def _convert(item: dict, root: Path) -> LintMessage:
     name = path.relative_to(root).as_posix() if path.is_relative_to(root) else path.name
     code = item["code"]
     line = item["location"]["row"]
-    return LintMessage(name, line, code, translate(code, item["message"]))
+    quoted = _quoted(item["message"])
+    subject = quoted[0] if quoted else ""
+    return LintMessage(name, line, code, translate(code, item["message"]), subject)
+
+
+def _quoted(message: str) -> list[str]:
+    """List the names quoted in a message."""
+    return [a or b for a, b in re.findall(r"`([^`]*)`|'([^']*)'", message)]
 
 
 def translate(code: str | None, message: str) -> str:
@@ -87,7 +97,7 @@ def translate(code: str | None, message: str) -> str:
     template = _FRENCH.get(code or "")
     if template is None:
         return message
-    quoted = [a or b for a, b in re.findall(r"`([^`]*)`|'([^']*)'", message)]
+    quoted = _quoted(message)
     numbers = re.findall(r"\d+", message)
     return template.format(
         name=quoted[0] if quoted else "",
@@ -172,6 +182,7 @@ _FRENCH = {
     "F821": "nom « {name} » non défini",
     "F822": "nom « {name} » non défini dans __all__",
     "F823": "variable « {name} » utilisée avant d'avoir reçu une valeur",
+    "B012": "« {name} » interdit dans un bloc finally",
     "F701": "break en dehors d'une boucle",
     "F702": "continue en dehors d'une boucle",
     "F704": "yield ou await en dehors d'une fonction",

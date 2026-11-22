@@ -61,13 +61,22 @@ non recevable. Les tâches de tests unitaires sont retirées.
 
 ### Le verdict
 
-1. **Recevabilité** (bloquant) : fichiers et packages demandés avec leurs noms exacts, syntaxe,
-   noms non définis, imports inexistants, signatures.
-2. **Contraintes** (bloquant) : constructions et fonctions interdites ou imposées.
-3. **Tests** (tout ou rien) : les tests visibles sont détaillés, les tests cachés sont comptés.
-4. **Qualité** (non bloquant) : PEP 8, nommage, docstrings Sphinx, imports, bonnes pratiques.
+1. **Recevabilité** (bloquant) : fichiers et packages demandés avec leurs noms exacts (un fichier
+   peut être vide), et aucune erreur que PyCharm montre en rouge : syntaxe, noms non définis, imports
+   inexistants, expressions régulières incorrectes, liste dans un ensemble ou comme clé… Les
+   avertissements (⚠) ne bloquent pas.
+2. **Contraintes** (bloquant) : constructions, fonctions et modules interdits ou imposés. Les tests
+   sont exécutés quand même.
+3. **Tests** (tout ou rien) : les tests visibles sont détaillés, les tests cachés sont comptés. Une
+   fonction absente, ou dont la signature diffère de l'énoncé, rate ses tests ; les autres sont
+   exécutés.
+4. **Qualité** (non bloquant) : PEP 8, nommage, docstrings Sphinx, modularité, bonnes pratiques.
 
 Ton code est exécuté sur une copie, dans un processus isolé, avec 2 secondes par test.
+
+L'étape 1 applique les consignes d'examen : fichiers, organisation, icône rouge de PyCharm. La
+dernière condition, une phase préparatoire sur papier à ton nom, dépend de toi. L'outil approche
+l'icône rouge sans la remplacer : en cas de doute, regarde celle de l'éditeur.
 
 ## Dossiers
 
@@ -113,6 +122,7 @@ interdits = ["break", "continue", "try", "while True"]
 imposes = ["while"]
 fonctions_interdites = ["int", ".replace"]   # un point devant une méthode
 modules_interdits = ["re"]
+modules_imposes = ["random"]
 appels_imposes = ["table"]
 
 [contraintes.fonctions.table]      # mêmes clés, pour une seule fonction

@@ -203,7 +203,7 @@ def to_plain(value):
         if isinstance(value, base):
             return base(to_plain(item) for item in value)
     if isinstance(value, dict):
-        return {to_plain(key): to_plain(item) for key, item in value.items()}
+        return dict((to_plain(key), to_plain(item)) for key, item in value.items())
     raise NotPlainError
 
 

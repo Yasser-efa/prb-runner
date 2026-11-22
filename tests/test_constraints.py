@@ -123,6 +123,17 @@ def test_forbidden_module(check, line):
     assert check(rule, "return []", before="import random") == []
 
 
+@pytest.mark.parametrize(
+    "line", ["import re", "import re as motifs", "from re import search", "import random, re"]
+)
+def test_required_module(check, line):
+    rule = '[contraintes]\nmodules_imposes = ["re"]'
+    assert check(rule, "return []", line) == []
+    assert check(rule, f"{line}\nreturn []") == []
+    message = "l'énoncé impose d'utiliser le module re"
+    assert check(rule, "return []", "import random\nfrom random import choice") == [message]
+
+
 def test_required_call(check):
     rule = '[contraintes]\nappels_imposes = ["aide"]'
     aide = "def aide(x):\n    return x\n"
@@ -135,6 +146,12 @@ def test_a_recursive_call_does_not_count(check):
     rule = '[contraintes]\nappels_imposes = ["aide"]'
     aide = "def aide(x):\n    return aide(x)\n"
     assert len(check(rule, "return []", before=aide)) == 1
+
+
+def test_constraint_on_a_missing_function(workshop):
+    exercise = workshop.exercise(f'{FUNCTION}\n[contraintes.fonctions.table]\nimposes = ["for"]\n')
+    folder = workshop.submit("def autre():\n    pass\n")
+    assert check_constraints(exercise, read_sources(folder)) == []
 
 
 def test_constraint_on_one_function(check):

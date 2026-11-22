@@ -39,6 +39,7 @@ signature = "lire_question_utilisateur(invite: str, attributs: set[str]) -> tupl
 [contraintes]
 interdits = ["break", "continue", "while True"]
 appels_imposes = ["lire_lignes_fichier", "creer_personnages", "filtrer_personnages", "decrire_personnage", "lire_question_utilisateur"]
+modules_imposes = ["re", "random"]
 
 [contraintes.fonctions.lire_lignes_fichier]
 imposes = ["compréhension", "try"]

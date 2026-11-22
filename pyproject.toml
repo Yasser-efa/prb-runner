@@ -1,12 +1,5 @@
-[project]
-name = "prb-starters"
-version = "0.1.0"
-description = "Command-line trainer for the practical part of a Python exam"
-requires-python = ">=3.14"
-dependencies = ["rich==15.0.0", "ruff==0.17.6"]
-
-[dependency-groups]
-dev = ["pytest==9.2.0"]
+# No [project] table on purpose: PyCharm would replace the module configured by
+# prb/pycharm.py (excluded folders, sources root) with its own.
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

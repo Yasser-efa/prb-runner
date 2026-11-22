@@ -33,7 +33,8 @@ le numéro binaire de chaque ligne, et justifiez vos boucles.
 
 Cette fonction crée autant de personnages qu'il y a de combinaisons de `'oui'` et de `'non'` pour les
 attributs. Un personnage est un dictionnaire : `'prenom'`, puis une clé par attribut. Les prénoms sont
-choisis **au hasard** dans la liste, sans homonymes. On considère que la liste est assez grande.
+choisis **au hasard** dans la liste (module `random`), sans homonymes. On considère que la liste est
+assez grande.
 
 Les personnages sont rangés dans l'ordre du tableau : tous les attributs à `'non'` d'abord, et le
 dernier attribut change le plus vite.
@@ -52,7 +53,7 @@ attribut, la liste est vide.
 
 Cette fonction renvoie une valeur vraie si la question est de la forme `attribut = valeur`, où
 l'attribut est dans la collection et la valeur est `oui` ou `non`. Les espaces autour du `=` sont
-facultatives ; il peut y en avoir plusieurs. Utilisez une expression régulière.
+facultatives ; il peut y en avoir plusieurs. Utilisez une expression régulière (module `re`).
 
 ## Tâche 3.2 – `lire_question_utilisateur(invite, attributs)`, dans `questions.py`
 

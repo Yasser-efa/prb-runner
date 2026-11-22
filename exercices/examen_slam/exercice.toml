@@ -35,6 +35,7 @@ preserve_arguments = true
 [contraintes]
 interdits = ["break", "continue", "while True"]
 appels_imposes = ["chercher_mots_grille", "numeroter_grille", "afficher_grille", "positions_mot"]
+modules_imposes = ["re"]
 
 [contraintes.fonctions.chercher_mots_grille]
 appels_imposes = ["chercher_mots_ligne", "obtenir_colonne"]

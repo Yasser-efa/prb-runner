@@ -3,9 +3,9 @@
 import ast
 from collections.abc import Iterator
 
-from prb.admissibility import find_function
 from prb.constructs import CONSTRUCTS
 from prb.model import ConstraintSet, Exercise
+from prb.signatures import find_function
 from prb.sources import Problem, SourceFile
 
 _Located = tuple[SourceFile, ast.AST]
@@ -21,11 +21,14 @@ def check_constraints(exercise: Exercise, sources: dict[str, SourceFile]) -> lis
     problems = []
     for constraint in exercise.constraints:
         scope = _scope(exercise, constraint, sources)
+        if not scope:
+            continue  # The function is absent, which is reported by the tests.
         place = f" dans {constraint.function}" if constraint.function else ""
         problems += _check_forbidden(constraint, scope, place)
         problems += _check_required(constraint, scope, place)
         problems += _check_forbidden_functions(constraint, scope, place)
         problems += _check_forbidden_modules(constraint, scope, place)
+        problems += _check_required_modules(constraint, scope, place)
         problems += _check_required_calls(constraint, scope, place)
     return problems
 
@@ -38,7 +41,8 @@ def _scope(
         return [(source, source.tree) for source in sources.values() if source.tree]
     spec = next(item for item in exercise.functions if item.name == constraint.function)
     source = sources[spec.file]
-    return [(source, find_function(source.tree, spec.name))]
+    function = find_function(source.tree, spec.name)
+    return [(source, function)] if function else []
 
 
 def _check_forbidden(
@@ -134,15 +138,29 @@ def _check_forbidden_modules(
 ) -> Iterator[Problem]:
     for name in constraint.forbidden_modules:
         for source, tree in scope:
-            for node in ast.walk(tree):
-                if isinstance(node, ast.Import):
-                    modules = [alias.name for alias in node.names]
-                elif isinstance(node, ast.ImportFrom):
-                    modules = [node.module or ""]
-                else:
-                    continue
-                if any(module == name or module.startswith(f"{name}.") for module in modules):
-                    yield _problem(f"le module {name} est interdit{place}", source, node)
+            for node in _imports_of(tree, name):
+                yield _problem(f"le module {name} est interdit{place}", source, node)
+
+
+def _check_required_modules(
+    constraint: ConstraintSet, scope: list[_Located], place: str
+) -> Iterator[Problem]:
+    for name in constraint.required_modules:
+        if not any(True for _, tree in scope for _ in _imports_of(tree, name)):
+            yield Problem(f"l'énoncé impose d'utiliser le module {name}{place}")
+
+
+def _imports_of(tree: ast.AST, name: str) -> Iterator[ast.AST]:
+    """Find the imports of a module or of something inside it."""
+    for node in ast.walk(tree):
+        if isinstance(node, ast.Import):
+            modules = [alias.name for alias in node.names]
+        elif isinstance(node, ast.ImportFrom):
+            modules = [node.module or ""]
+        else:
+            continue
+        if any(module == name or module.startswith(f"{name}.") for module in modules):
+            yield node
 
 
 def _check_required_calls(

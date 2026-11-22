@@ -173,8 +173,3 @@ def test_main_guard(remarks, ending, ok):
     main = f'def main() -> None:\n    """Lance le programme."""\n    print("a")\n\n\n{ending}'
     found = remarks({"tables.py": SOLUTION, "main.py": main}, MAIN)
     assert any("__main__" in message for message in found) is not ok
-
-
-def test_extra_file(remarks):
-    found = remarks({"tables.py": SOLUTION, "brouillon.py": ""})
-    assert found == ["fichier non demandé : retire-le avant de créer le ZIP"]

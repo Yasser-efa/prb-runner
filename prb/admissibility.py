@@ -1,47 +1,75 @@
-"""Step 1 of the verdict: would the submission be accepted at all?"""
+"""Step 1 of the verdict: would the submission be accepted at all?
+
+The official criteria are: every requested file is present (possibly empty), the layout of the
+statement is respected, PyCharm shows no error (red icon) and a paper preparation is handed in.
+The last one cannot be checked here.
+"""
 
 import ast
 import difflib
+from collections.abc import Iterator
+from dataclasses import dataclass, field
 from pathlib import Path, PurePosixPath
 
-from prb.imports import check_imports
-from prb.linting import BLOCKING_RULES, lint
-from prb.model import Exercise, FunctionSpec
+from prb.hashing import check_hashing
+from prb.imports import Project, check_imports, star_names
+from prb.linting import BLOCKING_RULES, STAR_RULE, UNDEFINED_RULE, LintMessage, lint
+from prb.model import Exercise
+from prb.patterns import check_patterns
 from prb.sources import Problem, SourceFile, list_files
+
+
+@dataclass
+class Admissibility:
+    """What makes a submission worth zero, and what could be held against it."""
+
+    errors: list[Problem] = field(default_factory=list)
+    warnings: list[Problem] = field(default_factory=list)
 
 
 def check_admissibility(
     exercise: Exercise, folder: Path, sources: dict[str, SourceFile]
-) -> list[Problem]:
-    """Look for what makes a submission worth zero at the exam.
+) -> Admissibility:
+    """Apply the official criteria to a submission.
 
     :param exercise: the exercise
     :param folder: the student's folder
     :param sources: the Python files of that folder
-    :return: the blocking problems, empty if the submission is admissible
+    :return: the blocking problems and the warnings
     """
-    problems = _check_layout(exercise, folder)
-    problems += _check_provided(exercise, folder)
-    problems += [source.error for source in sources.values() if source.error]
-    problems += _check_names(folder, sources)
-    problems += check_imports(sources)
-    for function in exercise.functions:
-        problems += _check_function(function, sources)
-    if exercise.main:
-        problems += _check_main(exercise.main, sources)
-    return problems
+    red = red_errors(folder, sources)
+    return Admissibility(
+        errors=_check_layout(exercise, folder) + _check_provided(exercise, folder) + red.errors,
+        warnings=_unexpected_files(exercise, folder) + red.warnings,
+    )
 
 
-def unexpected_files(exercise: Exercise, folder: Path) -> list[Problem]:
-    """Find Python files that the statement does not mention.
+def red_errors(folder: Path, sources: dict[str, SourceFile]) -> Admissibility:
+    """Find what PyCharm shows with its red icon, and related warnings.
 
-    :param exercise: the exercise
     :param folder: the student's folder
-    :return: one remark per extra file
+    :param sources: the Python files of that folder
+    :return: the errors and the warnings
     """
+    result = Admissibility()
+    result.errors += [source.error for source in sources.values() if source.error]
+    for problem, is_red in _check_names(folder, sources):
+        (result.errors if is_red else result.warnings).append(problem)
+    for source in sources.values():
+        if source.tree is not None:
+            result.errors += check_hashing(source)
+            result.errors += check_patterns(source)
+    imports = check_imports(sources)
+    result.errors += imports.errors
+    result.warnings += imports.warnings
+    return result
+
+
+def _unexpected_files(exercise: Exercise, folder: Path) -> list[Problem]:
+    """Find Python files that the statement does not mention."""
     expected = {name.casefold() for name in (*exercise.files, *exercise.provided_names)}
     return [
-        Problem("fichier non demandé : retire-le avant de créer le ZIP", name)
+        Problem("fichier non prévu par l'énoncé : retire-le avant de créer le ZIP", name)
         for name in list_files(folder)
         if name.endswith(".py") and name.casefold() not in expected
     ]
@@ -88,98 +116,71 @@ def _describe_missing(name: str, present: list[str], expected: tuple[str, ...]) 
     return f"fichier manquant : {name}{suffix}"
 
 
-def _check_names(folder: Path, sources: dict[str, SourceFile]) -> list[Problem]:
+def _check_names(folder: Path, sources: dict[str, SourceFile]) -> Iterator[tuple[Problem, bool]]:
+    """Find undefined names and misplaced statements, red in PyCharm or not."""
     files = [name for name, source in sources.items() if source.tree is not None]
-    problems = []
-    for message in lint(folder, files, BLOCKING_RULES):
-        source_line = sources[message.file].line(message.line)
-        problems.append(Problem(message.message, message.file, message.line, source_line))
-    return problems
+    project = Project(sources)
+    for message in lint(folder, files, (*BLOCKING_RULES, STAR_RULE)):
+        source = sources[message.file]
+        text, is_red = message.message, True
+        if message.code == STAR_RULE:
+            if _comes_from_star(message, source, project):
+                continue
+            text = f"nom « {message.name} » non défini"
+        elif message.code == UNDEFINED_RULE and _is_bound_before(message, source):
+            text = f"« {message.name} » peut ne pas être défini à cet endroit"
+            is_red = False
+        elif message.code == UNDEFINED_RULE and _is_only_quoted(message, source):
+            is_red = False
+        yield Problem(text, source.name, message.line, source.line(message.line)), is_red
 
 
-def _check_function(function: FunctionSpec, sources: dict[str, SourceFile]) -> list[Problem]:
-    source = sources.get(function.file)
-    if source is None or source.tree is None:
-        return []
-    found = find_function(source.tree, function.name)
-    if found is None:
-        return [_describe_missing_function(function, source, sources)]
-    expected, obtained = _parameters(function.node), _parameters(found)
-    if not _same_parameters(expected, obtained):
-        message = (
-            f"signature de {function.name} : l'énoncé demande "
-            f"({', '.join(expected)}), tu as ({', '.join(obtained)})"
-        )
-        return [Problem(message, source.name, found.lineno)]
-    return []
+def _comes_from_star(message: LintMessage, source: SourceFile, project: Project) -> bool:
+    names = star_names(source, project)
+    return names is None or message.name in names
 
 
-def _check_main(main: str, sources: dict[str, SourceFile]) -> list[Problem]:
-    source = sources.get(main)
-    if source is None or source.tree is None:
-        return []
-    found = find_function(source.tree, "main")
-    if found is None:
-        return [Problem(f"fonction main() absente de {main}", main)]
-    if _parameters(found):
-        return [Problem("main() ne doit pas avoir de paramètre", main, found.lineno)]
-    return []
+def _is_only_quoted(message: LintMessage, source: SourceFile) -> bool:
+    """Tell whether a name only appears in annotations written between quotes."""
+    nodes = ast.walk(source.tree)
+    return not any(isinstance(node, ast.Name) and node.id == message.name for node in nodes)
 
 
-def find_function(tree: ast.Module, name: str) -> ast.FunctionDef | None:
-    """Find a function defined at the top level of a module.
+def _is_bound_before(message: LintMessage, source: SourceFile) -> bool:
+    """Tell whether a name received a value earlier in the same scope.
 
-    :param tree: the parsed module
-    :param name: the function name
-    :return: the last definition, or None
+    PyCharm only warns about such a name (deleted, or bound by a past ``except``).
     """
-    matches = [n for n in tree.body if isinstance(n, ast.FunctionDef) and n.name == name]
-    return matches[-1] if matches else None
-
-
-def _describe_missing_function(
-    function: FunctionSpec, source: SourceFile, sources: dict[str, SourceFile]
-) -> Problem:
-    message = f"fonction {function.name} absente de {source.name}"
-    for other in sources.values():
-        if other is not source and other.tree and find_function(other.tree, function.name):
-            return Problem(f"{message} : tu l'as définie dans {other.name}", source.name)
-    names = [node.name for node in source.tree.body if isinstance(node, ast.FunctionDef)]
-    for node in ast.walk(source.tree):
-        if isinstance(node, ast.FunctionDef) and node.name == function.name:
-            return Problem(f"{message} : elle est imbriquée", source.name, node.lineno)
-    close = difflib.get_close_matches(function.name, names, n=1, cutoff=0.6)
-    if close:
-        message += f" : tu as défini {close[0]}"
-    return Problem(message, source.name)
-
-
-def _parameters(node: ast.FunctionDef) -> list[str]:
-    """Write the parameters without their annotations."""
-    arguments = node.args
-    positional = [*arguments.posonlyargs, *arguments.args]
-    defaults = [None] * (len(positional) - len(arguments.defaults)) + arguments.defaults
-    result = [_parameter(arg, value) for arg, value in zip(positional, defaults, strict=True)]
-    if arguments.vararg:
-        result.append(f"*{arguments.vararg.arg}")
-    elif arguments.kwonlyargs:
-        result.append("*")
-    for arg, value in zip(arguments.kwonlyargs, arguments.kw_defaults, strict=True):
-        result.append(_parameter(arg, value))
-    if arguments.kwarg:
-        result.append(f"**{arguments.kwarg.arg}")
-    return result
-
-
-def _same_parameters(expected: list[str], obtained: list[str]) -> bool:
-    """Compare parameters. A default value written « ... » stands for any default value."""
-    if len(expected) != len(obtained):
-        return False
-    return all(
-        found.startswith(wanted[:-3]) if wanted.endswith("=...") else found == wanted
-        for wanted, found in zip(expected, obtained, strict=True)
+    scope = _scope_at(source.tree, message.line)
+    return any(
+        name == message.name and line < message.line for name, line in _bindings(scope)
     )
 
 
-def _parameter(arg: ast.arg, default: ast.expr | None) -> str:
-    return arg.arg if default is None else f"{arg.arg}={ast.unparse(default)}"
+def _scope_at(tree: ast.Module, line: int) -> ast.AST:
+    """Find the innermost function that contains a line."""
+    scope: ast.AST = tree
+    for node in ast.walk(tree):
+        if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef)):
+            if node.lineno <= line <= node.end_lineno:
+                scope = node
+    return scope
+
+
+def _bindings(scope: ast.AST) -> Iterator[tuple[str, int]]:
+    """List the names bound in a scope, comprehensions and inner functions excluded."""
+    pending = list(ast.iter_child_nodes(scope))
+    while pending:
+        node = pending.pop()
+        if isinstance(node, ast.Name) and isinstance(node.ctx, ast.Store):
+            yield node.id, node.lineno
+        elif isinstance(node, ast.ExceptHandler) and node.name:
+            yield node.name, node.lineno
+        if not isinstance(
+            node,
+            (
+                ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef, ast.Lambda,
+                ast.ListComp, ast.SetComp, ast.DictComp, ast.GeneratorExp,
+            ),
+        ):  # fmt: skip
+            pending.extend(ast.iter_child_nodes(node))

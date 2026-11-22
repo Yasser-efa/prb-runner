@@ -25,6 +25,7 @@ Avant de toucher au clavier, remplis la phase préparatoire **sur papier** :
 - **QUOI** : entrées / variables, sorties / résultat attendu, constantes.
 - **COMMENT** : un schéma sur un exemple *différent* de ceux de l'énoncé, avec les indices.
 - **Justifications** : le type de chaque boucle et, pour un `while`, sa condition d'arrêt.
+- **Ton nom** : à l'examen, pas de feuille à ton nom (même vierge) = dépôt non recevable.
 """
 _KINDS = {"new": "Nouvel exercice", "review": "Révision", "resume": "Suite"}
 

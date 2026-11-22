@@ -144,7 +144,7 @@ def test_any_default_value_is_accepted(submit):
     assert submit(GOOD | {"jeu/regles.py": other}).status is Status.PASSED
     without = REGLES.replace(' = "donnees/liste.txt"', "")
     verdict = submit(GOOD | {"jeu/regles.py": without})
-    assert "chemin=..." in verdict.admissibility[0].message
+    assert verdict.status is Status.FAILED and "chemin=..." in verdict.absent[0].message
 
 
 def test_open_without_encoding_is_a_remark(submit):

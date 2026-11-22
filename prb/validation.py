@@ -108,8 +108,12 @@ def assemble(exercise: Exercise, folder: Path) -> Path:
 def _check_verdict(verdict: Verdict) -> Iterator[str]:
     for problem in verdict.admissibility:
         yield f"solution non recevable : {problem.message}"
+    for problem in verdict.warnings:
+        yield f"avertissement sur la solution : {problem.message}"
     for problem in verdict.constraints:
         yield f"contrainte non respectée par la solution : {problem.message}"
+    for problem in verdict.absent:
+        yield f"solution incomplète : {problem.message}"
     failed = sum(not report.ok for report in verdict.visible)
     if failed:
         yield f"la solution rate {failed} test(s) visible(s)"
@@ -161,6 +165,7 @@ def _check_statement(exercise: Exercise) -> Iterator[str]:
         expected += constraint.forbidden + constraint.required
         expected += constraint.forbidden_functions + constraint.forbidden_modules
         expected += constraint.required_calls
+        expected += [f"`{module}`" for module in constraint.required_modules]
     for text in dict.fromkeys(expected):
         if text not in exercise.statement:
             yield f"l'énoncé ne mentionne pas « {text} »"

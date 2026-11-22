@@ -38,7 +38,7 @@ class RunError:
 class Outcome:
     """What happened when a case was run.
 
-    ``status`` is one of: value, exception, timeout, flood, crash, skipped.
+    ``status`` is one of: value, exception, timeout, flood, crash, skipped, absent.
     """
 
     status: str
@@ -122,7 +122,7 @@ class _Session:
                 stopped = self._stopped(problem)
                 self.outcomes[current] = stopped
                 if stopped.status == "timeout":
-                    self.timeouts[_target(cases[current])] += 1
+                    self.timeouts[cases[current].target] += 1
                 if loading:
                     self._spread(cases, pending, loading, stopped)
             elif problem is not None:
@@ -136,7 +136,7 @@ class _Session:
         """Skip the remaining cases of a function that ran out of time repeatedly."""
         kept = []
         for index in pending:
-            if self.timeouts[_target(cases[index])] >= MAX_TIMEOUTS:
+            if self.timeouts[cases[index].target] >= MAX_TIMEOUTS:
                 self.outcomes[index] = Outcome("skipped")
             else:
                 kept.append(index)
@@ -259,11 +259,6 @@ def _describe_case(index: int, case: Case) -> dict:
         "after": after,
         "seed": case.seed,
     }
-
-
-def _target(case: Case) -> str:
-    """Name of what a case runs."""
-    return f"{case.function.module}.{case.function.name}" if case.function else "main"
 
 
 def _read_outcome(event: dict) -> Outcome:

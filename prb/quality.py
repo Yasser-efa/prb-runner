@@ -5,15 +5,14 @@ from collections.abc import Iterator
 from pathlib import Path
 
 from prb import docstrings, loops
-from prb.admissibility import unexpected_files
 from prb.linting import IGNORED_RULES, QUALITY_RULES, lint
 from prb.model import Exercise
-from prb.sources import Problem, SourceFile
+from prb.sources import Problem, SourceFile, is_main_guard
 
 PEP8 = "PEP 8"
 NAMING = "Nommage"
 DOCUMENTATION = docstrings.GROUP
-IMPORTS = "Imports et organisation"
+IMPORTS = "Modularité"
 PRACTICE = loops.GROUP
 GROUPS = (PEP8, NAMING, DOCUMENTATION, IMPORTS, PRACTICE)
 
@@ -42,10 +41,6 @@ def check_quality(
         remarks += loops.check_loop_variables(source)
     if exercise.main:
         remarks += _check_main_guard(sources[exercise.main])
-    remarks += [
-        Problem(problem.message, problem.file, group=IMPORTS)
-        for problem in unexpected_files(exercise, folder)
-    ]
     return sort_remarks(remarks)
 
 
@@ -111,16 +106,5 @@ def _stored_names(node: ast.AST, scope: str | None) -> Iterator[tuple[str | None
 
 
 def _check_main_guard(source: SourceFile) -> Iterator[Problem]:
-    for node in source.tree.body:
-        if isinstance(node, ast.If) and _is_main_test(node.test):
-            return
-    yield Problem("il manque « if __name__ == '__main__': »", source.name, group=PRACTICE)
-
-
-def _is_main_test(test: ast.expr) -> bool:
-    if not (isinstance(test, ast.Compare) and len(test.ops) == 1):
-        return False
-    if not isinstance(test.ops[0], ast.Eq):
-        return False
-    sides = {ast.unparse(test.left), ast.unparse(test.comparators[0])}
-    return sides == {"__name__", "'__main__'"}
+    if not any(is_main_guard(node) for node in source.tree.body):
+        yield Problem("il manque « if __name__ == '__main__': »", source.name, group=PRACTICE)

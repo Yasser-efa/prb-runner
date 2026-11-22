@@ -6,6 +6,9 @@ from collections.abc import Callable
 from dataclasses import dataclass
 from pathlib import Path
 
+# Target of the tests that run the whole program.
+PROGRAM = "main"
+
 
 class BankError(Exception):
     """A file of the bank is missing or badly formatted."""
@@ -25,6 +28,11 @@ class FunctionSpec:
     def file(self) -> str:
         """Path of the file that must define the function."""
         return self.module.replace(".", "/") + ".py"
+
+    @property
+    def target(self) -> str:
+        """Full name of the function."""
+        return f"{self.module}.{self.name}"
 
     @property
     def returns_float(self) -> bool:
@@ -47,6 +55,7 @@ class ConstraintSet:
     required: tuple[str, ...] = ()
     forbidden_functions: tuple[str, ...] = ()
     forbidden_modules: tuple[str, ...] = ()
+    required_modules: tuple[str, ...] = ()
     required_calls: tuple[str, ...] = ()
 
 
@@ -108,6 +117,11 @@ class Case:
     def is_program(self) -> bool:
         """Tell whether the case runs the whole program."""
         return self.function is None
+
+    @property
+    def target(self) -> str:
+        """Name of what the case runs."""
+        return self.function.target if self.function else PROGRAM
 
 
 @dataclass(frozen=True)

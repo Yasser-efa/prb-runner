@@ -30,15 +30,23 @@ def test_a_complete_exercise_is_valid(validate):
 @pytest.mark.parametrize(
     ("solution", "expected"),
     [
-        (SOLUTION.replace("range(1", "inconnu(1"), "échoue"),
+        (SOLUTION.replace("range(1", "inconnu(1"), "non recevable"),
         (SOLUTION.replace("taille + 1", "taille"), "2 test(s) visible(s)"),
         (SOLUTION.replace(":return:", ":retour:"), "qualité"),
         (SOLUTION.replace("return [", "return [0] + ["), "rate 2"),
+        (SOLUTION.replace("def table", "def tabel"), "échoue"),
+        (SOLUTION.replace("taille", "longueur"), "solution incomplète"),
     ],
 )
 def test_bad_solutions(validate, solution, expected):
     problems = validate(solution={"tables.py": solution}).problems
-    assert any(expected in problem for problem in problems) or "non recevable" in problems[0]
+    assert any(expected in problem for problem in problems), problems
+
+
+def test_warnings_on_the_solution(validate):
+    code = f"{SOLUTION}\n\ndef jamais():\n    valeur = 1\n    del valeur\n    return valeur\n"
+    problems = validate(solution={"tables.py": code}).problems
+    assert any("avertissement sur la solution" in problem for problem in problems), problems
 
 
 def test_solution_that_ignores_its_constraints(validate):
@@ -72,6 +80,18 @@ def test_slow_solution(validate):
 def test_incomplete_exercises(validate, options, expected):
     problems = validate(**options).problems
     assert any(expected in problem for problem in problems), problems
+
+
+def test_statement_must_announce_the_required_modules(validate):
+    description = f'{FUNCTION}\n[contraintes]\nmodules_imposes = ["re"]\n'
+    solution = SOLUTION.replace("\n\n\ndef", "\n\nimport re\n\n\ndef").replace(
+        "return [", "return [re.escape('a') and "
+    )
+    problems = validate(description=description, solution={"tables.py": solution}).problems
+    assert problems == ["l'énoncé ne mentionne pas « `re` »"]
+    statement = f"{STATEMENT}Utilise le module `re`.\n"
+    options = {"description": description, "solution": {"tables.py": solution}}
+    assert validate(statement, **options).problems == []
 
 
 def test_statement_must_announce_the_constraints(validate):

@@ -11,7 +11,8 @@ from prb.constraints import check_constraints
 from prb.controls import apply_control
 from prb.model import BankError, Case, Exercise
 from prb.quality import IMPORTS, PRACTICE, check_quality, sort_remarks
-from prb.runner import Outcome, RunReport, run_cases
+from prb.runner import Outcome, RunError, RunReport, run_cases
+from prb.signatures import check_functions
 from prb.sources import Problem, read_sources
 
 
@@ -40,10 +41,17 @@ class Verdict:
 
     exercise: Exercise
     admissibility: list[Problem] = field(default_factory=list)
+    warnings: list[Problem] = field(default_factory=list)
     constraints: list[Problem] = field(default_factory=list)
+    absent: list[Problem] = field(default_factory=list)
     visible: list[CaseReport] = field(default_factory=list)
     hidden: list[CaseReport] = field(default_factory=list)
     remarks: list[Problem] = field(default_factory=list)
+
+    @property
+    def tests_passed(self) -> bool:
+        """Tell whether every test succeeded."""
+        return all(report.ok for report in [*self.visible, *self.hidden])
 
     @property
     def status(self) -> Status:
@@ -52,9 +60,7 @@ class Verdict:
             return Status.NOT_ADMISSIBLE
         if self.constraints:
             return Status.CONSTRAINTS
-        if all(report.ok for report in [*self.visible, *self.hidden]):
-            return Status.PASSED
-        return Status.FAILED
+        return Status.PASSED if self.tests_passed else Status.FAILED
 
     @property
     def passed(self) -> bool:
@@ -65,8 +71,9 @@ class Verdict:
 def verify(exercise: Exercise, folder: Path) -> Verdict:
     """Check some code against an exercise.
 
-    The check stops at the first blocking step that fails, as a rejected submission is not
-    evaluated at the exam.
+    The check stops there if the submission is not admissible, since it would not be evaluated
+    at the exam. A broken constraint or a missing function does not prevent the other tests from
+    running.
 
     :param exercise: the exercise
     :param folder: the folder holding the code
@@ -74,15 +81,15 @@ def verify(exercise: Exercise, folder: Path) -> Verdict:
     """
     verdict = Verdict(exercise)
     sources = read_sources(folder)
-    verdict.admissibility = check_admissibility(exercise, folder, sources)
+    admissibility = check_admissibility(exercise, folder, sources)
+    verdict.admissibility, verdict.warnings = admissibility.errors, admissibility.warnings
     if verdict.admissibility:
         return verdict
     own = {name: file for name, file in sources.items() if name not in exercise.provided_names}
     verdict.constraints = check_constraints(exercise, own)
-    if not verdict.constraints:
-        noisy = _run_tests(exercise, folder, verdict)
-        verdict.remarks += _test_remarks(verdict, noisy)
-    verdict.remarks = sort_remarks(verdict.remarks + check_quality(exercise, folder, own))
+    noisy = _run_tests(exercise, folder, verdict, check_functions(exercise, own))
+    remarks = _test_remarks(verdict, noisy) + check_quality(exercise, folder, own)
+    verdict.remarks = sort_remarks(remarks)
     return verdict
 
 
@@ -149,13 +156,24 @@ def judge(cases: Sequence[Case], outcomes: Sequence[Outcome]) -> list[CaseReport
     return reports
 
 
-def _run_tests(exercise: Exercise, folder: Path, verdict: Verdict) -> list[str]:
-    hidden = expected_hidden_cases(exercise)
-    cases = [*exercise.visible_cases, *hidden]
-    report = run_cases(
-        folder, cases, exercise.main, exercise.timeout, exercise.test_files()
+def _run_tests(
+    exercise: Exercise, folder: Path, verdict: Verdict, absent: dict[str, Problem]
+) -> list[str]:
+    """Run the tests of what exists. The functions that are absent fail theirs."""
+    verdict.absent = list(absent.values())
+    cases = [*exercise.visible_cases, *expected_hidden_cases(exercise)]
+    runnable = [case for case in cases if case.target not in absent]
+    report = run_cases(folder, runnable, exercise.main, exercise.timeout, exercise.test_files())
+    outcomes = iter(report.outcomes)
+    judged = judge(
+        cases,
+        [
+            Outcome("absent", error=RunError("Absente", absent[case.target].message))
+            if case.target in absent
+            else next(outcomes)
+            for case in cases
+        ],
     )
-    judged = judge(cases, report.outcomes)
     count = len(exercise.visible_cases)
     verdict.visible, verdict.hidden = judged[:count], judged[count:]
     return report.noisy_modules
