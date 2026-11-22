@@ -32,6 +32,7 @@ Les deux configurations sont dans `.run/` et apparaissent en haut à droite de P
 | `python -m prb du_jour` | affiche l'exercice du jour et lance le chrono |
 | `python -m prb du_jour --suivant` | un exercice de plus, une fois celui du jour réussi |
 | `python -m prb du_jour --nouveau` ou `--revision` | force le choix |
+| `python -m prb du_jour <id>` | l'exercice de ton choix, par exemple un ancien examen |
 | `python -m prb verifier [<id>]` | vérifie ta solution et enregistre la tentative |
 | `python -m prb indice [<id>]` | affiche l'indice suivant |
 | `python -m prb solution [<id>]` | affiche la solution (confirmation si l'exercice n'est pas réussi) |
@@ -46,18 +47,24 @@ Sans `<id>`, les commandes prennent l'exercice en cours.
 2. Un exercice réussi après avoir vu la solution : il revient le lendemain.
 3. Sinon, une révision due pour deux nouveaux exercices, dans l'ordre de `exercices/ordre.toml`.
 
+`du_jour <id>` passe outre cet ordre. L'exercice choisi devient l'exercice en cours, donc `du_jour`
+le reprend tant qu'il n'est pas réussi ; `du_jour --nouveau` continue la liste sans lui. Les autres
+exercices en cours sont rappelés sous l'énoncé.
+
 Un exercice réussi revient après 3 jours, puis 7, puis 21 ; ensuite il est acquis. Une révision qui
 n'est pas réussie le jour même revient le lendemain et repart à 3 jours. Au début d'une révision,
 l'ancien code est rangé dans `mes_solutions/_archives/`.
 
 Le chrono additionne les séances d'un même exercice, plafonnées à 90 minutes chacune (30 minutes
-de plus que la durée prévue pour les examens). Il compte jusqu'à ta dernière commande.
+de plus que la durée prévue pour les examens). Il compte jusqu'à ta dernière commande, sans le temps
+passé sur un autre exercice.
 
 ### Les anciens examens
 
-Cinq anciens examens (`examen_...`) viennent à la fin de la banque. `du_jour` copie les fichiers
-fournis par le prof depuis `sources/anciens_examens/` ; comme à l'examen, les modifier rend le dépôt
-non recevable. Les tâches de tests unitaires sont retirées.
+Cinq anciens examens (`examen_...`) viennent à la fin de la banque. Pour ne pas attendre, choisis-en
+un : `python -m prb du_jour examen_slam`. `du_jour` copie les fichiers fournis par le prof depuis
+`sources/anciens_examens/` ; comme à l'examen, les modifier rend le dépôt non recevable. Les tâches
+de tests unitaires sont retirées.
 
 ### Le verdict
 

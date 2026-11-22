@@ -76,6 +76,78 @@ def test_one_exercise_a_day(two_exercises, workshop, run):
     assert "Suite : autre" in run("du_jour", minutes=23)
 
 
+def test_chosen_exercise(two_exercises, workshop, run):
+    output = run("du_jour autre")
+    assert "Nouvel exercice : autre" in output and "Aussi en cours" not in output
+    workshop.write(workshop.paths.solutions / "autre", {"tables.py": WRONG})
+    run("verifier", minutes=10)
+    assert "Suite : autre" in run("du_jour", days=1)
+    workshop.write(workshop.paths.solutions / "autre", {"tables.py": SOLUTION})
+    assert "RÉUSSI" in run("verifier", days=1, minutes=5)
+    assert "Déjà réussi aujourd'hui : autre" in run("du_jour", days=1, minutes=6)
+    assert "Nouvel exercice : demo" in run("du_jour demo", days=1, minutes=7)
+
+
+def test_time_spent_on_another_exercise_does_not_count(two_exercises, workshop, run):
+    run("du_jour")
+    workshop.submit(WRONG)
+    run("verifier", minutes=10)
+    output = run("du_jour autre", minutes=20)
+    assert "Aussi en cours : demo (pour y revenir : python -m prb du_jour demo)" in output
+    output = run("du_jour demo", minutes=60)
+    assert "Suite : demo" in output and "10 min déjà passées" in output
+    assert "Aussi en cours : autre" in output and "Aussi en cours : demo" not in output
+    assert "temps : 15 min" in run("verifier", minutes=65)
+    run("du_jour autre", minutes=70)
+    assert "temps : 15 min" in run("verifier demo", minutes=90)
+
+
+@pytest.mark.parametrize(("answer", "restarted"), [("oui", True), ("non", False)])
+def test_restarting_a_passed_exercise_needs_a_confirmation(
+    workshop, run, monkeypatch, answer, restarted
+):
+    run("du_jour")
+    workshop.submit(SOLUTION)
+    run("verifier", minutes=20)
+    monkeypatch.setattr("builtins.input", lambda _: answer)
+    output = run("du_jour demo", minutes=30)
+    assert "demo est déjà réussi (prochaine révision : jeu. 26/11)" in output
+    assert ("Révision : demo" in output) is restarted
+    assert (workshop.student / "tables.py").exists() is not restarted
+    assert run.code == (0 if restarted else 1)
+    assert ("en révision" in run("progression", minutes=31)) is restarted
+
+
+def test_a_due_review_can_be_chosen_without_confirmation(workshop, run):
+    run("du_jour")
+    workshop.submit(SOLUTION)
+    run("verifier", minutes=20)
+    assert "Révision : demo" in run("du_jour demo", days=3)
+
+
+def test_an_acquired_exercise_can_be_chosen_again(workshop, run, monkeypatch):
+    for day in (0, 3, 10, 31):
+        run("du_jour", days=day)
+        workshop.submit(SOLUTION)
+        run("verifier", days=day, minutes=20)
+    monkeypatch.setattr("builtins.input", lambda _: "OUI")
+    output = run("du_jour demo", days=40)
+    assert "déjà réussi (exercice acquis)" in output and "Révision : demo" in output
+
+
+def test_unknown_exercises_are_not_started(two_exercises, run):
+    assert "exercice inconnu : dem (peut-être : demo)" in run("du_jour dem")
+    assert run.code == 2
+    assert "peut-être : autre" in run("du_jour autres")
+    assert "peut-être" not in run("du_jour xyz")
+    assert "en cours" not in run("progression")
+
+
+def test_an_exercise_and_an_option_exclude_each_other(run):
+    with pytest.raises(SystemExit):
+        run("du_jour demo --nouveau")
+
+
 def test_verifier_keeps_the_exercise_that_was_just_passed(two_exercises, workshop, run):
     run("du_jour")
     workshop.submit(SOLUTION)

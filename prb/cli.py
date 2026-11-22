@@ -56,7 +56,10 @@ def _build_parser() -> argparse.ArgumentParser:
         ("--revision", "review", "prend une révision"),
     ):
         choice.add_argument(option, dest="wanted", action="store_const", const=value, help=text)
-    today.set_defaults(run=lambda context, options: commands.show_today(context, options.wanted))
+    choice.add_argument("id", nargs="?", help="lance l'exercice de ton choix")
+    today.set_defaults(
+        run=lambda context, options: commands.show_today(context, options.wanted, options.id)
+    )
 
     for name, function, text in (
         ("verifier", commands.verify_exercise, "vérifie ta solution"),

@@ -1,6 +1,7 @@
 """Reading of the exercise bank (TOML and Markdown files)."""
 
 import ast
+import difflib
 import re
 import sys
 import tomllib
@@ -16,6 +17,7 @@ from prb.sources import list_files
 
 DEFAULT_MINUTES = 40
 DEFAULT_TIMEOUT = 2.0
+MAX_SUGGESTIONS = 6
 KINDS = ("fonction", "programme")
 _ID_PATTERN = re.compile(r"[a-z][a-z0-9_]*")
 
@@ -68,7 +70,7 @@ def load_exercise(paths: Paths, exercise_id: str) -> Exercise:
     """
     folder = paths.exercises / exercise_id
     if not _ID_PATTERN.fullmatch(exercise_id) or not (folder / "exercice.toml").is_file():
-        raise BankError(f"exercice inconnu : {exercise_id}")
+        raise BankError(f"exercice inconnu : {exercise_id}{_suggest(paths, exercise_id)}")
     where = f"{exercise_id}/exercice.toml"
     data = _read_toml(folder / "exercice.toml")
     allowed = {"titre", "reference", "sorte", "duree_minutes", "timeout_secondes"}
@@ -112,6 +114,14 @@ def load_exercise(paths: Paths, exercise_id: str) -> Exercise:
         hints=_strings(hints, "indices", f"{exercise_id}/indices.toml"),
         reference_folder=private / "solution",
     )
+
+
+def _suggest(paths: Paths, text: str) -> str:
+    """Look for the exercises that the student may have meant."""
+    names = sorted(path.parent.name for path in paths.exercises.glob("*/exercice.toml"))
+    found = [name for name in names if text and text.casefold() in name]
+    found = found or difflib.get_close_matches(text, names)
+    return f" (peut-être : {', '.join(found[:MAX_SUGGESTIONS])})" if found else ""
 
 
 def _read_text(path: Path) -> str:

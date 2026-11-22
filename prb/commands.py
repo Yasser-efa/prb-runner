@@ -59,13 +59,16 @@ class Context:
         return load_exercise(self.paths, exercise_id)
 
 
-def show_today(context: Context, wanted: str | None) -> int:
+def show_today(context: Context, wanted: str | None, exercise_id: str | None = None) -> int:
     """Start or resume the exercise of the day.
 
     :param context: the paths, the terminal and the progress
     :param wanted: "new", "review", "next" or None to let the tool decide
+    :param exercise_id: the exercise chosen by the student, None to let the tool decide
     :return: the exit code
     """
+    if exercise_id is not None:
+        return _start_chosen(context, exercise_id)
     histories = [context.history(name) for name in load_order(context.paths)]
     states = [read_state(history) for history in histories]
     today = context.now.date()
@@ -78,6 +81,22 @@ def show_today(context: Context, wanted: str | None) -> int:
         _explain_nothing_to_do(context, states, forced)
         return 0
     _start(context, choice)
+    return 0
+
+
+def _start_chosen(context: Context, exercise_id: str) -> int:
+    """Start or resume the exercise chosen by the student."""
+    state = context.state(exercise_id)
+    if state.stage in (Stage.PLANNED, Stage.DONE) and not state.is_due(context.now.date()):
+        warning = (
+            f"{exercise_id} est déjà réussi ({_next_review(state)}). Le recommencer maintenant "
+            "compte comme une révision et range ton code dans mes_solutions/_archives/."
+        )
+        if not _confirm(context, warning, "Tape OUI pour le recommencer : "):
+            context.console.print("Exercice non relancé.")
+            return 1
+    kind = {Stage.NEW: "new", Stage.ACTIVE: "resume"}.get(state.stage, "review")
+    _start(context, Choice(state, kind))
     return 0
 
 
@@ -121,6 +140,15 @@ def _start(context: Context, choice: Choice) -> None:
     context.progress.start_session(exercise.id, choice.kind, context.now, limit)
     seconds = choice.state.seconds if choice.kind == "resume" else None
     screens.show_exercise(context.console, exercise, choice.kind, seconds, context.now)
+    _show_others(context, exercise.id)
+
+
+def _show_others(context: Context, exercise_id: str) -> None:
+    """Remind the student of the other unfinished exercises."""
+    for name in load_order(context.paths):
+        if name != exercise_id and context.state(name).stage is Stage.ACTIVE:
+            message = f"Aussi en cours : {name} (pour y revenir : python -m prb du_jour {name})"
+            context.console.print(Text(message, style="dim"))
 
 
 def verify_exercise(context: Context, exercise_id: str | None) -> int:
@@ -196,21 +224,23 @@ def show_solution(context: Context, exercise_id: str | None) -> int:
     """
     exercise = context.exercise(exercise_id)
     state = context.state(exercise.id)
-    if state.stage not in (Stage.PLANNED, Stage.DONE) and not _confirm(context, exercise):
-        context.console.print("Solution non affichée. Essaie plutôt : python -m prb indice")
-        return 1
+    if state.stage not in (Stage.PLANNED, Stage.DONE):
+        warning = (
+            f"{exercise.id} n'est pas encore réussi. Si tu regardes la solution, l'exercice "
+            "reviendra le lendemain de ta réussite."
+        )
+        if not _confirm(context, warning, "Tape OUI pour la voir quand même : "):
+            context.console.print("Solution non affichée. Essaie plutôt : python -m prb indice")
+            return 1
     context.progress.record_solution_viewed(exercise.id, context.now)
     screens.show_solution(context.console, exercise, exercise.reference_folder)
     return 0
 
 
-def _confirm(context: Context, exercise: Exercise) -> bool:
-    context.console.print(
-        Text(f"{exercise.id} n'est pas encore réussi. Si tu regardes la solution, l'exercice ")
-        .append("reviendra le lendemain de ta réussite.")
-    )
+def _confirm(context: Context, warning: str, question: str) -> bool:
+    context.console.print(Text(warning))
     try:
-        answer = input("Tape OUI pour la voir quand même : ")
+        answer = input(question)
     except EOFError:
         return False
     return answer.strip().upper() == "OUI"

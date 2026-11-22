@@ -187,15 +187,21 @@ class Progress:
 
         :param exercise_id: the exercise
         :param at: current time
-        :return: False if no session was started today
+        :return: False if no session was started today, or if another exercise was started since
         """
         with self._connect() as connection:
             row = connection.execute(
-                "SELECT id, started_at FROM sessions WHERE exercise_id = ?"
+                "SELECT id, started_at, last_seen_at FROM sessions WHERE exercise_id = ?"
                 " ORDER BY started_at DESC, id DESC LIMIT 1",
                 (exercise_id,),
             ).fetchone()
             if row is None or datetime.fromisoformat(row["started_at"]).date() != at.date():
+                return False
+            other = connection.execute(
+                "SELECT id FROM sessions WHERE exercise_id != ? AND started_at >= ? LIMIT 1",
+                (exercise_id, row["last_seen_at"]),
+            ).fetchone()
+            if other is not None:
                 return False
             connection.execute(
                 "UPDATE sessions SET last_seen_at = ? WHERE id = ?", (_write(at), row["id"])
