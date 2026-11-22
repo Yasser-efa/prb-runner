@@ -23,15 +23,34 @@ Conseil : désactive *Full Line Code Completion* pendant l'entrainement. À l'ex
 
 ## Utilisation
 
-1. Lis l'énoncé `exercices/<id>/enonce.md` et fais d'abord la phase préparatoire sur papier.
-2. Code ta solution dans `mes_solutions/<id>/`, en créant toi-même les fichiers demandés.
-3. Lance la vérification :
+Chaque matin, dans PyCharm : configuration **du_jour**, phase préparatoire sur papier, code dans
+`mes_solutions/<id>/` (en créant toi-même les fichiers demandés), puis configuration **verifier**.
+Les deux configurations sont dans `.run/` et apparaissent en haut à droite de PyCharm.
 
-```powershell
-python -m prb verifier <id>
-```
+| Commande | Effet |
+|---|---|
+| `python -m prb du_jour` | affiche l'exercice du jour et lance le chrono |
+| `python -m prb du_jour --suivant` | un exercice de plus, une fois celui du jour réussi |
+| `python -m prb du_jour --nouveau` ou `--revision` | force le choix |
+| `python -m prb verifier [<id>]` | vérifie ta solution et enregistre la tentative |
+| `python -m prb indice [<id>]` | affiche l'indice suivant |
+| `python -m prb solution [<id>]` | affiche la solution (confirmation si l'exercice n'est pas réussi) |
+| `python -m prb progression` | tableau de tous les exercices |
 
-Sans `<id>`, la commande vérifie l'exercice en cours.
+Sans `<id>`, les commandes prennent l'exercice en cours.
+
+### Le choix de l'exercice
+
+1. L'exercice non réussi de la veille.
+2. Un exercice réussi après avoir vu la solution : il revient le lendemain.
+3. Sinon, une révision due pour deux nouveaux exercices, dans l'ordre de `exercices/ordre.toml`.
+
+Un exercice réussi revient après 3 jours, puis 7, puis 21 ; ensuite il est acquis. Une révision qui
+n'est pas réussie le jour même revient le lendemain et repart à 3 jours. Au début d'une révision,
+l'ancien code est rangé dans `mes_solutions/_archives/`.
+
+Le chrono additionne les séances d'un même exercice, plafonnées à 90 minutes chacune. Il compte
+jusqu'à ta dernière commande.
 
 ### Le verdict
 
@@ -49,7 +68,8 @@ Ton code est exécuté sur une copie, dans un processus isolé, avec 2 secondes 
 |---|---|
 | `exercices/` | énoncés, descriptions et tests visibles |
 | `_prive/` | solutions, tests cachés et indices : exclu dans PyCharm, à ne pas ouvrir |
-| `mes_solutions/` | ton code (ignoré par git) |
+| `mes_solutions/` | ton code (ignoré par git), anciens essais dans `_archives/` |
+| `progression.sqlite3` | ton historique (ignoré par git) |
 | `prb/` | l'outil |
 | `tests/` | les tests de l'outil (`python -m pytest`) |
 

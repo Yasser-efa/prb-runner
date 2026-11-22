@@ -26,6 +26,11 @@ class Paths:
         return self.root / "mes_solutions"
 
     @property
+    def archives(self) -> Path:
+        """Previous code of the exercises under review."""
+        return self.solutions / "_archives"
+
+    @property
     def database(self) -> Path:
         """SQLite file holding the progress."""
         return self.root / "progression.sqlite3"

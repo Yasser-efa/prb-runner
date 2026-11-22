@@ -200,10 +200,10 @@ def test_attempts_are_recorded(workshop, check):
     progress = Progress(workshop.paths.database)
     progress.record_attempt(check(SOLUTION), datetime(2026, 11, 23, 8, 30), 600)
     progress.record_attempt(check("x = 1\n"), datetime(2026, 11, 23, 8, 40), None)
-    first, second = progress.attempts("demo")
+    first, second = progress.history("demo").attempts
     assert first.passed and first.seconds == 600 and first.hidden_ok == first.hidden_total == 2
     assert second.status is Status.NOT_ADMISSIBLE and second.seconds is None
-    assert progress.attempts("autre") == []
+    assert progress.history("autre").attempts == ()
 
 
 def test_windows_line_endings_and_bom(check, workshop):
@@ -217,23 +217,21 @@ def test_windows_line_endings_and_bom(check, workshop):
 
 def test_an_empty_folder_is_not_an_attempt(workshop, capsys):
     workshop.exercise()
-    assert cli.main(["verifier"], workshop.paths) == 1
+    assert cli.main(["verifier", "demo"], workshop.paths) == 1
     assert "est vide" in capsys.readouterr().out
     assert workshop.student.is_dir()
-    assert Progress(workshop.paths.database).attempts() == []
+    assert Progress(workshop.paths.database).history("demo").attempts == ()
 
 
 def test_command_line(workshop, capsys):
     workshop.exercise()
     workshop.submit("def table(nombre, taille=3):\n    return []\n")
-    assert cli.main(["verifier"], workshop.paths) == 1
+    assert cli.main(["verifier", "demo"], workshop.paths) == 1
     assert "TESTS RATÉS" in capsys.readouterr().out
     workshop.submit(SOLUTION)
-    assert cli.main(["verifier", "demo"], workshop.paths) == 0
+    assert cli.main(["verifier"], workshop.paths) == 0
     output = capsys.readouterr().out
     assert "RÉUSSI" in output and "tentative n° 2" in output
-    assert cli.main(["verifier"], workshop.paths) == 2
-    assert "tous les exercices sont réussis" in capsys.readouterr().out
     assert cli.main(["verifier", "absent"], workshop.paths) == 2
     assert "exercice inconnu" in capsys.readouterr().out
 
