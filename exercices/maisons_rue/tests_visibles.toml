@@ -1,0 +1,23 @@
+[[tests]]
+appel = "maisons_quai(17, 25)"
+attendu = "9"
+
+[[tests]]
+appel = "maisons_quai(17, 25, False)"
+attendu = "7"
+
+[[tests]]
+appel = "maisons_rue(17, 25)"
+attendu = "5"
+
+[[tests]]
+appel = "maisons_rue(17, 25, False)"
+attendu = "3"
+
+[[tests]]
+appel = "maisons_rue(17, 24)"
+attendu = "-1"
+
+[[tests]]
+appel = "maisons_rue(25, 17)"
+attendu = "5"

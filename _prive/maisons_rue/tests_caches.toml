@@ -1,0 +1,42 @@
+[[groupes]]
+theme = "quai"
+appels = [
+    "maisons_quai(1, 10)",
+    "maisons_quai(10, 1)",
+    "maisons_quai(4, 9, False)",
+    "maisons_quai(9, 4, bornes_comprises=False)",
+    "maisons_quai(17, 24)",
+]
+
+[[groupes]]
+theme = "rue"
+appels = [
+    "maisons_rue(2, 20)",
+    "maisons_rue(20, 2)",
+    "maisons_rue(1, 99)",
+    "maisons_rue(12, 4, False)",
+    "maisons_rue(1, 7, bornes_comprises=False)",
+]
+
+[[groupes]]
+theme = "valeurs limites"
+appels = [
+    "maisons_quai(5, 5)",
+    "maisons_quai(5, 5, False)",
+    "maisons_quai(5, 6, False)",
+    "maisons_quai(5, 6)",
+    "maisons_rue(5, 5)",
+    "maisons_rue(5, 5, False)",
+    "maisons_rue(5, 7, False)",
+    "maisons_rue(7, 5)",
+    "maisons_rue(5, 9, False)",
+]
+
+[[groupes]]
+theme = "côtés différents"
+appels = [
+    "maisons_rue(24, 17)",
+    "maisons_rue(2, 3, False)",
+    "maisons_rue(1, 2)",
+    "maisons_rue(8, 5, bornes_comprises=False)",
+]

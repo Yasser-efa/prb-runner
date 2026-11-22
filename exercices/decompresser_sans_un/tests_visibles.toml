@@ -1,0 +1,19 @@
+[[tests]]
+appel = "decompresser('ab3c')"
+attendu = "'abbbc'"
+
+[[tests]]
+appel = "decompresser('x12')"
+attendu = "'xxxxxxxxxxxx'"
+
+[[tests]]
+appel = "decompresser('')"
+attendu = "''"
+
+[[tests]]
+appel = "compresser('abbbc')"
+attendu = "'ab3c'"
+
+[[tests]]
+appel = "compresser('')"
+attendu = "''"

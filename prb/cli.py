@@ -67,6 +67,10 @@ def _build_parser() -> argparse.ArgumentParser:
         command.add_argument("id", nargs="?", help="exercice (par défaut : l'exercice en cours)")
         command.set_defaults(run=_with_exercise(function))
 
+    validate = subparsers.add_parser("valider", help="vérifie la banque d'exercices")
+    validate.add_argument("ids", nargs="*", metavar="id", help="exercices (par défaut : tous)")
+    validate.set_defaults(run=lambda context, options: commands.validate(context, options.ids))
+
     progress = subparsers.add_parser("progression", help="affiche l'état de tous les exercices")
     progress.set_defaults(run=lambda context, _: commands.show_progress(context))
     return parser

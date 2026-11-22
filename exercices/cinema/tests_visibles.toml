@@ -1,0 +1,29 @@
+[[tests]]
+appel = "position_siege(147)"
+attendu = "(8, 7)"
+
+[[tests]]
+appel = "position_siege(1)"
+attendu = "(1, 1)"
+
+[[tests]]
+appel = "position_siege(5, 4)"
+attendu = "(2, 1)"
+
+[[tests]]
+appel = "numero_siege(8, 7)"
+attendu = "147"
+
+[[tests]]
+entree = ["147"]
+sortie = """
+Numéro du siège ? 147
+Rangée 8, position 7
+"""
+
+[[tests]]
+entree = ["241"]
+sortie = """
+Numéro du siège ? 241
+Ce siège n'existe pas.
+"""

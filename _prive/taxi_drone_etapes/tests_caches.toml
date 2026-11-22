@@ -1,0 +1,36 @@
+[[groupes]]
+theme = "distance et lecture"
+appels = [
+    "distance_taxi((-2, 5), (3, -1))",
+    "distance_taxi((4, 4), (4, 4))",
+    "lire_etapes('')",
+    "lire_etapes('   ')",
+    "lire_etapes('0,0')",
+    "lire_etapes('  10,-20    -3,4 ')",
+]
+
+[[groupes]]
+theme = "trajet"
+appels = [
+    "distance_trajet([])",
+    "distance_trajet([(3, 4)])",
+    "distance_trajet([(0, 0), (3, 4)])",
+    "distance_trajet([(0, 0), (1, 1), (0, 0)])",
+    "distance_trajet([(5, 5), (5, 5), (5, 5)])",
+    "distance_trajet([(1, 1), (2, 5), (-3, 0), (4, 4), (4, 0)])",
+]
+
+[[groupes]]
+theme = "taxi le plus proche"
+appels = [
+    "taxi_le_plus_proche((0, 0), [])",
+    "taxi_le_plus_proche((0, 0), [(9, 9)])",
+    "taxi_le_plus_proche((2, 2), [(0, 0), (4, 4), (2, 2)])",
+    "taxi_le_plus_proche((2, 2), [(0, 2), (2, 0), (4, 2)])",
+    "taxi_le_plus_proche((1, 1), [(9, 9), (2, 2), (2, 2)])",
+    "taxi_le_plus_proche((-5, -5), [(0, 0), (-9, -5), (-5, -8)])",
+]
+
+[[groupes]]
+theme = "programme"
+entrees = [["1,1"], [""], ["0,0 0,5  5,5"], ["-1,-1 1,1"]]

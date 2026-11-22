@@ -1,0 +1,5 @@
+indices = [
+    "Dessine un trajet à quatre étapes. Combien de tronçons comporte-t-il ? Entre quelles étapes ?",
+    "Un trajet de n étapes compte n - 1 tronçons : chaque étape avec la suivante. Parcours les indices jusqu'à l'avant-dernière étape, ou associe la liste à sa copie décalée d'un cran. Que se passe-t-il avec 0 ou 1 étape ?",
+    "Pour le taxi, retiens l'indice du meilleur trouvé jusqu'ici et ne le remplace que si un taxi est strictement plus proche : l'égalité garde alors le premier. Une autre piste : calcule la liste des distances, puis min et index.",
+]

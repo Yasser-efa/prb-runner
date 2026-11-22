@@ -1,0 +1,5 @@
+indices = [
+    "Dessine la semaine en cercle plutôt qu'en ligne, avec un numéro par jour. Que se passe-t-il quand on dépasse le dernier ? Combien de jours faut-il pour revenir au même endroit ?",
+    "Range les noms de jours dans une constante. Il faut passer du nom à son numéro, calculer, puis repasser du numéro au nom. Quel opérateur Python ramène n'importe quel entier entre 0 et 6, même un entier négatif ?",
+    "(numéro + nb_jours) % 7, sans boucle. Pour jours_avant, pars de l'écart entre les deux numéros, ramené entre 0 et 6 : un seul cas pose problème, celui où l'écart vaut 0. Pour la saisie, strip() et lower().",
+]

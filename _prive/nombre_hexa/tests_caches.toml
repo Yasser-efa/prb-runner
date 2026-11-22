@@ -1,0 +1,38 @@
+[[groupes]]
+theme = "chiffre"
+appels = [
+    "valeur_chiffre('0')",
+    "valeur_chiffre('9')",
+    "valeur_chiffre('a')",
+    "valeur_chiffre('f')",
+    "valeur_chiffre('C')",
+]
+
+[[groupes]]
+theme = "nombre"
+appels = [
+    "valeur_nombre('10')",
+    "valeur_nombre('7E')",
+    "valeur_nombre('FF')",
+    "valeur_nombre('100')",
+    "valeur_nombre('BEEF')",
+    "valeur_nombre('aBcD')",
+    "valeur_nombre('F0F0')",
+    "valeur_nombre('12345')",
+]
+
+[[groupes]]
+theme = "valeurs limites"
+appels = [
+    "valeur_nombre('A')",
+    "valeur_nombre('000')",
+    "valeur_nombre('00a')",
+    "valeur_nombre('F')",
+    "valeur_nombre('ffff')",
+    "valeur_nombre('1000000000000000000000000')",
+    "valeur_nombre('DEADBEEFDEADBEEFDEADBEEF')",
+]
+
+[[groupes]]
+theme = "programme"
+entrees = [["ff"], ["  10  "], ["0"], ["CAFE"]]

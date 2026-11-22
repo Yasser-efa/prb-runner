@@ -1,0 +1,24 @@
+titre = "Nombre hexadécimal"
+reference = "n° 12"
+sorte = "programme"
+duree_minutes = 40
+
+[organisation]
+fichiers = ["main.py", "hexa/__init__.py", "hexa/chiffres.py", "hexa/nombres.py"]
+main = "main.py"
+
+[[fonctions]]
+module = "hexa.chiffres"
+signature = "valeur_chiffre(chiffre: str) -> int"
+
+[[fonctions]]
+module = "hexa.nombres"
+signature = "valeur_nombre(nombre: str) -> int"
+
+[contraintes]
+interdits = ["break", "continue", "try", "while True", "dictionnaire"]
+fonctions_interdites = ["int", "ord", "hex", "eval", "float", "bytes", ".fromhex"]
+appels_imposes = ["valeur_nombre"]
+
+[contraintes.fonctions.valeur_nombre]
+appels_imposes = ["valeur_chiffre"]

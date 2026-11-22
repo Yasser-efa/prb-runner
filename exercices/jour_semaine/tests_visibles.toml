@@ -1,0 +1,35 @@
+[[tests]]
+appel = "jour_apres('jeudi', 17)"
+attendu = "'dimanche'"
+
+[[tests]]
+appel = "jour_apres('lundi', -1)"
+attendu = "'dimanche'"
+
+[[tests]]
+appel = "jour_apres('mercredi', 0)"
+attendu = "'mercredi'"
+
+[[tests]]
+appel = "jours_avant('jeudi', 'dimanche')"
+attendu = "3"
+
+[[tests]]
+appel = "jours_avant('mardi', 'mardi')"
+attendu = "7"
+
+[[tests]]
+entree = ["jeudi", "17"]
+sortie = """
+Jour de départ ? jeudi
+Nombre de jours ? 17
+Résultat : dimanche
+"""
+
+[[tests]]
+entree = ["  Lundi ", "8"]
+sortie = """
+Jour de départ ?   Lundi
+Nombre de jours ? 8
+Résultat : mardi
+"""

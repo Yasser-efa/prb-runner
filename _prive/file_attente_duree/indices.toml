@@ -1,0 +1,5 @@
+indices = [
+    "Écris l'évolution de la file minute par minute en partant de 6, jusqu'à dépasser 1000. Quand t'arrêtes-tu ? Exprime d'abord la condition d'arrêt en français, puis sa négation.",
+    "Deux variables évoluent ensemble dans la boucle : l'effectif et le nombre de minutes. Que doit renvoyer la fonction si l'effectif de départ suffit déjà ?",
+    "Pour premier_depassement, avance un indice tant qu'il reste dans la liste ET que l'effectif ne dépasse pas la capacité. Après la boucle, l'indice te dit pourquoi elle s'est arrêtée.",
+]

@@ -1,0 +1,5 @@
+indices = [
+    "Écris 2A3 sur papier avec la valeur de chaque chiffre et la puissance de 16 qui lui correspond. De quel côté la puissance vaut-elle 1 ? Combien vaut-elle pour le premier chiffre ?",
+    "Deux méthodes sont possibles : parcourir les chiffres de droite à gauche en augmentant la puissance, ou de gauche à droite en retenant la valeur de ce qui a déjà été lu. Dans la seconde, que devient cette valeur quand un nouveau chiffre arrive à droite ?",
+    "De gauche à droite : valeur = valeur * 16 + valeur du chiffre, en partant de 0. De droite à gauche : reversed et enumerate donnent le chiffre et l'exposant. L'import se fait depuis la racine : from hexa.chiffres import …",
+]

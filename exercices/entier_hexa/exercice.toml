@@ -1,0 +1,28 @@
+titre = "D'un entier vers l'hexadécimal"
+reference = "var. n° 12"
+sorte = "programme"
+duree_minutes = 40
+
+[organisation]
+fichiers = ["main.py", "conversion.py"]
+main = "main.py"
+
+[[fonctions]]
+module = "conversion"
+signature = "entier_vers_base(valeur: int, base: int = 16) -> str"
+
+[[fonctions]]
+module = "conversion"
+signature = "entier_vers_hexa(valeur: int) -> str"
+
+[contraintes]
+interdits = ["break", "continue", "try", "while True"]
+fonctions_interdites = ["hex", "bin", "oct", "format", ".format", "chr"]
+appels_imposes = ["entier_vers_hexa"]
+
+[contraintes.fonctions.entier_vers_base]
+imposes = ["while"]
+interdits = ["f-string"]
+
+[contraintes.fonctions.entier_vers_hexa]
+interdits = ["f-string"]

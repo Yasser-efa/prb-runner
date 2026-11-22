@@ -1,0 +1,29 @@
+titre = "Compresser de longues séries"
+reference = "var. 18/11"
+sorte = "fonction"
+duree_minutes = 40
+
+[organisation]
+fichiers = ["rle/__init__.py", "rle/couples.py", "rle/compression.py"]
+
+[[fonctions]]
+module = "rle.couples"
+signature = "obtenir_couples(chaine: str, maximum: int = 9) -> list[tuple[str, int]]"
+
+[[fonctions]]
+module = "rle.compression"
+signature = "compresser(chaine: str) -> str"
+
+[[fonctions]]
+module = "rle.compression"
+signature = "meilleure_forme(chaine: str) -> str"
+
+[contraintes]
+interdits = ["break", "continue", "try", "while True"]
+modules_interdits = ["re", "itertools"]
+
+[contraintes.fonctions.compresser]
+appels_imposes = ["obtenir_couples"]
+
+[contraintes.fonctions.meilleure_forme]
+appels_imposes = ["compresser"]

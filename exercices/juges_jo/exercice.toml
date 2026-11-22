@@ -1,0 +1,21 @@
+titre = "La note des juges aux JO"
+reference = "09/11"
+sorte = "fonction"
+duree_minutes = 35
+
+[organisation]
+fichiers = ["plongeon.py"]
+
+[[fonctions]]
+module = "plongeon"
+signature = "note_finale(notes: list[float]) -> float"
+preserve_arguments = true
+
+[[fonctions]]
+module = "plongeon"
+signature = "note_ajustee(notes: list[float], nb_retirees: int = 1) -> float"
+preserve_arguments = true
+
+[contraintes]
+interdits = ["break", "continue", "try", "while True"]
+modules_interdits = ["statistics"]

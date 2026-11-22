@@ -1,0 +1,33 @@
+[[groupes]]
+theme = "cas général"
+appels = [
+    "nombre_pesees(5)",
+    "nombre_pesees(8)",
+    "nombre_pesees(12)",
+    "nombre_pesees(20)",
+    "nombre_pesees(100)",
+    "boules_maximum(3)",
+    "boules_maximum(4)",
+]
+
+[[groupes]]
+theme = "valeurs limites"
+appels = [
+    "nombre_pesees(2)",
+    "nombre_pesees(3)",
+    "nombre_pesees(10)",
+    "nombre_pesees(27)",
+    "nombre_pesees(28)",
+    "nombre_pesees(243)",
+    "nombre_pesees(244)",
+    "boules_maximum(1)",
+]
+
+[[groupes]]
+theme = "grands nombres"
+appels = [
+    "nombre_pesees(1000000)",
+    "nombre_pesees(3486784401)",
+    "nombre_pesees(3486784402)",
+    "boules_maximum(20)",
+]

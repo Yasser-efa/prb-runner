@@ -1,0 +1,23 @@
+titre = "Alice et Bob : créneaux qui se chevauchent"
+reference = "var. n° 6+"
+sorte = "fonction"
+duree_minutes = 40
+
+[organisation]
+fichiers = ["fusion.py", "rencontre.py"]
+
+[[fonctions]]
+module = "fusion"
+signature = "fusionner(creneaux: list[tuple[int, int]]) -> list[tuple[int, int]]"
+preserve_arguments = true
+
+[[fonctions]]
+module = "rencontre"
+signature = "temps_ensemble(dispos_alice: list[tuple[int, int]], dispos_bob: list[tuple[int, int]]) -> int"
+preserve_arguments = true
+
+[contraintes]
+interdits = ["break", "continue", "try", "while True"]
+
+[contraintes.fonctions.temps_ensemble]
+appels_imposes = ["fusionner"]

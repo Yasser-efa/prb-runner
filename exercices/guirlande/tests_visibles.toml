@@ -1,0 +1,19 @@
+[[tests]]
+appel = "duree_rallumage([2, 3, 5, 7, 11])"
+attendu = "2310"
+
+[[tests]]
+appel = "duree_rallumage([2, 4])"
+attendu = "4"
+
+[[tests]]
+appel = "duree_rallumage([7])"
+attendu = "7"
+
+[[tests]]
+appel = "instants_communs([2, 3], 20)"
+attendu = "[6, 12, 18]"
+
+[[tests]]
+appel = "instants_communs([2, 3], 5)"
+attendu = "[]"

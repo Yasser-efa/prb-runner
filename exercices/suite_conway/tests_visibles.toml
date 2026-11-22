@@ -1,0 +1,30 @@
+[[tests]]
+appel = "conway('1211')"
+attendu = "'111221'"
+
+[[tests]]
+appel = "conway('1')"
+attendu = "'11'"
+
+[[tests]]
+appel = "conway('333')"
+attendu = "'33'"
+
+[[tests]]
+appel = "serie(4)"
+attendu = "['1', '11', '21', '1211']"
+
+[[tests]]
+appel = "serie(0)"
+attendu = "[]"
+
+[[tests]]
+entree = ["5"]
+sortie = """
+Nombre de termes ? 5
+1
+11
+21
+1211
+111221
+"""

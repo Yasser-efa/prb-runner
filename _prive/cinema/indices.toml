@@ -1,0 +1,5 @@
+indices = [
+    "Dessine les rangées 1 et 2 avec leurs numéros. Que se passe-t-il pour les sièges 20 et 21 si tu divises directement par 20 ? L'énoncé du cours proposait de numéroter d'abord de 0 à 239…",
+    "Si sièges, rangées et positions étaient numérotés à partir de 0, quelle opération donnerait la rangée ? Et la position ? Décale à l'entrée, calcule, puis décale à la sortie.",
+    "Le quotient et le reste de la division entière du numéro décalé donnent la rangée et la position, décalées elles aussi. Pour l'inverse, pars de la formule place = rangée × taille + position, avec des numéros à partir de 0.",
+]

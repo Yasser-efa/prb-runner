@@ -1,0 +1,5 @@
+indices = [
+    "Dessine une bande de minutes par lampe pour les périodes 2 et 3, en coloriant les minutes où elle est allumée. Combien de changements d'état a connus une lampe à une minute donnée ?",
+    "Le nombre de changements est un quotient, et sa parité donne l'état. Pour la guirlande, attention au début : aux premières minutes, toutes les lampes sont allumées mais aucune ne s'est encore éteinte.",
+    "À quelle minute la première lampe s'éteint-elle ? Commence la recherche là, et avance d'une minute tant que toutes les lampes ne sont pas allumées. Une fonction intermédiaire toutes_allumees(periodes, minute) rend la condition lisible.",
+]

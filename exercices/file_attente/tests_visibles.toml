@@ -1,0 +1,31 @@
+[[tests]]
+appel = "effectif_depart(1536, 8)"
+attendu = "6"
+
+[[tests]]
+appel = "effectif_depart(10, 2)"
+attendu = "-1"
+
+[[tests]]
+appel = "effectif_depart(45, 2, 3)"
+attendu = "5"
+
+[[tests]]
+appel = "evolution(6, 3)"
+attendu = "[6, 12, 24, 48]"
+
+[[tests]]
+entree = ["1536", "8"]
+sortie = """
+Effectif final ? 1536
+Nombre de minutes ? 8
+Effectif de départ : 6
+"""
+
+[[tests]]
+entree = ["10", "2"]
+sortie = """
+Effectif final ? 10
+Nombre de minutes ? 2
+Situation impossible.
+"""

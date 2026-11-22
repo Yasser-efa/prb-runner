@@ -1,0 +1,28 @@
+titre = "Les arrêts du bus"
+reference = "n° 7"
+sorte = "fonction"
+duree_minutes = 30
+
+[organisation]
+fichiers = ["ligne.py"]
+
+[[fonctions]]
+module = "ligne"
+signature = "position_arret(numero: int, premier: int = 3, ecart: int = 9) -> int"
+
+[[fonctions]]
+module = "ligne"
+signature = "numero_arret(position: int, premier: int = 3, ecart: int = 9) -> int"
+
+[[fonctions]]
+module = "ligne"
+signature = "arrets_entre(debut: int, fin: int, premier: int = 3, ecart: int = 9) -> list[int]"
+
+[contraintes]
+interdits = ["break", "continue", "try", "while True"]
+
+[contraintes.fonctions.position_arret]
+interdits = ["for", "while"]
+
+[contraintes.fonctions.numero_arret]
+interdits = ["for", "while"]

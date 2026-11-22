@@ -1,0 +1,19 @@
+titre = "Nombre dans une base quelconque"
+reference = "var. n° 12"
+sorte = "fonction"
+duree_minutes = 40
+
+[organisation]
+fichiers = ["bases.py"]
+
+[[fonctions]]
+module = "bases"
+signature = "est_valide(nombre: str, base: int = 16) -> bool"
+
+[[fonctions]]
+module = "bases"
+signature = "valeur_nombre(nombre: str, base: int = 16) -> int"
+
+[contraintes]
+interdits = ["break", "continue", "try", "while True", "dictionnaire"]
+fonctions_interdites = ["int", "ord", "chr", "eval", "float", "bytes"]

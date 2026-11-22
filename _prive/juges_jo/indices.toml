@@ -1,0 +1,5 @@
+indices = [
+    "Écris les cinq notes sur papier et barre celles qu'on retire, puis fais la même chose avec des notes égales. Combien de notes reste-t-il pour la moyenne ? Attention : une méthode de liste peut chercher une valeur ou un indice, ce n'est pas la même chose.",
+    "La liste reçue doit rester intacte : toute méthode qui la modifie doit travailler sur une copie. Pour la tâche 1, as-tu vraiment besoin d'enlever des éléments pour calculer une somme sans eux ?",
+    "Pour la généralisation, une copie triée (sorted) range les notes à retirer aux deux bouts : il reste à prendre une tranche. Méfie-toi de la borne de fin négative quand nb_retirees vaut 0.",
+]

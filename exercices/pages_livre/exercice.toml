@@ -1,0 +1,22 @@
+titre = "Les pages du livre"
+reference = "n° 13"
+sorte = "fonction"
+duree_minutes = 35
+
+[organisation]
+fichiers = ["numerotation.py"]
+
+[[fonctions]]
+module = "numerotation"
+signature = "nombre_chiffres(nb_pages: int) -> int"
+
+[[fonctions]]
+module = "numerotation"
+signature = "chiffres_entre(premiere: int, derniere: int) -> int"
+
+[[fonctions]]
+module = "numerotation"
+signature = "occurrences(chiffre: int, nb_pages: int) -> int"
+
+[contraintes]
+interdits = ["break", "continue", "try", "while True"]

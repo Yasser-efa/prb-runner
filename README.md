@@ -36,6 +36,7 @@ Les deux configurations sont dans `.run/` et apparaissent en haut à droite de P
 | `python -m prb indice [<id>]` | affiche l'indice suivant |
 | `python -m prb solution [<id>]` | affiche la solution (confirmation si l'exercice n'est pas réussi) |
 | `python -m prb progression` | tableau de tous les exercices |
+| `python -m prb valider [<id>…]` | vérifie la banque elle-même |
 
 Sans `<id>`, les commandes prennent l'exercice en cours.
 
@@ -132,7 +133,8 @@ sortie, comme dans la console de PyCharm.
 
 ### `exercices/<id>/enonce.md`
 
-L'énoncé, avec l'organisation des fichiers, les hypothèses, des exemples et les contraintes.
+L'énoncé, avec l'organisation des fichiers, les hypothèses, des exemples (`>>> table(3, taille=4)`
+puis le résultat) et les contraintes.
 
 ### `_prive/<id>/`
 
@@ -147,3 +149,14 @@ entrees = [["0"], ["-4"]]          # exécutions du programme
 ```
 
 - `indices.toml` : `indices = ["premier indice", "deuxième", "troisième"]`.
+
+### Vérifier l'exercice
+
+```powershell
+python -m prb valider ma_table
+```
+
+La commande vérifie que la solution est recevable, respecte les contraintes, passe les tests
+visibles, reste loin du timeout et n'a aucune remarque de qualité. Elle vérifie aussi qu'il y a
+assez de tests cachés et d'indices, que les exemples `>>>` de l'énoncé sont justes et que l'énoncé
+annonce tous les fichiers, fonctions et contraintes. Elle n'affiche ni test caché, ni indice.

@@ -1,0 +1,26 @@
+titre = "La guirlande qui bascule"
+reference = "var. n° 9"
+sorte = "fonction"
+duree_minutes = 40
+
+[organisation]
+fichiers = ["bascule.py"]
+
+[[fonctions]]
+module = "bascule"
+signature = "lampe_allumee(periode: int, minute: int) -> bool"
+
+[[fonctions]]
+module = "bascule"
+signature = "duree_rallumage(periodes: list[int]) -> int"
+preserve_arguments = true
+
+[contraintes]
+interdits = ["break", "continue", "try", "while True"]
+modules_interdits = ["math"]
+
+[contraintes.fonctions.lampe_allumee]
+interdits = ["for", "while"]
+
+[contraintes.fonctions.duree_rallumage]
+imposes = ["while"]

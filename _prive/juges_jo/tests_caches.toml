@@ -1,0 +1,31 @@
+[[groupes]]
+theme = "cinq juges"
+appels = [
+    "note_finale([1, 2, 3, 4, 5])",
+    "note_finale([5, 4, 3, 2, 1])",
+    "note_finale([0, 10, 0, 10, 0])",
+    "note_finale([9.5, 9.5, 2, 2, 5])",
+    "note_finale([10, 1, 7.25, 6.75, 8])",
+    "note_finale([0, 0, 0, 0, 0])",
+]
+
+[[groupes]]
+theme = "autre nombre de juges"
+appels = [
+    "note_ajustee([4, 9, 6])",
+    "note_ajustee([2, 2, 9, 9])",
+    "note_ajustee([7, 3, 9, 1, 5, 8, 2])",
+    "note_ajustee([6.5, 7, 7.5, 8, 8.5, 9], 2)",
+    "note_ajustee([10, 0, 5, 5, 10, 0], nb_retirees=2)",
+]
+
+[[groupes]]
+theme = "valeurs limites"
+appels = [
+    "note_ajustee([4], 0)",
+    "note_ajustee([4, 9, 6], 0)",
+    "note_ajustee([9, 1, 5], 1)",
+    "note_ajustee([1, 2, 3, 4, 5, 6, 7], 3)",
+    "note_ajustee([3, 3, 3, 3, 3], 2)",
+    "note_ajustee([10, 9, 8, 7, 6, 5, 4, 3, 2, 1], 4)",
+]

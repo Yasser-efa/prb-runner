@@ -1,0 +1,36 @@
+[[groupes]]
+theme = "fusion"
+appels = [
+    "fusionner([(1, 3), (5, 7), (9, 11)])",
+    "fusionner([(9, 11), (5, 7), (1, 3)])",
+    "fusionner([(8, 20), (9, 10), (12, 13)])",
+    "fusionner([(9, 10), (8, 20), (12, 13)])",
+    "fusionner([(1, 5), (2, 3), (4, 8)])",
+    "fusionner([(1, 10), (2, 3), (9, 12), (11, 13)])",
+    "fusionner([(1, 2), (2, 3), (3, 4), (6, 7)])",
+    "fusionner([(1, 3), (5, 8), (6, 7), (8, 10), (12, 14)])",
+    "fusionner([(12, 14), (1, 2), (13, 20), (4, 6), (5, 9), (15, 16)])",
+]
+
+[[groupes]]
+theme = "valeurs limites"
+appels = [
+    "fusionner([(9, 12)])",
+    "fusionner([(9, 12), (9, 12), (9, 12)])",
+    "fusionner([(0, 24), (5, 6)])",
+    "fusionner([(0, 12), (12, 24)])",
+    "fusionner([(9, 12), (9, 15)])",
+    "fusionner([(9, 15), (12, 15)])",
+]
+
+[[groupes]]
+theme = "temps commun"
+appels = [
+    "temps_ensemble([], [])",
+    "temps_ensemble([(9, 12)], [])",
+    "temps_ensemble([(8, 12), (10, 14)], [(9, 11), (10, 16)])",
+    "temps_ensemble([(0, 24), (0, 24)], [(0, 24)])",
+    "temps_ensemble([(14, 18), (8, 10), (9, 12)], [(11, 15), (17, 20)])",
+    "temps_ensemble([(8, 10), (10, 12)], [(9, 11)])",
+    "temps_ensemble([(1, 5), (2, 3)], [(2, 3), (2, 4), (4, 6)])",
+]

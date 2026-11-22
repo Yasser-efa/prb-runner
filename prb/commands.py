@@ -21,6 +21,7 @@ from prb.scheduler import (
     read_state,
 )
 from prb.sources import list_files
+from prb.validation import check_order, validate_bank
 from prb.verdict import verify
 from prb.workspace import archive_folder, prepare_folder
 
@@ -222,6 +223,26 @@ def show_progress(context: Context) -> int:
     states = [context.state(exercise.id) for exercise in exercises]
     screens.show_progress(context.console, exercises, states, context.now.date())
     return 0
+
+
+def validate(context: Context, wanted: list[str]) -> int:
+    """Check the exercises of the bank.
+
+    :param context: the paths, the terminal and the progress
+    :param wanted: identifiers to check, all of them if empty
+    :return: the exit code, 0 if everything is valid
+    """
+    console = context.console
+    problems = [] if wanted else check_order(context.paths)
+    for problem in problems:
+        console.print(Text(f"✗ {problem}", style="red"))
+    total = valid = 0
+    for result in validate_bank(context.paths, wanted):
+        total += 1
+        valid += not result.problems
+        screens.show_validation(console, result)
+    console.print(Text(f"{valid}/{total} exercices valides", style="bold"))
+    return 0 if valid == total and not problems else 1
 
 
 ERRORS = (BankError, CommandError)

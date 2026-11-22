@@ -16,6 +16,7 @@ from rich.tree import Tree
 from prb.bank import Exercise
 from prb.scheduler import INTERVALS, Stage, State
 from prb.sources import list_files
+from prb.validation import Validation
 
 _DAYS = ("lun.", "mar.", "mer.", "jeu.", "ven.", "sam.", "dim.")
 _PREPARATION = """\
@@ -133,6 +134,22 @@ def show_progress(
     if active:
         summary += f", en cours : {', '.join(active)}"
     console.print(Text(summary))
+
+
+def show_validation(console: Console, result: Validation) -> None:
+    """Display the checking of one exercise.
+
+    :param console: the terminal
+    :param result: the result
+    """
+    mark, style = ("✗", "red") if result.problems else ("✓", "green")
+    text = Text.assemble((f"{mark} ", style), f"{result.exercise_id:<26}")
+    text.append(
+        f"{result.visible} visibles, {result.hidden} cachés, {result.hints} indices", style="dim"
+    )
+    console.print(text)
+    for problem in result.problems:
+        console.print(Text(f"    • {problem}", style="red"))
 
 
 def describe_stage(state: State, today: date) -> Text:

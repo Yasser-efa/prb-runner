@@ -1,0 +1,19 @@
+[[tests]]
+appel = "lampe_allumee(3, 2)"
+attendu = "True"
+
+[[tests]]
+appel = "lampe_allumee(3, 5)"
+attendu = "False"
+
+[[tests]]
+appel = "lampe_allumee(3, 6)"
+attendu = "True"
+
+[[tests]]
+appel = "duree_rallumage([2])"
+attendu = "4"
+
+[[tests]]
+appel = "duree_rallumage([2, 3])"
+attendu = "8"

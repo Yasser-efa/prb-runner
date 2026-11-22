@@ -1,0 +1,36 @@
+[[groupes]]
+theme = "chiffres décimaux"
+appels = [
+    "valeur_chiffre('1')",
+    "valeur_chiffre('5')",
+    "valeur_chiffre('8')",
+    "chiffre_hexa(3)",
+    "chiffre_hexa(6)",
+]
+
+[[groupes]]
+theme = "lettres"
+appels = [
+    "valeur_chiffre('C')",
+    "valeur_chiffre('D')",
+    "valeur_chiffre('E')",
+    "valeur_chiffre('c')",
+    "valeur_chiffre('e')",
+    "chiffre_hexa(12)",
+    "chiffre_hexa(13)",
+    "chiffre_hexa(14)",
+]
+
+[[groupes]]
+theme = "valeurs limites"
+appels = [
+    "valeur_chiffre('0')",
+    "valeur_chiffre('9')",
+    "valeur_chiffre('a')",
+    "valeur_chiffre('F')",
+    "valeur_chiffre('f')",
+    "chiffre_hexa(0)",
+    "chiffre_hexa(9)",
+    "chiffre_hexa(10)",
+    "chiffre_hexa(15)",
+]

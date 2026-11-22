@@ -1,0 +1,24 @@
+titre = "La guirlande lumineuse"
+reference = "n° 9"
+sorte = "fonction"
+duree_minutes = 40
+
+[organisation]
+fichiers = ["lumieres/__init__.py", "lumieres/guirlande.py"]
+
+[[fonctions]]
+module = "lumieres.guirlande"
+signature = "duree_rallumage(periodes: list[int]) -> int"
+preserve_arguments = true
+
+[[fonctions]]
+module = "lumieres.guirlande"
+signature = "instants_communs(periodes: list[int], limite: int) -> list[int]"
+preserve_arguments = true
+
+[contraintes]
+interdits = ["break", "continue", "try", "while True"]
+modules_interdits = ["math"]
+
+[contraintes.fonctions.duree_rallumage]
+imposes = ["while"]

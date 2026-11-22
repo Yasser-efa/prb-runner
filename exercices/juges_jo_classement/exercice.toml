@@ -1,0 +1,32 @@
+titre = "Le classement des plongeurs"
+reference = "var. 09/11"
+sorte = "fonction"
+duree_minutes = 40
+
+[organisation]
+fichiers = ["jo/__init__.py", "jo/notes.py", "jo/classement.py"]
+
+[[fonctions]]
+module = "jo.notes"
+signature = "note_finale(notes: list[float]) -> float"
+preserve_arguments = true
+
+[[fonctions]]
+module = "jo.classement"
+signature = "classer(resultats: dict[str, list[float]]) -> list[tuple[str, float]]"
+preserve_arguments = true
+
+[[fonctions]]
+module = "jo.classement"
+signature = "podium(resultats: dict[str, list[float]]) -> list[str]"
+preserve_arguments = true
+
+[contraintes]
+interdits = ["break", "continue", "try", "while True"]
+modules_interdits = ["statistics"]
+
+[contraintes.fonctions.classer]
+appels_imposes = ["note_finale"]
+
+[contraintes.fonctions.podium]
+appels_imposes = ["classer"]

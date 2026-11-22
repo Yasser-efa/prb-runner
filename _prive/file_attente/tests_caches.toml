@@ -1,0 +1,37 @@
+[[groupes]]
+theme = "cas général"
+appels = [
+    "effectif_depart(40, 3)",
+    "effectif_depart(1000, 3, 10)",
+    "effectif_depart(42, 1)",
+    "effectif_depart(41, 1)",
+    "effectif_depart(100, 3, facteur=5)",
+    "evolution(1, 10)",
+    "evolution(5, 2, facteur=10)",
+]
+
+[[groupes]]
+theme = "valeurs limites"
+appels = [
+    "effectif_depart(7, 0)",
+    "effectif_depart(0, 5)",
+    "effectif_depart(0, 0)",
+    "effectif_depart(1, 1)",
+    "effectif_depart(8, 4)",
+    "effectif_depart(9, 5, 1)",
+    "evolution(6, 0)",
+    "evolution(0, 3)",
+    "evolution(4, 3, 1)",
+]
+
+[[groupes]]
+theme = "grands nombres"
+appels = [
+    "effectif_depart(3626777458843887524118528, 80)",
+    "effectif_depart(3626777458843887524118529, 80)",
+    "evolution(1, 64)",
+]
+
+[[groupes]]
+theme = "programme"
+entrees = [["7", "0"], ["0", "3"], ["1", "1"], ["3626777458843887524118528", "80"]]

@@ -1,0 +1,19 @@
+[[tests]]
+appel = "fusionner([(9, 12), (11, 14), (16, 18)])"
+attendu = "[(9, 14), (16, 18)]"
+
+[[tests]]
+appel = "fusionner([(14, 17), (9, 14)])"
+attendu = "[(9, 17)]"
+
+[[tests]]
+appel = "fusionner([])"
+attendu = "[]"
+
+[[tests]]
+appel = "temps_ensemble([(9, 12), (11, 14)], [(10, 13), (10, 13)])"
+attendu = "3"
+
+[[tests]]
+appel = "temps_ensemble([(9, 12)], [(12, 14)])"
+attendu = "0"

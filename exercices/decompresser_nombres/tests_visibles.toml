@@ -1,0 +1,19 @@
+[[tests]]
+appel = "obtenir_couples('a12b3c1')"
+attendu = "[('a', 12), ('b', 3), ('c', 1)]"
+
+[[tests]]
+appel = "obtenir_couples('')"
+attendu = "[]"
+
+[[tests]]
+appel = "decompresser('a12b3c1')"
+attendu = "'aaaaaaaaaaaabbbc'"
+
+[[tests]]
+appel = "decompresser('x2y2')"
+attendu = "'xxyy'"
+
+[[tests]]
+appel = "decompresser(' 10!1')"
+attendu = "'          !'"

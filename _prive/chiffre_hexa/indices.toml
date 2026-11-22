@@ -1,0 +1,5 @@
+indices = [
+    "Écris les 16 chiffres hexadécimaux à la suite, dans l'ordre, avec un numéro sous chacun à partir de 0. Que remarques-tu ?",
+    "Cette suite de chiffres est elle-même une chaine : range-la dans une constante. Quelle méthode des chaines donne la place d'un caractère ? Et comment obtient-on le caractère qui se trouve à une place ?",
+    "La méthode index (ou find) pour la tâche 1, l'indexation entre crochets pour la tâche 2. Il reste à ramener les minuscules en majuscules avec upper().",
+]

@@ -1,0 +1,24 @@
+titre = "Compresser une chaine"
+reference = "18/11"
+sorte = "programme"
+duree_minutes = 40
+
+[organisation]
+fichiers = ["main.py", "compresseur.py"]
+main = "main.py"
+
+[[fonctions]]
+module = "compresseur"
+signature = "obtenir_couples(chaine: str) -> list[tuple[str, int]]"
+
+[[fonctions]]
+module = "compresseur"
+signature = "compresser(chaine: str) -> str"
+
+[contraintes]
+interdits = ["break", "continue", "try", "while True"]
+modules_interdits = ["re", "itertools"]
+appels_imposes = ["compresser"]
+
+[contraintes.fonctions.compresser]
+appels_imposes = ["obtenir_couples"]

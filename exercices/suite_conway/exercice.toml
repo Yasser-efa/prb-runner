@@ -1,0 +1,24 @@
+titre = "La suite de Conway"
+reference = "03/11"
+sorte = "programme"
+duree_minutes = 40
+
+[organisation]
+fichiers = ["main.py", "suite_de_conway.py"]
+main = "main.py"
+
+[[fonctions]]
+module = "suite_de_conway"
+signature = "conway(terme: str) -> str"
+
+[[fonctions]]
+module = "suite_de_conway"
+signature = "serie(nb_termes: int) -> list[str]"
+
+[contraintes]
+interdits = ["break", "continue", "try", "while True"]
+modules_interdits = ["re", "itertools"]
+appels_imposes = ["serie"]
+
+[contraintes.fonctions.serie]
+appels_imposes = ["conway"]

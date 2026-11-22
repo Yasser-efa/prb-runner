@@ -1,0 +1,5 @@
+indices = [
+    "Dessine une ligne du temps par lampe pour les périodes 4 et 6, et marque les minutes où chacune s'allume. Quelle est la première minute marquée sur les deux lignes ? Est-ce 4 × 6 ?",
+    "Comment vérifier, pour une minute donnée, qu'une lampe s'allume à cet instant ? Et que toutes s'allument ? Commence par une fonction qui répond par vrai ou faux pour une minute.",
+    "Une fonction intermédiaire toutes_allumees(periodes, minute), puis une boucle while qui avance la minute tant que la réponse est fausse. La même fonction sert dans la compréhension de la tâche 2. La fonction all() est utile.",
+]

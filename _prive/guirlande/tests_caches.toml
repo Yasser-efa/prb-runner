@@ -1,0 +1,33 @@
+[[groupes]]
+theme = "cas général"
+appels = [
+    "duree_rallumage([4, 6])",
+    "duree_rallumage([6, 10, 15])",
+    "duree_rallumage([12, 8, 18])",
+    "duree_rallumage([9, 3])",
+    "duree_rallumage([4, 6, 10, 15, 7, 11])",
+]
+
+[[groupes]]
+theme = "valeurs limites"
+appels = [
+    "duree_rallumage([1])",
+    "duree_rallumage([1, 1, 1])",
+    "duree_rallumage([5, 5])",
+    "duree_rallumage([1, 8])",
+    "duree_rallumage([8, 1, 2, 4])",
+    "instants_communs([4], 4)",
+    "instants_communs([4], 3)",
+    "instants_communs([1], 5)",
+    "instants_communs([5, 5], 11)",
+    "instants_communs([3], 0)",
+]
+
+[[groupes]]
+theme = "instants communs"
+appels = [
+    "instants_communs([4, 6], 40)",
+    "instants_communs([6, 10, 15], 90)",
+    "instants_communs([2, 3, 5, 7, 11], 5000)",
+    "instants_communs([10, 4], 60)",
+]

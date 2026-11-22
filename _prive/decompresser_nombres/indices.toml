@@ -1,0 +1,5 @@
+indices = [
+    "Écris a12b3c1 avec ses indices. Les couples n'ont plus tous la même longueur : qu'est-ce qui indique la fin d'un nombre ? Combien de situations peuvent arrêter la lecture des chiffres ?",
+    "Utilise un indice que tu avances toi-même. Pour chaque couple : lis le caractère, puis avance tant que tu es encore dans la chaine ET que le caractère est un chiffre. Dans quel ordre faut-il tester ces deux conditions ?",
+    "Retiens l'indice où le nombre commence et celui où il finit : une tranche donne alors le nombre entier, sans l'assembler chiffre par chiffre. La boucle extérieure continue tant que l'indice reste dans la chaine.",
+]

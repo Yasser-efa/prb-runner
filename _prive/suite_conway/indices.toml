@@ -1,0 +1,5 @@
+indices = [
+    "Écris 1211 sur papier et entoure les séries. À quel moment du parcours sais-tu qu'une série est finie ? Que faut-il avoir retenu pour l'écrire à ce moment-là ?",
+    "C'est le même parcours que pour compresser une chaine : un caractère en cours et un compteur. Seul l'ordre d'écriture change. Et que se passe-t-il pour la dernière série, qu'aucun changement de caractère ne vient terminer ?",
+    "Pour la série de termes, pars d'une liste qui contient le premier terme et ajoute à chaque tour le suivant du dernier. Compte bien les tours : pour 4 termes, conway n'est appelée que 3 fois. Traite à part nb_termes < 1.",
+]

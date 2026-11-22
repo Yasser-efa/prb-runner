@@ -1,0 +1,19 @@
+[[tests]]
+appel = "valeur_chiffre('7')"
+attendu = "7"
+
+[[tests]]
+appel = "valeur_chiffre('b')"
+attendu = "11"
+
+[[tests]]
+appel = "valeur_chiffre('A')"
+attendu = "10"
+
+[[tests]]
+appel = "chiffre_hexa(11)"
+attendu = "'B'"
+
+[[tests]]
+appel = "chiffre_hexa(7)"
+attendu = "'7'"

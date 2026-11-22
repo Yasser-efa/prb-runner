@@ -1,0 +1,15 @@
+[[tests]]
+appel = "note_finale([7, 8, 6, 9, 8.5])"
+attendu = "7.833333333333333"
+
+[[tests]]
+appel = "classer({'Zoé': [8, 9, 7], 'Tom': [9, 9, 9], 'Ana': [5, 8, 10]})"
+attendu = "[('Tom', 9.0), ('Ana', 8.0), ('Zoé', 8.0)]"
+
+[[tests]]
+appel = "classer({})"
+attendu = "[]"
+
+[[tests]]
+appel = "podium({'Zoé': [8, 9, 7], 'Tom': [9, 9, 9]})"
+attendu = "['Tom', 'Zoé']"

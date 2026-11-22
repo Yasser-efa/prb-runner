@@ -1,0 +1,19 @@
+[[tests]]
+appel = "distance_taxi((2, 3), (7, 1))"
+attendu = "7"
+
+[[tests]]
+appel = "distance_taxi((7, 1), (2, 3))"
+attendu = "7"
+
+[[tests]]
+appel = "distance_drone((0, 0), (3, 4))"
+attendu = "5.0"
+
+[[tests]]
+appel = "distance_drone((2, 3), (7, 1))"
+attendu = "5.385164807134504"
+
+[[tests]]
+appel = "gain_drone((0, 0), (3, 4))"
+attendu = "2.0"

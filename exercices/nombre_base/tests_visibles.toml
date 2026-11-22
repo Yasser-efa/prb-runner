@@ -1,0 +1,19 @@
+[[tests]]
+appel = "est_valide('1F')"
+attendu = "True"
+
+[[tests]]
+appel = "est_valide('128', 8)"
+attendu = "False"
+
+[[tests]]
+appel = "valeur_nombre('1011', 2)"
+attendu = "11"
+
+[[tests]]
+appel = "valeur_nombre('z', 36)"
+attendu = "35"
+
+[[tests]]
+appel = "valeur_nombre('128', 8)"
+attendu = "-1"

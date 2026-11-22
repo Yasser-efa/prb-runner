@@ -1,0 +1,37 @@
+[[groupes]]
+theme = "décompression"
+appels = [
+    "decompresser('a2b')",
+    "decompresser('ab2')",
+    "decompresser('a10bc20d')",
+    "decompresser('abc')",
+    "decompresser('bonjour')",
+    "decompresser('m2i s2i')",
+    "decompresser(' 3-2!')",
+    "decompresser('aa3')",
+]
+
+[[groupes]]
+theme = "compression"
+appels = [
+    "compresser('aabcc')",
+    "compresser('aaaaaaaaaaaa')",
+    "compresser('mississippi')",
+    "compresser('  -  ')",
+    "compresser('abba')",
+    "compresser('aAaA')",
+]
+
+[[groupes]]
+theme = "valeurs limites"
+appels = [
+    "decompresser('a')",
+    "decompresser('a2')",
+    "decompresser('a100')",
+    "decompresser('ab')",
+    "compresser('a')",
+    "compresser('aa')",
+    "compresser('ab')",
+    "compresser('abb')",
+    "compresser('aab')",
+]

@@ -1,0 +1,5 @@
+indices = [
+    "Imagine que tu imprimes les pages une à une. Que retiens-tu après chaque page ? À partir de quand sais-tu qu'il est inutile de continuer ?",
+    "Deux variables évoluent ensemble : la page et le total de chiffres imprimés. Quand la boucle s'arrête, le total peut valoir exactement le nombre voulu, ou l'avoir dépassé : que faut-il renvoyer dans chaque cas ?",
+    "Boucle tant que le total est inférieur au nombre voulu : la page suivante ajoute autant de chiffres que la longueur de son numéro écrit en chaine. La tâche 2 utilise la même boucle, mais sa réponse ne dépend pas de l'égalité.",
+]

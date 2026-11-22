@@ -1,0 +1,25 @@
+titre = "Vitesse moyenne"
+reference = "n° 1"
+sorte = "programme"
+duree_minutes = 35
+
+[organisation]
+fichiers = ["main.py", "trajets.py"]
+main = "main.py"
+
+[[fonctions]]
+module = "trajets"
+signature = "vitesse_aller_retour(vitesse_aller: float, vitesse_retour: float) -> float"
+
+[[fonctions]]
+module = "trajets"
+signature = "vitesse_moyenne(troncons: list[tuple[float, float]]) -> float"
+preserve_arguments = true
+
+[contraintes]
+interdits = ["break", "continue", "try", "while True"]
+modules_interdits = ["statistics"]
+appels_imposes = ["vitesse_aller_retour"]
+
+[contraintes.fonctions.vitesse_moyenne]
+imposes = ["compréhension"]

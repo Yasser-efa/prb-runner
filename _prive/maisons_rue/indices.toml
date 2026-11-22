@@ -1,0 +1,5 @@
+indices = [
+    "Dessine les maisons 17 à 25 et compte-les sur ton dessin, avec et sans les deux extrémités. Compte aussi les intervalles entre les maisons : quel est le lien entre les deux ?",
+    "Commence par le quai : le nombre d'intervalles est l'écart entre les deux numéros. Combien de maisons en plus ou en moins selon que les bornes sont comprises ? L'ordre des numéros ne doit rien changer.",
+    "Dans une rue, un intervalle vaut 2 : divise l'écart avec //. Traite ensuite le cas particulier des deux numéros égaux sans les bornes (le résultat ne peut pas être négatif) et celui des parités différentes.",
+]

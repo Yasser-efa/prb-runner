@@ -1,0 +1,19 @@
+titre = "Compression abrégée, sans les 1"
+reference = "var. 17/11+"
+sorte = "fonction"
+duree_minutes = 40
+
+[organisation]
+fichiers = ["abrege.py"]
+
+[[fonctions]]
+module = "abrege"
+signature = "decompresser(compresse: str) -> str"
+
+[[fonctions]]
+module = "abrege"
+signature = "compresser(chaine: str) -> str"
+
+[contraintes]
+interdits = ["break", "continue", "try", "while True"]
+modules_interdits = ["re", "itertools"]

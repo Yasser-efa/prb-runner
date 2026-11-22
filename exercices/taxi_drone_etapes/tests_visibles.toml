@@ -1,0 +1,22 @@
+[[tests]]
+appel = "distance_taxi((2, 3), (7, 1))"
+attendu = "7"
+
+[[tests]]
+appel = "lire_etapes('2,3 7,1 -1,0')"
+attendu = "[(2, 3), (7, 1), (-1, 0)]"
+
+[[tests]]
+appel = "distance_trajet([(2, 3), (7, 1), (0, 0)])"
+attendu = "15"
+
+[[tests]]
+appel = "taxi_le_plus_proche((0, 0), [(5, 5), (1, 2), (3, 0)])"
+attendu = "1"
+
+[[tests]]
+entree = ["2,3 7,1 0,0"]
+sortie = """
+Étapes ? 2,3 7,1 0,0
+Distance : 15
+"""

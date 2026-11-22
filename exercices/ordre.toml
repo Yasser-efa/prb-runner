@@ -1,6 +1,38 @@
 # Ordre dans lequel du_jour propose les nouveaux exercices.
 ordre = [
+    # Annoncés par le prof, du plus probable au plus dur.
     "alice_bob",
     "alice_bob_listes",
     "decompresser",
+    "compresser",
+    "decompresser_nombres",
+    # Starters n° 1 à 9 et 13.
+    "vitesse_moyenne",
+    "boules_balance",
+    "maisons_rue",
+    "cinema",
+    "jour_semaine",
+    "bus",
+    "file_attente",
+    "guirlande",
+    "pages_livre",
+    # Starters de novembre.
+    "suite_conway",
+    "juges_jo",
+    "taxi_drone",
+    # Hexadécimal (n° 11 et 12).
+    "chiffre_hexa",
+    "nombre_hexa",
+    # Variantes, dans le même ordre.
+    "alice_bob_minuit",
+    "alice_bob_chevauchements",
+    "compresser_series",
+    "decompresser_sans_un",
+    "file_attente_duree",
+    "guirlande_bascule",
+    "pages_livre_inverse",
+    "juges_jo_classement",
+    "taxi_drone_etapes",
+    "nombre_base",
+    "entier_hexa",
 ]

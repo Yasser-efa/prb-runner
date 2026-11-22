@@ -1,0 +1,19 @@
+[[tests]]
+appel = "nombre_chiffres(256)"
+attendu = "660"
+
+[[tests]]
+appel = "nombre_chiffres(10)"
+attendu = "11"
+
+[[tests]]
+appel = "nombre_chiffres(0)"
+attendu = "0"
+
+[[tests]]
+appel = "chiffres_entre(8, 11)"
+attendu = "6"
+
+[[tests]]
+appel = "occurrences(1, 12)"
+attendu = "5"

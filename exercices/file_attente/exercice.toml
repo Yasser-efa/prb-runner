@@ -1,0 +1,23 @@
+titre = "La file d'attente qui double"
+reference = "n° 8"
+sorte = "programme"
+duree_minutes = 30
+
+[organisation]
+fichiers = ["main.py", "attente.py"]
+main = "main.py"
+
+[[fonctions]]
+module = "attente"
+signature = "effectif_depart(effectif_final: int, minutes: int, facteur: int = 2) -> int"
+
+[[fonctions]]
+module = "attente"
+signature = "evolution(depart: int, minutes: int, facteur: int = 2) -> list[int]"
+
+[contraintes]
+interdits = ["break", "continue", "try", "while True"]
+appels_imposes = ["effectif_depart"]
+
+[contraintes.fonctions.evolution]
+imposes = ["compréhension"]

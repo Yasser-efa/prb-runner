@@ -1,0 +1,5 @@
+indices = [
+    "Écris ab3c12 avec ses indices. Quand tu lis un caractère, comment savoir si un nombre le suit ? Et combien de chiffres compte ce nombre ?",
+    "C'est l'exercice decompresser_nombres avec un cas de plus : après le caractère, il peut y avoir zéro chiffre. Que vaut alors la tranche qui devrait contenir le nombre ?",
+    "Si la tranche est vide, le nombre vaut 1 ; sinon, convertis-la. Pour compresser, garde le parcours par séries habituel et n'écris le nombre que s'il dépasse 1 : une petite fonction qui écrit un couple évite de répéter ce test après la boucle.",
+]

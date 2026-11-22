@@ -1,0 +1,25 @@
+titre = "Décompresser avec des nombres à plusieurs chiffres"
+reference = "17/11+"
+sorte = "fonction"
+duree_minutes = 40
+
+[organisation]
+fichiers = ["rle/__init__.py", "rle/decoupage.py", "rle/decompression.py"]
+
+[[fonctions]]
+module = "rle.decoupage"
+signature = "obtenir_couples(compresse: str) -> list[tuple[str, int]]"
+
+[[fonctions]]
+module = "rle.decompression"
+signature = "decompresser(compresse: str) -> str"
+
+[contraintes]
+interdits = ["break", "continue", "try", "while True"]
+modules_interdits = ["re"]
+
+[contraintes.fonctions.obtenir_couples]
+imposes = ["while"]
+
+[contraintes.fonctions.decompresser]
+appels_imposes = ["obtenir_couples"]

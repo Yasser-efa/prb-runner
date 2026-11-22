@@ -1,0 +1,43 @@
+[[groupes]]
+theme = "cas général"
+appels = [
+    "jour_apres('lundi', 3)",
+    "jour_apres('samedi', 1)",
+    "jour_apres('vendredi', 30)",
+    "jours_avant('lundi', 'mercredi')",
+    "jours_avant('vendredi', 'mardi')",
+    "jours_avant('samedi', 'vendredi')",
+]
+
+[[groupes]]
+theme = "valeurs limites"
+appels = [
+    "jour_apres('dimanche', 1)",
+    "jour_apres('dimanche', 7)",
+    "jour_apres('lundi', 6)",
+    "jour_apres('dimanche', 0)",
+    "jours_avant('dimanche', 'dimanche')",
+    "jours_avant('lundi', 'dimanche')",
+    "jours_avant('lundi', 'lundi')",
+    "jours_avant('dimanche', 'samedi')",
+]
+
+[[groupes]]
+theme = "dans le passé"
+appels = [
+    "jour_apres('jeudi', -17)",
+    "jour_apres('mercredi', -7)",
+    "jour_apres('mardi', -2)",
+    "jour_apres('lundi', -100)",
+]
+
+[[groupes]]
+theme = "grands nombres"
+appels = [
+    "jour_apres('lundi', 1000000000000)",
+    "jour_apres('samedi', -1000000000001)",
+]
+
+[[groupes]]
+theme = "programme"
+entrees = [["dimanche", "1"], ["MARDI", "-3"], ["  vendredi  ", "0"], ["Samedi", "700"]]

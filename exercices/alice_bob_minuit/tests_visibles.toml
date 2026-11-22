@@ -1,0 +1,23 @@
+[[tests]]
+appel = "decouper(14, 17)"
+attendu = "[(14, 17)]"
+
+[[tests]]
+appel = "decouper(22, 2)"
+attendu = "[(0, 2), (22, 24)]"
+
+[[tests]]
+appel = "decouper(5, 5)"
+attendu = "[]"
+
+[[tests]]
+appel = "temps_ensemble(22, 2, 23, 6)"
+attendu = "3"
+
+[[tests]]
+appel = "temps_ensemble(20, 8, 6, 22)"
+attendu = "4"
+
+[[tests]]
+appel = "temps_ensemble(14, 17, 15, 19)"
+attendu = "2"

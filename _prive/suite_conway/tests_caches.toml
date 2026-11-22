@@ -1,0 +1,31 @@
+[[groupes]]
+theme = "terme suivant"
+appels = [
+    "conway('11')",
+    "conway('21')",
+    "conway('111221')",
+    "conway('312211')",
+    "conway('12')",
+    "conway('1122')",
+    "conway('2112')",
+]
+
+[[groupes]]
+theme = "autres départs"
+appels = [
+    "conway('3')",
+    "conway('22')",
+    "conway('777777777')",
+    "conway('55551')",
+    "conway('15555')",
+    "conway('0')",
+    "conway('aab')",
+]
+
+[[groupes]]
+theme = "série"
+appels = ["serie(1)", "serie(2)", "serie(-3)", "serie(8)", "serie(15)"]
+
+[[groupes]]
+theme = "programme"
+entrees = [["1"], ["0"], ["-2"], ["9"]]

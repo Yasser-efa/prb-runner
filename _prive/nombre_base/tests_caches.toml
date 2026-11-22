@@ -1,0 +1,49 @@
+[[groupes]]
+theme = "validité"
+appels = [
+    "est_valide('102', 2)",
+    "est_valide('102', 3)",
+    "est_valide('ABC', 12)",
+    "est_valide('ABC', 13)",
+    "est_valide('xyz', 36)",
+    "est_valide('G')",
+    "est_valide('f')",
+]
+
+[[groupes]]
+theme = "valeur"
+appels = [
+    "valeur_nombre('777', 8)",
+    "valeur_nombre('10', 36)",
+    "valeur_nombre('ff')",
+    "valeur_nombre('2021', base=3)",
+    "valeur_nombre('Python', 36)",
+    "valeur_nombre('1234567890', 10)",
+]
+
+[[groupes]]
+theme = "valeurs limites"
+appels = [
+    "est_valide('')",
+    "est_valide('', 2)",
+    "est_valide('0', 2)",
+    "est_valide('1', 2)",
+    "est_valide('2', 2)",
+    "valeur_nombre('')",
+    "valeur_nombre('0')",
+    "valeur_nombre('000', 2)",
+    "valeur_nombre('11111111111111111111111111111111', 2)",
+]
+
+[[groupes]]
+theme = "nombres incorrects"
+appels = [
+    "est_valide('-1')",
+    "est_valide('1 0')",
+    "est_valide(' 1')",
+    "est_valide('1.5', 10)",
+    "valeur_nombre('-1', 10)",
+    "valeur_nombre('1G')",
+    "valeur_nombre('12', 2)",
+    "valeur_nombre(' ', 36)",
+]

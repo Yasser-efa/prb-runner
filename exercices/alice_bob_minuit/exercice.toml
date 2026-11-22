@@ -1,0 +1,21 @@
+titre = "Alice et Bob : créneaux de nuit"
+reference = "var. n° 6"
+sorte = "fonction"
+duree_minutes = 40
+
+[organisation]
+fichiers = ["horaires/__init__.py", "horaires/decoupage.py", "horaires/rencontre.py"]
+
+[[fonctions]]
+module = "horaires.decoupage"
+signature = "decouper(debut: float, fin: float) -> list[tuple[float, float]]"
+
+[[fonctions]]
+module = "horaires.rencontre"
+signature = "temps_ensemble(debut_alice: float, fin_alice: float, debut_bob: float, fin_bob: float) -> float"
+
+[contraintes]
+interdits = ["break", "continue", "try", "while True"]
+
+[contraintes.fonctions.temps_ensemble]
+appels_imposes = ["decouper"]

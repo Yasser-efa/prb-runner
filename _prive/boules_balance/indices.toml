@@ -1,0 +1,5 @@
+indices = [
+    "Une pesée a trois issues possibles, pas deux. Dessine le cas de 3 boules, puis celui de 9 : que peux-tu conclure de chaque issue ? Combien de boules restent suspectes ?",
+    "Dresse un petit tableau : combien de boules au maximum avec 0 pesée, 1 pesée, 2 pesées, 3 pesées ? Comment passe-t-on d'une ligne à la suivante ?",
+    "Dans la boucle, fais évoluer en même temps le nombre de pesées et le nombre de boules qu'elles permettent de départager. La boucle s'arrête dès que ce nombre atteint nb_boules. Vérifie à la main 9 et 10.",
+]

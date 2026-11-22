@@ -1,0 +1,25 @@
+titre = "Le taxi et le drone"
+reference = "10/11"
+sorte = "fonction"
+duree_minutes = 35
+
+[organisation]
+fichiers = ["distances/__init__.py", "distances/taxi.py", "distances/drone.py"]
+
+[[fonctions]]
+module = "distances.taxi"
+signature = "distance_taxi(depart: tuple[int, int], arrivee: tuple[int, int]) -> int"
+
+[[fonctions]]
+module = "distances.drone"
+signature = "distance_drone(depart: tuple[int, int], arrivee: tuple[int, int]) -> float"
+
+[[fonctions]]
+module = "distances.drone"
+signature = "gain_drone(depart: tuple[int, int], arrivee: tuple[int, int]) -> float"
+
+[contraintes]
+interdits = ["break", "continue", "try", "while True"]
+
+[contraintes.fonctions.gain_drone]
+appels_imposes = ["distance_taxi", "distance_drone"]

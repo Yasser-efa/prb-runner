@@ -1,0 +1,23 @@
+[[tests]]
+appel = "position_arret(15)"
+attendu = "129"
+
+[[tests]]
+appel = "position_arret(2, 10, 5)"
+attendu = "15"
+
+[[tests]]
+appel = "numero_arret(129)"
+attendu = "15"
+
+[[tests]]
+appel = "numero_arret(130)"
+attendu = "-1"
+
+[[tests]]
+appel = "arrets_entre(10, 40)"
+attendu = "[12, 21, 30, 39]"
+
+[[tests]]
+appel = "arrets_entre(4, 11)"
+attendu = "[]"

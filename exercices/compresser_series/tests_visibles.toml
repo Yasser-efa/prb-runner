@@ -1,0 +1,23 @@
+[[tests]]
+appel = "obtenir_couples('aaaaaaaaaaaabb')"
+attendu = "[('a', 9), ('a', 3), ('b', 2)]"
+
+[[tests]]
+appel = "obtenir_couples('aaaaa', 2)"
+attendu = "[('a', 2), ('a', 2), ('a', 1)]"
+
+[[tests]]
+appel = "compresser('aaaaaaaaaaaabb')"
+attendu = "'a9a3b2'"
+
+[[tests]]
+appel = "compresser('')"
+attendu = "''"
+
+[[tests]]
+appel = "meilleure_forme('aaab')"
+attendu = "'aaab'"
+
+[[tests]]
+appel = "meilleure_forme('aaaab')"
+attendu = "'a4b1'"

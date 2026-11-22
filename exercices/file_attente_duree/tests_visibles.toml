@@ -1,0 +1,23 @@
+[[tests]]
+appel = "minutes_necessaires(6, 1000)"
+attendu = "8"
+
+[[tests]]
+appel = "minutes_necessaires(6, 6)"
+attendu = "0"
+
+[[tests]]
+appel = "premier_depassement([6, 12, 24, 20], 15)"
+attendu = "2"
+
+[[tests]]
+appel = "premier_depassement([6, 12], 12)"
+attendu = "-1"
+
+[[tests]]
+entree = ["6", "1000"]
+sortie = """
+Effectif de départ ? 6
+Effectif voulu ? 1000
+Durée : 8 min
+"""

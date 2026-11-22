@@ -1,0 +1,29 @@
+titre = "La file d'attente : combien de temps ?"
+reference = "var. n° 8"
+sorte = "programme"
+duree_minutes = 35
+
+[organisation]
+fichiers = ["main.py", "attente.py"]
+main = "main.py"
+
+[[fonctions]]
+module = "attente"
+signature = "minutes_necessaires(depart: int, voulu: int, facteur: int = 2) -> int"
+
+[[fonctions]]
+module = "attente"
+signature = "premier_depassement(effectifs: list[int], capacite: int) -> int"
+preserve_arguments = true
+
+[contraintes]
+interdits = ["break", "continue", "try", "while True"]
+modules_interdits = ["math"]
+appels_imposes = ["minutes_necessaires"]
+
+[contraintes.fonctions.minutes_necessaires]
+imposes = ["while"]
+
+[contraintes.fonctions.premier_depassement]
+imposes = ["while"]
+interdits = ["for"]

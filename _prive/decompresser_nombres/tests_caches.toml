@@ -1,0 +1,31 @@
+[[groupes]]
+theme = "couples"
+appels = [
+    "obtenir_couples('z9')",
+    "obtenir_couples('z10')",
+    "obtenir_couples('a100b20c3')",
+    "obtenir_couples('a1b22c333')",
+    "obtenir_couples('a2a3')",
+    "obtenir_couples('A1a1')",
+]
+
+[[groupes]]
+theme = "caractères quelconques"
+appels = [
+    "obtenir_couples('-12 3.4')",
+    "decompresser('é2 11ç1')",
+    "decompresser('(3)3')",
+    "decompresser('-2-2')",
+]
+
+[[groupes]]
+theme = "valeurs limites"
+appels = [
+    "obtenir_couples('a0')",
+    "decompresser('')",
+    "decompresser('a0')",
+    "decompresser('a0b1c0')",
+    "decompresser('a10b0c10')",
+    "decompresser('a1000')",
+    "decompresser('x1')",
+]

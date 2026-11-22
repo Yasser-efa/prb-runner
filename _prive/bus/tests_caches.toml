@@ -1,0 +1,40 @@
+[[groupes]]
+theme = "position"
+appels = [
+    "position_arret(1)",
+    "position_arret(2)",
+    "position_arret(100)",
+    "position_arret(1, 0, 4)",
+    "position_arret(5, ecart=1)",
+    "position_arret(7, premier=0)",
+    "position_arret(1000000000)",
+]
+
+[[groupes]]
+theme = "opération inverse"
+appels = [
+    "numero_arret(3)",
+    "numero_arret(12)",
+    "numero_arret(20)",
+    "numero_arret(0)",
+    "numero_arret(2)",
+    "numero_arret(0, 0, 4)",
+    "numero_arret(1, 10, 9)",
+    "numero_arret(3, 12, 9)",
+    "numero_arret(2, 3, 1)",
+    "numero_arret(8000000000, 0, 8)",
+]
+
+[[groupes]]
+theme = "arrêts entre deux positions"
+appels = [
+    "arrets_entre(0, 30)",
+    "arrets_entre(3, 3)",
+    "arrets_entre(12, 21)",
+    "arrets_entre(13, 20)",
+    "arrets_entre(0, 2)",
+    "arrets_entre(0, 12, 0, 4)",
+    "arrets_entre(5, 9, premier=0, ecart=1)",
+    "arrets_entre(100, 120)",
+    "arrets_entre(0, 12, 12, 5)",
+]

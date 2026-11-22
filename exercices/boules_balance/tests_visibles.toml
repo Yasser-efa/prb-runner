@@ -1,0 +1,19 @@
+[[tests]]
+appel = "nombre_pesees(9)"
+attendu = "2"
+
+[[tests]]
+appel = "nombre_pesees(1)"
+attendu = "0"
+
+[[tests]]
+appel = "nombre_pesees(4)"
+attendu = "2"
+
+[[tests]]
+appel = "boules_maximum(2)"
+attendu = "9"
+
+[[tests]]
+appel = "boules_maximum(0)"
+attendu = "1"

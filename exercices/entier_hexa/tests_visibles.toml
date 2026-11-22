@@ -1,0 +1,22 @@
+[[tests]]
+appel = "entier_vers_base(31)"
+attendu = "'1F'"
+
+[[tests]]
+appel = "entier_vers_base(11, 2)"
+attendu = "'1011'"
+
+[[tests]]
+appel = "entier_vers_hexa(675)"
+attendu = "'2A3'"
+
+[[tests]]
+appel = "entier_vers_hexa(0)"
+attendu = "'0'"
+
+[[tests]]
+entree = ["31"]
+sortie = """
+Nombre entier ? 31
+En hexadécimal : 1F
+"""

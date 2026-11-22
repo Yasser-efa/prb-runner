@@ -1,0 +1,5 @@
+indices = [
+    "Écris sur papier le résultat attendu pour trois plongeurs dont deux à égalité. Quels sont les deux critères de classement, et dans quel sens va chacun ?",
+    "Construis d'abord la liste des tuples (nom, note), puis trie-la. Un tri par note décroissante inverse aussi l'ordre des noms à égalité : comment trier les deux critères dans des sens opposés ?",
+    "sorted accepte une fonction key qui peut renvoyer un tuple : (-note, nom). Ou bien trie deux fois, car le tri de Python conserve l'ordre des éléments égaux : d'abord par nom, puis par note avec reverse=True. Pour le podium, une tranche suffit, même s'il y a moins de trois plongeurs.",
+]

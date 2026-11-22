@@ -1,0 +1,21 @@
+titre = "Le jour de la semaine"
+reference = "n° 5"
+sorte = "programme"
+duree_minutes = 35
+
+[organisation]
+fichiers = ["main.py", "calendrier.py"]
+main = "main.py"
+
+[[fonctions]]
+module = "calendrier"
+signature = "jour_apres(jour: str, nb_jours: int) -> str"
+
+[[fonctions]]
+module = "calendrier"
+signature = "jours_avant(jour: str, jour_voulu: str) -> int"
+
+[contraintes]
+interdits = ["break", "continue", "try", "while True"]
+modules_interdits = ["datetime", "calendar"]
+appels_imposes = ["jour_apres"]

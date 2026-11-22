@@ -1,0 +1,23 @@
+[[tests]]
+appel = "vitesse_aller_retour(90, 60)"
+attendu = "72.0"
+
+[[tests]]
+appel = "vitesse_aller_retour(50, 50)"
+attendu = "50.0"
+
+[[tests]]
+appel = "vitesse_moyenne([(30, 90), (30, 60)])"
+attendu = "72.0"
+
+[[tests]]
+appel = "vitesse_moyenne([(100, 50), (100, 100), (30, 30)])"
+attendu = "57.5"
+
+[[tests]]
+entree = ["90", "60"]
+sortie = """
+Vitesse à l'aller (km/h) ? 90
+Vitesse au retour (km/h) ? 60
+Vitesse moyenne : 72.0 km/h
+"""

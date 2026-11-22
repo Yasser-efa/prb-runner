@@ -1,0 +1,36 @@
+titre = "Le taxi : un trajet à étapes"
+reference = "var. 10/11"
+sorte = "programme"
+duree_minutes = 40
+
+[organisation]
+fichiers = ["main.py", "trajets.py"]
+main = "main.py"
+
+[[fonctions]]
+module = "trajets"
+signature = "distance_taxi(depart: tuple[int, int], arrivee: tuple[int, int]) -> int"
+
+[[fonctions]]
+module = "trajets"
+signature = "lire_etapes(texte: str) -> list[tuple[int, int]]"
+
+[[fonctions]]
+module = "trajets"
+signature = "distance_trajet(etapes: list[tuple[int, int]]) -> int"
+preserve_arguments = true
+
+[[fonctions]]
+module = "trajets"
+signature = "taxi_le_plus_proche(client: tuple[int, int], taxis: list[tuple[int, int]]) -> int"
+preserve_arguments = true
+
+[contraintes]
+interdits = ["break", "continue", "try", "while True"]
+appels_imposes = ["lire_etapes", "distance_trajet"]
+
+[contraintes.fonctions.distance_trajet]
+appels_imposes = ["distance_taxi"]
+
+[contraintes.fonctions.taxi_le_plus_proche]
+appels_imposes = ["distance_taxi"]

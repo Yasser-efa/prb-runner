@@ -1,0 +1,5 @@
+indices = [
+    "Dessine la file minute par minute à partir de 6 personnes. Après 1, 2 puis 3 minutes, par combien l'effectif de départ a-t-il été multiplié au total ?",
+    "Écris la formule qui donne l'effectif final, puis isole l'effectif de départ. Comment vérifier, sans nombre décimal, que la division tombe juste ?",
+    "Calcule facteur ** minutes une seule fois. Le reste % décide entre -1 et le quotient // (l'opérateur / perdrait des chiffres sur les grands nombres). Pour la liste, l'exposant va de 0 à minutes compris.",
+]

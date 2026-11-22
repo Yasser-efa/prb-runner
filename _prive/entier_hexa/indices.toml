@@ -1,0 +1,5 @@
+indices = [
+    "Divise 675 par 16 à la main : que représente le reste pour l'écriture cherchée ? Et que faut-il faire du quotient ?",
+    "Chaque division donne un chiffre, en commençant par le plus à droite. Dans quel ordre faut-il donc assembler les chiffres ? Quand s'arrêter ?",
+    "Tant que la valeur n'est pas nulle : place le chiffre du reste devant le résultat, puis remplace la valeur par le quotient entier. Zéro doit être traité à part, sinon la boucle ne tourne jamais.",
+]

@@ -1,0 +1,18 @@
+titre = "Les maisons d'une rue"
+reference = "n° 3"
+sorte = "fonction"
+duree_minutes = 35
+
+[organisation]
+fichiers = ["rue/__init__.py", "rue/numeros.py"]
+
+[[fonctions]]
+module = "rue.numeros"
+signature = "maisons_quai(premier: int, dernier: int, bornes_comprises: bool = True) -> int"
+
+[[fonctions]]
+module = "rue.numeros"
+signature = "maisons_rue(premier: int, dernier: int, bornes_comprises: bool = True) -> int"
+
+[contraintes]
+interdits = ["break", "continue", "try", "while True"]

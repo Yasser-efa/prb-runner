@@ -1,0 +1,15 @@
+[[tests]]
+appel = "note_finale([7.5, 8, 6.5, 9, 8])"
+attendu = "7.833333333333333"
+
+[[tests]]
+appel = "note_finale([8, 8, 8, 8, 8])"
+attendu = "8.0"
+
+[[tests]]
+appel = "note_ajustee([5, 9, 7, 6, 8, 1, 10], 2)"
+attendu = "7.0"
+
+[[tests]]
+appel = "note_ajustee([6, 8, 7], 0)"
+attendu = "7.0"

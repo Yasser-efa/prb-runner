@@ -1,0 +1,22 @@
+titre = "Les boules et la balance"
+reference = "n° 2"
+sorte = "fonction"
+duree_minutes = 35
+
+[organisation]
+fichiers = ["balance.py"]
+
+[[fonctions]]
+module = "balance"
+signature = "nombre_pesees(nb_boules: int) -> int"
+
+[[fonctions]]
+module = "balance"
+signature = "boules_maximum(nb_pesees: int) -> int"
+
+[contraintes]
+interdits = ["break", "continue", "try", "while True"]
+modules_interdits = ["math"]
+
+[contraintes.fonctions.nombre_pesees]
+imposes = ["while"]

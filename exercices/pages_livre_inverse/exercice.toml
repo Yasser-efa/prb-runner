@@ -1,0 +1,23 @@
+titre = "Les pages du livre, à l'envers"
+reference = "var. n° 13"
+sorte = "programme"
+duree_minutes = 35
+
+[organisation]
+fichiers = ["main.py", "numerotation.py"]
+main = "main.py"
+
+[[fonctions]]
+module = "numerotation"
+signature = "nombre_pages(nb_chiffres: int) -> int"
+
+[[fonctions]]
+module = "numerotation"
+signature = "page_du_chiffre(rang: int) -> int"
+
+[contraintes]
+interdits = ["break", "continue", "try", "while True"]
+appels_imposes = ["nombre_pages"]
+
+[contraintes.fonctions.nombre_pages]
+imposes = ["while"]

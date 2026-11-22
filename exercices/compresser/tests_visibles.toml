@@ -1,0 +1,35 @@
+[[tests]]
+appel = "obtenir_couples('aaabbcccc')"
+attendu = "[('a', 3), ('b', 2), ('c', 4)]"
+
+[[tests]]
+appel = "obtenir_couples('abba')"
+attendu = "[('a', 1), ('b', 2), ('a', 1)]"
+
+[[tests]]
+appel = "compresser('aaabbcccc')"
+attendu = "'a3b2c4'"
+
+[[tests]]
+appel = "compresser('abba')"
+attendu = "'a1b2a1'"
+
+[[tests]]
+appel = "compresser('')"
+attendu = "''"
+
+[[tests]]
+entree = ["aaabbcccc"]
+sortie = """
+Chaine ? aaabbcccc
+Compressée : a3b2c4
+Longueur : 9 -> 6
+"""
+
+[[tests]]
+entree = ["abc"]
+sortie = """
+Chaine ? abc
+Compressée : a1b1c1
+Longueur : 3 -> 6
+"""

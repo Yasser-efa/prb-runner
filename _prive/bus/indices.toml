@@ -1,0 +1,5 @@
+indices = [
+    "Dessine les quatre premiers arrêts sur une ligne avec leurs kilomètres. Entre le 1er et le 4e arrêt, combien y a-t-il d'intervalles de 9 km ?",
+    "Pour l'opération inverse, pars de ta formule et isole le numéro. Deux vérifications s'imposent avant de répondre : la position est-elle avant le premier arrêt ? Tombe-t-elle exactement sur un arrêt ?",
+    "Le reste de la division de (position - premier) par ecart dit s'il y a un arrêt, mais attention aux positions situées avant le premier arrêt : un reste nul n'y prouve rien. Pour la liste, parcours les positions des arrêts avec range(premier, fin + 1, ecart) et garde celles qui conviennent.",
+]

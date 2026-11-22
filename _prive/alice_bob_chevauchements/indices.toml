@@ -1,0 +1,5 @@
+indices = [
+    "Dessine des créneaux en désordre sur une ligne du temps. Si tu les examines du plus tôt au plus tard, à quels créneaux déjà construits dois-tu comparer chaque nouveau créneau ?",
+    "Après un tri, un créneau ne peut toucher que le dernier créneau construit. Deux cas : il commence après la fin de celui-ci, ou bien il le prolonge. Dans le second cas, quelle est la nouvelle fin ? Pense à un créneau entièrement inclus dans un autre.",
+    "Parcours sorted(creneaux) avec une liste résultat : si le résultat est vide ou si debut dépasse la dernière fin, ajoute le créneau ; sinon remplace le dernier par (même début, max des deux fins). Une fois les deux listes fusionnées, c'est l'exercice alice_bob_listes.",
+]

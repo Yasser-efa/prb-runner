@@ -1,0 +1,38 @@
+[[groupes]]
+theme = "taxi"
+appels = [
+    "distance_taxi((0, 0), (5, 5))",
+    "distance_taxi((5, 5), (0, 0))",
+    "distance_taxi((1, 8), (4, 2))",
+    "distance_taxi((-3, -2), (4, 1))",
+    "distance_taxi((-1, 5), (-6, -5))",
+]
+
+[[groupes]]
+theme = "drone"
+appels = [
+    "distance_drone((0, 0), (1, 1))",
+    "distance_drone((10, 2), (4, 10))",
+    "distance_drone((-3, -2), (4, 1))",
+    "distance_drone((3, 4), (0, 0))",
+]
+
+[[groupes]]
+theme = "gain"
+appels = [
+    "gain_drone((2, 3), (7, 1))",
+    "gain_drone((7, 1), (2, 3))",
+    "gain_drone((-5, 0), (0, 12))",
+]
+
+[[groupes]]
+theme = "valeurs limites"
+appels = [
+    "distance_taxi((4, 4), (4, 4))",
+    "distance_taxi((4, 4), (4, 9))",
+    "distance_taxi((9, 4), (2, 4))",
+    "distance_drone((4, 4), (4, 4))",
+    "distance_drone((4, 4), (4, 9))",
+    "gain_drone((4, 4), (4, 9))",
+    "gain_drone((4, 4), (4, 4))",
+]

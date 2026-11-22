@@ -1,0 +1,5 @@
+indices = [
+    "Écris aaabbcccc sur papier avec ses indices. Quand tu avances d'un caractère, comment sais-tu que la série en cours est terminée ? De quelles informations as-tu besoin à ce moment-là pour créer le couple ?",
+    "Deux variables suffisent pendant le parcours : le caractère de la série en cours et son compteur. À chaque caractère, soit la série continue, soit elle se termine et une nouvelle commence. Que reste-t-il à faire après la boucle ?",
+    "Initialise la série avec le premier caractère et un compteur à 1, puis parcours chaine[1:]. Traite d'abord le cas de la chaine vide, et n'oublie pas d'ajouter la dernière série après la boucle : aucun changement ne l'annonce.",
+]

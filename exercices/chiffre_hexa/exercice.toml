@@ -1,0 +1,19 @@
+titre = "Chiffre hexadécimal"
+reference = "n° 11"
+sorte = "fonction"
+duree_minutes = 30
+
+[organisation]
+fichiers = ["chiffres.py"]
+
+[[fonctions]]
+module = "chiffres"
+signature = "valeur_chiffre(chiffre: str) -> int"
+
+[[fonctions]]
+module = "chiffres"
+signature = "chiffre_hexa(valeur: int) -> str"
+
+[contraintes]
+interdits = ["break", "continue", "try", "while True", "dictionnaire", "liste", "ensemble", "f-string"]
+fonctions_interdites = ["int", "ord", "chr", "hex", "eval", "float", "bytes", "format", ".format", ".fromhex"]

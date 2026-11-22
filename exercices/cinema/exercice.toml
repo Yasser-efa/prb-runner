@@ -1,0 +1,20 @@
+titre = "Les sièges du cinéma"
+reference = "n° 4"
+sorte = "programme"
+duree_minutes = 35
+
+[organisation]
+fichiers = ["main.py", "salle/__init__.py", "salle/sieges.py"]
+main = "main.py"
+
+[[fonctions]]
+module = "salle.sieges"
+signature = "position_siege(siege: int, sieges_par_rangee: int = 20) -> tuple[int, int]"
+
+[[fonctions]]
+module = "salle.sieges"
+signature = "numero_siege(rangee: int, position: int, sieges_par_rangee: int = 20) -> int"
+
+[contraintes]
+interdits = ["break", "continue", "try", "while True", "while", "for"]
+appels_imposes = ["position_siege"]

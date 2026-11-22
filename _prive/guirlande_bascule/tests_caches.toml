@@ -1,0 +1,33 @@
+[[groupes]]
+theme = "une lampe"
+appels = [
+    "lampe_allumee(5, 0)",
+    "lampe_allumee(5, 4)",
+    "lampe_allumee(5, 5)",
+    "lampe_allumee(5, 9)",
+    "lampe_allumee(5, 10)",
+    "lampe_allumee(1, 0)",
+    "lampe_allumee(1, 1)",
+    "lampe_allumee(1, 2)",
+    "lampe_allumee(7, 1000000000)",
+]
+
+[[groupes]]
+theme = "guirlande"
+appels = [
+    "duree_rallumage([2, 3, 5, 7, 11])",
+    "duree_rallumage([4, 6])",
+    "duree_rallumage([3, 5])",
+    "duree_rallumage([10, 3])",
+    "duree_rallumage([2, 4, 8])",
+]
+
+[[groupes]]
+theme = "valeurs limites"
+appels = [
+    "duree_rallumage([1])",
+    "duree_rallumage([1, 2])",
+    "duree_rallumage([1, 100])",
+    "duree_rallumage([7, 7, 7])",
+    "duree_rallumage([100, 1])",
+]

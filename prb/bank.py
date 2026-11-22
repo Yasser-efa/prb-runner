@@ -322,11 +322,12 @@ def _build_case(
     try:
         parsed = parse_call(call) if call is not None else None
         value = parse_literal(expected) if expected is not None else None
+        function = _find_function(parsed, functions) if parsed else None
     except LiteralError as error:
-        raise BankError(f"{where} : {error}") from error
+        # A hidden test must not be revealed, even by an error message.
+        raise BankError(f"{where} : {'test illisible' if theme else error}") from error
     if parsed is None and main is None:
         raise BankError(f"{where} : un test sans « appel » a besoin de organisation.main")
-    function = _find_function(parsed, functions, where) if parsed else None
     return Case(
         label=parsed.source if parsed else main,
         function=function,
@@ -340,7 +341,7 @@ def _build_case(
     )
 
 
-def _find_function(call: Call, functions: tuple[FunctionSpec, ...], where: str) -> FunctionSpec:
+def _find_function(call: Call, functions: tuple[FunctionSpec, ...]) -> FunctionSpec:
     matches = [
         function
         for function in functions
@@ -348,5 +349,5 @@ def _find_function(call: Call, functions: tuple[FunctionSpec, ...], where: str) 
     ]
     if len(matches) != 1:
         problem = "inconnue" if not matches else "ambiguë (précise le module)"
-        raise BankError(f"{where} : fonction {problem} dans « {call.source} »")
+        raise LiteralError(f"fonction {problem} dans « {call.source} »")
     return matches[0]

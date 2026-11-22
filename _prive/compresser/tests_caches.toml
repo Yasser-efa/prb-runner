@@ -1,0 +1,36 @@
+[[groupes]]
+theme = "couples"
+appels = [
+    "obtenir_couples('xxyyyz')",
+    "obtenir_couples('xyyzzz')",
+    "obtenir_couples('aAaA')",
+    "obtenir_couples('mississippi')",
+]
+
+[[groupes]]
+theme = "caractères quelconques"
+appels = [
+    "compresser('111')",
+    "compresser('1122')",
+    "compresser('  a  ')",
+    "compresser('ééè!!')",
+    "obtenir_couples('00 0')",
+]
+
+[[groupes]]
+theme = "valeurs limites"
+appels = [
+    "obtenir_couples('')",
+    "obtenir_couples('a')",
+    "obtenir_couples('aaa')",
+    "obtenir_couples('aaaaaaaaa')",
+    "compresser('z')",
+    "compresser('zzzzzzzzz')",
+    "compresser('ab')",
+    "compresser('aab')",
+    "compresser('abb')",
+]
+
+[[groupes]]
+theme = "programme"
+entrees = [["z"], ["zzzzzzzzz"], [""], ["a b"]]

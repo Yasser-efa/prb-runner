@@ -1,0 +1,5 @@
+indices = [
+    "Dessine le damier et les deux carrefours. Trace un trajet de taxi, puis un autre : leurs longueurs sont-elles différentes ? Quelle figure géométrique forment les déplacements horizontal et vertical avec la ligne droite du drone ?",
+    "Dans les deux cas, tu as besoin de l'écart horizontal et de l'écart vertical. Ils doivent être positifs quel que soit le sens du trajet, au moins pour le taxi.",
+    "Taxi : somme des deux écarts (abs). Drone : théorème de Pythagore (math.sqrt, math.hypot ou ** 0.5). Dans drone.py, l'import se fait depuis la racine du projet : from distances.taxi import …",
+]

@@ -1,0 +1,5 @@
+indices = [
+    "La réponse n'est pas 75 km/h. Dessine le trajet et choisis une distance qui t'arrange, par exemple 180 km : combien de temps dure l'aller ? Et le retour ? Pendant quelle partie du temps roule-t-on le plus lentement ?",
+    "Écris la formule distance totale / durée totale avec une distance inconnue d : elle se simplifie. Donner une valeur fixe à d marche aussi.",
+    "Pour les tronçons, additionne d'un côté les distances et de l'autre les durées (distance / vitesse), chacune avec sum() et une compréhension. Dans le programme, f\"{valeur:.1f}\" affiche une décimale.",
+]

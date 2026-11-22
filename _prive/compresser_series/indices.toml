@@ -1,0 +1,5 @@
+indices = [
+    "Reprends le parcours de l'exercice compresser. Jusqu'ici, une série se terminait dans un seul cas : lequel ? Quel cas supplémentaire faut-il maintenant prévoir ?",
+    "Écris 12 a suivis de 2 b et simule ton parcours : que valent ton compteur et ton caractère en cours quand le maximum est atteint ? Le caractère lu à ce moment commence un nouveau couple.",
+    "La série continue seulement si le caractère est le même ET que le compteur est encore inférieur au maximum. Le reste du parcours ne change pas. Pour la tâche 3, compare les longueurs : en cas d'égalité, garde la chaine.",
+]

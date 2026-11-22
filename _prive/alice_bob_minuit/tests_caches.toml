@@ -1,0 +1,41 @@
+[[groupes]]
+theme = "découpage"
+appels = [
+    "decouper(0, 5)",
+    "decouper(23.5, 0.5)",
+    "decouper(12, 11)",
+    "decouper(18, 23)",
+]
+
+[[groupes]]
+theme = "valeurs limites"
+appels = [
+    "decouper(22, 0)",
+    "decouper(0, 0)",
+    "decouper(23, 23)",
+    "temps_ensemble(22, 2, 2, 22)",
+    "temps_ensemble(0, 12, 12, 0)",
+    "temps_ensemble(22, 0, 0, 2)",
+    "temps_ensemble(9, 9, 0, 23)",
+    "temps_ensemble(18, 6, 18, 6)",
+]
+
+[[groupes]]
+theme = "rencontre de jour"
+appels = [
+    "temps_ensemble(15, 19, 14, 17)",
+    "temps_ensemble(8, 18, 12.5, 13.5)",
+    "temps_ensemble(8, 10, 12, 14)",
+]
+
+[[groupes]]
+theme = "rencontre de nuit"
+appels = [
+    "temps_ensemble(22, 2, 1, 3)",
+    "temps_ensemble(1, 3, 22, 2)",
+    "temps_ensemble(22, 2, 3, 5)",
+    "temps_ensemble(22, 2, 20, 23)",
+    "temps_ensemble(12, 11, 10, 13)",
+    "temps_ensemble(21.5, 6.25, 23.75, 5)",
+    "temps_ensemble(6, 22, 20, 8)",
+]

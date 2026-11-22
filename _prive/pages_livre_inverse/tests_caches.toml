@@ -1,0 +1,49 @@
+[[groupes]]
+theme = "nombre de pages"
+appels = [
+    "nombre_pages(5)",
+    "nombre_pages(91)",
+    "nombre_pages(261)",
+    "nombre_pages(2202)",
+    "nombre_pages(488895)",
+]
+
+[[groupes]]
+theme = "valeurs limites"
+appels = [
+    "nombre_pages(1)",
+    "nombre_pages(9)",
+    "nombre_pages(11)",
+    "nombre_pages(189)",
+    "nombre_pages(192)",
+    "nombre_pages(2889)",
+    "page_du_chiffre(1)",
+    "page_du_chiffre(10)",
+    "page_du_chiffre(189)",
+    "page_du_chiffre(190)",
+]
+
+[[groupes]]
+theme = "impossible"
+appels = [
+    "nombre_pages(12)",
+    "nombre_pages(190)",
+    "nombre_pages(191)",
+    "nombre_pages(2890)",
+    "nombre_pages(661)",
+]
+
+[[groupes]]
+theme = "page d'un chiffre"
+appels = [
+    "page_du_chiffre(5)",
+    "page_du_chiffre(12)",
+    "page_du_chiffre(13)",
+    "page_du_chiffre(660)",
+    "page_du_chiffre(661)",
+    "page_du_chiffre(100000)",
+]
+
+[[groupes]]
+theme = "programme"
+entrees = [["0"], ["9"], ["191"], ["2889"]]

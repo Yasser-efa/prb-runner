@@ -1,0 +1,5 @@
+indices = [
+    "Dessine une journée de 0 à 24 et place le créneau 22 h – 2 h dessus. En combien de morceaux apparait-il ? Comment reconnait-on ce cas à partir des deux heures ?",
+    "Une fois les deux créneaux découpés, tu as deux petites listes de morceaux qui ne passent pas minuit : compare chaque morceau d'Alice à chaque morceau de Bob.",
+    "Cas de decouper : heures égales, début < fin, début > fin (avec attention à une fin à minuit pile, qui donnerait un morceau vide). Dans temps_ensemble, deux boucles imbriquées qui additionnent max(0, min des fins - max des débuts).",
+]

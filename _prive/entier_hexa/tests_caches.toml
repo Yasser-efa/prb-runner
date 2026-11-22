@@ -1,0 +1,40 @@
+[[groupes]]
+theme = "hexadécimal"
+appels = [
+    "entier_vers_hexa(9)",
+    "entier_vers_hexa(10)",
+    "entier_vers_hexa(255)",
+    "entier_vers_hexa(4096)",
+    "entier_vers_hexa(48879)",
+    "entier_vers_hexa(61680)",
+]
+
+[[groupes]]
+theme = "autres bases"
+appels = [
+    "entier_vers_base(255, 2)",
+    "entier_vers_base(64, 8)",
+    "entier_vers_base(2026, 10)",
+    "entier_vers_base(35, 36)",
+    "entier_vers_base(36, base=36)",
+    "entier_vers_base(100, 3)",
+]
+
+[[groupes]]
+theme = "valeurs limites"
+appels = [
+    "entier_vers_base(0)",
+    "entier_vers_base(0, 2)",
+    "entier_vers_base(1, 2)",
+    "entier_vers_base(2, 2)",
+    "entier_vers_base(16)",
+    "entier_vers_base(15)",
+    "entier_vers_hexa(1)",
+    "entier_vers_hexa(16)",
+    "entier_vers_hexa(1208925819614629174706176)",
+    "entier_vers_hexa(1208925819614629174706175)",
+]
+
+[[groupes]]
+theme = "programme"
+entrees = [["0"], ["16"], ["51966"], ["1208925819614629174706175"]]

@@ -1,0 +1,33 @@
+[[tests]]
+appel = "nombre_pages(660)"
+attendu = "256"
+
+[[tests]]
+appel = "nombre_pages(10)"
+attendu = "-1"
+
+[[tests]]
+appel = "nombre_pages(0)"
+attendu = "0"
+
+[[tests]]
+appel = "page_du_chiffre(9)"
+attendu = "9"
+
+[[tests]]
+appel = "page_du_chiffre(11)"
+attendu = "10"
+
+[[tests]]
+entree = ["660"]
+sortie = """
+Nombre de chiffres ? 660
+Nombre de pages : 256
+"""
+
+[[tests]]
+entree = ["10"]
+sortie = """
+Nombre de chiffres ? 10
+Aucun livre ne convient.
+"""

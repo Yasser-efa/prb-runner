@@ -1,0 +1,22 @@
+[[tests]]
+appel = "valeur_chiffre('F')"
+attendu = "15"
+
+[[tests]]
+appel = "valeur_nombre('1F')"
+attendu = "31"
+
+[[tests]]
+appel = "valeur_nombre('2a3')"
+attendu = "675"
+
+[[tests]]
+appel = "valeur_nombre('0')"
+attendu = "0"
+
+[[tests]]
+entree = ["1F"]
+sortie = """
+Nombre hexadécimal ? 1F
+Valeur : 31
+"""

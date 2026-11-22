@@ -1,0 +1,43 @@
+[[groupes]]
+theme = "couples"
+appels = [
+    "obtenir_couples('aaabbcccc')",
+    "obtenir_couples('abba', 1)",
+    "obtenir_couples('aaaabbb', 3)",
+    "obtenir_couples('aaaaaabb', maximum=3)",
+    "obtenir_couples('zzzzzzzzzzzzzzzzzzzzzzzzz', 10)",
+]
+
+[[groupes]]
+theme = "valeurs limites"
+appels = [
+    "obtenir_couples('')",
+    "obtenir_couples('a')",
+    "obtenir_couples('aaaaaaaaa')",
+    "obtenir_couples('aaaaaaaaaa')",
+    "obtenir_couples('aaaaaaaaaaaaaaaaaa')",
+    "obtenir_couples('aaaaaaaaaab')",
+    "obtenir_couples('baaaaaaaaaa')",
+]
+
+[[groupes]]
+theme = "compression"
+appels = [
+    "compresser('1111111111')",
+    "compresser('xxxxxxxxxxxxxxxxxxx')",
+    "compresser('a bb  ccc')",
+    "compresser('z')",
+]
+
+[[groupes]]
+theme = "meilleure forme"
+appels = [
+    "meilleure_forme('')",
+    "meilleure_forme('a')",
+    "meilleure_forme('aa')",
+    "meilleure_forme('aaa')",
+    "meilleure_forme('abcdef')",
+    "meilleure_forme('aabb')",
+    "meilleure_forme('aaaaaaaaaaaa')",
+    "meilleure_forme('    ')",
+]

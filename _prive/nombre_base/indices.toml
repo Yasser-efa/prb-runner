@@ -1,0 +1,5 @@
+indices = [
+    "Reprends ta chaine de chiffres de l'exercice hexadécimal : comment la prolonger pour aller jusqu'à la base 36 ? Pour une base donnée, quelle partie de cette chaine contient les chiffres permis ?",
+    "Une tranche donne les chiffres permis. Un nombre est valide si tous ses caractères s'y trouvent : pense à la fonction all() avec l'opérateur in, et au cas particulier de la chaine vide.",
+    "Pour la valeur, vérifie d'abord la validité, puis parcours de gauche à droite : valeur = valeur * base + valeur du chiffre. Ramène le nombre en majuscules une seule fois, au début.",
+]

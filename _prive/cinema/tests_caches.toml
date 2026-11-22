@@ -1,0 +1,38 @@
+[[groupes]]
+theme = "position"
+appels = [
+    "position_siege(33)",
+    "position_siege(200)",
+    "position_siege(239)",
+    "position_siege(10, 3)",
+    "position_siege(100, sieges_par_rangee=12)",
+]
+
+[[groupes]]
+theme = "opération inverse"
+appels = [
+    "numero_siege(2, 13)",
+    "numero_siege(12, 19)",
+    "numero_siege(4, 1, 3)",
+    "numero_siege(9, 4, sieges_par_rangee=12)",
+]
+
+[[groupes]]
+theme = "valeurs limites"
+appels = [
+    "position_siege(20)",
+    "position_siege(21)",
+    "position_siege(40)",
+    "position_siege(240)",
+    "position_siege(7, 1)",
+    "position_siege(12, 12)",
+    "position_siege(13, 12)",
+    "numero_siege(1, 1)",
+    "numero_siege(1, 20)",
+    "numero_siege(12, 20)",
+    "numero_siege(7, 1, 1)",
+]
+
+[[groupes]]
+theme = "programme"
+entrees = [["1"], ["240"], ["0"], ["-5"], ["20"], ["1000"]]

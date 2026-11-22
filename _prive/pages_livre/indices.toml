@@ -1,0 +1,5 @@
+indices = [
+    "Regroupe les pages selon le nombre de chiffres de leur numéro : combien de pages à un chiffre ? à deux chiffres ? Fais le calcul à la main pour 12 pages, puis pour 256.",
+    "Il n'est pas nécessaire de raisonner par groupes : quel type Python permet de connaitre facilement le nombre de chiffres d'un entier ? Il reste à additionner pour toutes les pages.",
+    "Parcours les numéros avec range (attention à la dernière page), convertis chacun en chaine et additionne les longueurs. La tâche 1 est un cas particulier de la tâche 2. Pour les occurrences, la méthode count() des chaines compte un caractère.",
+]
