@@ -4,6 +4,7 @@ from collections.abc import Sequence
 from datetime import date, datetime
 from pathlib import Path
 
+from rich import box
 from rich.console import Console
 from rich.markdown import Markdown
 from rich.panel import Panel
@@ -109,14 +110,10 @@ def show_progress(
     :param states: the state of each exercise, in the same order
     :param today: the current date
     """
-    table = Table(title="Progression")
-    for column in ("", "Exercice", "Réf.", "Statut", "Essais", "Temps", "Indices", "Révision"):
-        right = column in ("", "Essais", "Temps", "Indices")
-        table.add_column(
-            column,
-            justify="right" if right else "left",
-            no_wrap=column in ("Exercice", "Temps", "Révision"),
-        )
+    table = Table(title="Progression", box=box.SIMPLE_HEAD)
+    for column in ("", "Exercice", "Réf.", "Statut", "Essais", "Temps", "Ind.", "Révision"):
+        right = column in ("", "Essais", "Temps", "Ind.")
+        table.add_column(column, justify="right" if right else "left", no_wrap=column != "Réf.")
     for number, (exercise, state) in enumerate(zip(exercises, states, strict=True), 1):
         table.add_row(
             str(number),
@@ -149,15 +146,15 @@ def describe_stage(state: State, today: date) -> Text:
         case Stage.NEW:
             return Text("à faire", style="dim")
         case Stage.ACTIVE:
-            label = "révision en cours" if state.cycle_kind == "review" else "en cours"
+            label = "en révision" if state.cycle_kind == "review" else "en cours"
             return Text(label, style="yellow")
         case Stage.DONE:
             return Text("acquis", style="bold green")
     if state.is_due(today):
         return Text("à revoir", style="magenta")
     if state.urgent:
-        return Text("réussi avec la solution", style="yellow")
-    return Text(f"réussi ({state.level}/{len(INTERVALS) + 1})", style="green")
+        return Text("avec solution", style="yellow")
+    return Text(f"réussi {state.level}/{len(INTERVALS) + 1}", style="green")
 
 
 def describe_due(state: State, today: date) -> Text:

@@ -107,7 +107,7 @@ def test_an_early_review_on_the_same_day_starts_a_new_cycle(workshop, run):
     workshop.submit(SOLUTION)
     run("verifier", minutes=20)
     assert "Révision : demo" in run("du_jour --revision", minutes=30)
-    assert "révision en cours" in run("progression", minutes=31)
+    assert "en révision" in run("progression", minutes=31)
 
 
 def test_a_locked_file_stops_the_review(workshop, monkeypatch):
@@ -155,7 +155,7 @@ def test_solution_needs_a_confirmation(workshop, run, monkeypatch):
     assert run.code == 0 and "range(1" in output
     workshop.submit(SOLUTION)
     assert "prochaine révision : mar. 24/11" in run("verifier", minutes=7)
-    assert "réussi avec la solution" in run("progression", minutes=8)
+    assert "avec solution" in run("progression", minutes=8)
     assert "Révision : demo" in run("du_jour", days=1)
 
 
@@ -180,7 +180,7 @@ def test_solution_is_free_after_success(workshop, run):
     workshop.submit(SOLUTION)
     run("verifier", minutes=5)
     assert "range(1" in run("solution", minutes=6)
-    assert "réussi (1/4)" in run("progression", minutes=7)
+    assert "réussi 1/4" in run("progression", minutes=7)
 
 
 def test_progress_table(two_exercises, workshop, run):
@@ -190,7 +190,7 @@ def test_progress_table(two_exercises, workshop, run):
     workshop.submit(SOLUTION)
     run("verifier", minutes=32)
     output = run("progression", days=1)
-    for part in ("réussi (1/4)", "32 min", "jeu. 26/11", "à faire", "1/2 réussis"):
+    for part in ("réussi 1/4", "32 min", "jeu. 26/11", "à faire", "1/2 réussis"):
         assert part in output
     output = run("progression", days=5)
     assert "à revoir" in output and "1 révision(s) due(s)" in output
