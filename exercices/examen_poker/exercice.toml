@@ -1,0 +1,43 @@
+titre = "Examen d'aout 2025 : Poker d'As"
+reference = "aout 2025"
+sorte = "programme"
+duree_minutes = 150
+
+[organisation]
+fichiers = ["main.py", "poker/__init__.py", "poker/poker_as.py"]
+main = "main.py"
+
+[organisation.fournis]
+"poker/des.py" = "sources/anciens_examens/des.py"
+
+[[fonctions]]
+module = "poker.poker_as"
+signature = "analyser_comptage(comptage: dict[int, int]) -> tuple[int, int]"
+preserve_arguments = true
+
+[[fonctions]]
+module = "poker.poker_as"
+signature = "comparer_tirages(tirage1: list[int], tirage2: list[int]) -> int"
+preserve_arguments = true
+
+[[fonctions]]
+module = "poker.poker_as"
+signature = "detailler_tirage_des(comptage: dict[int, int]) -> list[int]"
+preserve_arguments = true
+
+[[fonctions]]
+module = "main"
+signature = "afficher_tirage(des: list[int]) -> None"
+preserve_arguments = true
+
+[[fonctions]]
+module = "main"
+signature = "selectionner_des(detail_des: list[int]) -> dict[int, int]"
+preserve_arguments = true
+
+[contraintes]
+interdits = ["break", "continue", "while True"]
+appels_imposes = ["effectuer_tirage", "comparer_tirages", "detailler_tirage_des", "selectionner_des"]
+
+[contraintes.fonctions.afficher_tirage]
+appels_imposes = ["initiale"]

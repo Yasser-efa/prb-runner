@@ -124,6 +124,9 @@ def test_sessions_add_up_and_are_limited():
     sessions = (session("new", length=40), session("resume", 1, length=600))
     history = History("a", sessions)
     assert elapsed_seconds(history, read_state(history)) == (40 + 90) * 60
+    long = Session("a", "resume", at(2), at(2, 600), limit_minutes=180)
+    history = History("a", (*sessions, long))
+    assert elapsed_seconds(history, read_state(history)) == (40 + 90 + 180) * 60
 
 
 def test_time_restarts_for_a_review():

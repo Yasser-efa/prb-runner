@@ -4,7 +4,8 @@ from pathlib import Path
 
 import pytest
 
-from prb.bank import Exercise, load_exercise
+from prb.bank import load_exercise
+from prb.model import Exercise
 from prb.paths import Paths
 
 FUNCTION = '''titre = "Table"

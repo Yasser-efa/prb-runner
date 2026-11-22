@@ -12,7 +12,7 @@ LINE_LENGTH = 120
 
 # What PyCharm shows as an error: undefined names and misplaced statements.
 BLOCKING_RULES = ("F70", "F82", "F831", "F62")
-QUALITY_RULES = ("E", "W", "N", "A", "F")
+QUALITY_RULES = ("E", "W", "N", "A", "F", "PLW1514")
 # E226 and E24 are off by default in pycodestyle; the others duplicate our own checks.
 IGNORED_RULES = ("E226", "E241", "E242", "E741", "E9", "A005", *BLOCKING_RULES)
 
@@ -160,6 +160,7 @@ _FRENCH = {
     "A001": "le nom « {name} » écrase une fonction prédéfinie de Python",
     "A002": "le paramètre « {name} » porte le nom d'une fonction prédéfinie de Python",
     "A004": "l'import « {name} » écrase une fonction prédéfinie de Python",
+    "PLW1514": "open() sans encodage : ajoute encoding='utf-8'",
     "F401": "import inutilisé ({name})",
     "F403": "« import * » : importe seulement les noms utiles",
     "F405": "« {name} » vient peut-être d'un import * : importe-le explicitement",

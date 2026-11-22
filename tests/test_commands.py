@@ -111,6 +111,7 @@ def test_an_early_review_on_the_same_day_starts_a_new_cycle(workshop, run):
 
 
 def test_a_locked_file_stops_the_review(workshop, monkeypatch):
+    exercise = workshop.exercise()
     workshop.submit(SOLUTION)
 
     def refuse(*_):
@@ -118,7 +119,7 @@ def test_a_locked_file_stops_the_review(workshop, monkeypatch):
 
     monkeypatch.setattr(Path, "rename", refuse)
     with pytest.raises(WorkspaceError, match="accès refusé"):
-        archive_folder(workshop.paths, "demo", MONDAY)
+        archive_folder(workshop.paths, exercise, MONDAY)
     assert (workshop.student / "tables.py").exists()
 
 

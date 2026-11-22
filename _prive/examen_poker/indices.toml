@@ -1,0 +1,5 @@
+indices = [
+    "analyser_comptage : la combinaison est le plus grand nombre de dés ; parmi les valeurs qui l'atteignent, il faut la plus forte figure. Comparer des tuples (nombre, valeur) fait exactement cela. comparer_tirages se ramène alors à deux analyses et une comparaison de tuples.",
+    "detailler_tirage_des : parcours les valeurs de la plus petite à la plus grande et ajoute un 0 avant chaque groupe, sauf le premier. selectionner_des : associe chaque dé au caractère tapé en dessous ; zip s'arrête au plus court, ce qui règle les longueurs différentes. compter_des ignore déjà les 0.",
+    "main : le comptage des dés conservés grandit avec somme_comptages ; nombre_des dit combien il reste à lancer. La boucle continue tant qu'il reste des choix ET des dés à lancer. Après la boucle, relance ce qui reste et additionne une dernière fois.",
+]

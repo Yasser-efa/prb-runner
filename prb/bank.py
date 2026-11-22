@@ -7,9 +7,12 @@ import tomllib
 from dataclasses import dataclass
 from pathlib import Path, PurePosixPath
 
+from prb.case_reader import CaseReader
 from prb.constructs import CONSTRUCTS
-from prb.literals import Call, LiteralError, parse_call, parse_literal
+from prb.controls import load_controls
+from prb.model import BankError, ConstraintSet, Exercise, FunctionSpec, ProvidedFile
 from prb.paths import Paths
+from prb.sources import list_files
 
 DEFAULT_MINUTES = 40
 DEFAULT_TIMEOUT = 2.0
@@ -17,82 +20,13 @@ KINDS = ("fonction", "programme")
 _ID_PATTERN = re.compile(r"[a-z][a-z0-9_]*")
 
 
-class BankError(Exception):
-    """A file of the bank is missing or badly formatted."""
-
-
 @dataclass(frozen=True)
-class FunctionSpec:
-    """A function required by an exercise."""
+class _Layout:
+    """Files of an exercise."""
 
-    module: str
-    name: str
-    signature: str
-    node: ast.FunctionDef
-    preserve_arguments: bool = False
-
-    @property
-    def file(self) -> str:
-        """Path of the file that must define the function."""
-        return self.module.replace(".", "/") + ".py"
-
-    @property
-    def returns_float(self) -> bool:
-        """Tell whether the announced return type mentions float."""
-        return self.node.returns is not None and "float" in ast.unparse(self.node.returns)
-
-
-@dataclass(frozen=True)
-class ConstraintSet:
-    """Constraints on the whole code (``function`` is None) or on one function."""
-
-    function: str | None = None
-    forbidden: tuple[str, ...] = ()
-    required: tuple[str, ...] = ()
-    forbidden_functions: tuple[str, ...] = ()
-    forbidden_modules: tuple[str, ...] = ()
-    required_calls: tuple[str, ...] = ()
-
-
-@dataclass(frozen=True)
-class Case:
-    """One execution of the code: a function call, or the whole program."""
-
-    label: str
-    function: FunctionSpec | None = None
-    args: tuple = ()
-    kwargs: tuple[tuple[str, object], ...] = ()
-    stdin: tuple[str, ...] = ()
-    has_value: bool = False
-    value: object = None
-    output: str | None = None
-    theme: str | None = None
-
-    @property
-    def is_program(self) -> bool:
-        """Tell whether the case runs the whole program."""
-        return self.function is None
-
-
-@dataclass(frozen=True)
-class Exercise:
-    """Everything the tool knows about one exercise."""
-
-    id: str
-    title: str
-    reference: str
-    kind: str
-    minutes: int
-    timeout: float
     files: tuple[str, ...]
     main: str | None
-    functions: tuple[FunctionSpec, ...]
-    constraints: tuple[ConstraintSet, ...]
-    statement: str
-    visible_cases: tuple[Case, ...]
-    hidden_cases: tuple[Case, ...]
-    hints: tuple[str, ...]
-    reference_folder: Path
+    provided: tuple[ProvidedFile, ...]
 
 
 def load_order(paths: Paths) -> list[str]:
@@ -142,15 +76,21 @@ def load_exercise(paths: Paths, exercise_id: str) -> Exercise:
     kind = _text(data, "sorte", where)
     if kind not in KINDS:
         raise BankError(f"{where} : sorte doit valoir {' ou '.join(KINDS)}")
-    files, main = _read_layout(data.get("organisation", {}), where)
-    functions = tuple(_read_function(item, files, where) for item in data.get("fonctions", []))
-    if kind == "programme" and main is None:
+    layout = _read_layout(data.get("organisation", {}), paths.root, where)
+    if kind == "programme" and layout.main is None:
         raise BankError(f"{where} : un programme a besoin de organisation.main")
-    visible = _read_toml(folder / "tests_visibles.toml")
+    functions = tuple(
+        _read_function(item, layout.files, where) for item in data.get("fonctions", [])
+    )
     private = paths.private / exercise_id
-    hidden = _read_toml(private / "tests_caches.toml")
+    controls = load_controls(private / "controles.py")
+
+    def reader(name: str) -> CaseReader:
+        return CaseReader(f"{exercise_id}/{name}", functions, layout.main, controls)
+
     hints = _read_toml(private / "indices.toml")
     _check_keys(hints, {"indices"}, f"{exercise_id}/indices.toml")
+    visible, hidden = "tests_visibles.toml", "tests_caches.toml"
     return Exercise(
         id=exercise_id,
         title=_text(data, "titre", where),
@@ -158,13 +98,17 @@ def load_exercise(paths: Paths, exercise_id: str) -> Exercise:
         kind=kind,
         minutes=int(data.get("duree_minutes", DEFAULT_MINUTES)),
         timeout=float(data.get("timeout_secondes", DEFAULT_TIMEOUT)),
-        files=files,
-        main=main,
+        files=layout.files,
+        main=layout.main,
+        provided=layout.provided,
         functions=functions,
         constraints=_read_constraints(data.get("contraintes", {}), functions, where),
         statement=_read_text(folder / "enonce.md"),
-        visible_cases=_read_visible(visible, functions, main, f"{exercise_id}/tests_visibles.toml"),
-        hidden_cases=_read_hidden(hidden, functions, main, f"{exercise_id}/tests_caches.toml"),
+        visible_cases=reader(visible).read_visible(_read_toml(folder / visible)),
+        hidden_cases=reader(hidden).read_hidden(_read_toml(private / hidden)),
+        hidden_files=tuple(
+            (name, private / "fichiers" / name) for name in list_files(private / "fichiers")
+        ),
         hints=_strings(hints, "indices", f"{exercise_id}/indices.toml"),
         reference_folder=private / "solution",
     )
@@ -204,21 +148,36 @@ def _strings(data: dict, key: str, where: str) -> tuple[str, ...]:
     return tuple(value)
 
 
-def _read_layout(data: dict, where: str) -> tuple[tuple[str, ...], str | None]:
-    _check_keys(data, {"fichiers", "main"}, where)
+def _read_layout(data: dict, root: Path, where: str) -> _Layout:
+    _check_keys(data, {"fichiers", "main", "fournis", "modifiables"}, where)
     files = _strings(data, "fichiers", where)
     if not files:
         raise BankError(f"{where} : organisation.fichiers est vide")
-    for name in files:
+    sources = data.get("fournis", {})
+    editable = _strings(data, "modifiables", where)
+    for name in (*files, *sources, *sources.values()):
         path = PurePosixPath(name)
         if "\\" in name or path.is_absolute() or ".." in path.parts:
             raise BankError(f"{where} : chemin invalide ({name})")
+    for name in (*files, *sources):
+        path = PurePosixPath(name)
         if path.suffix == ".py" and path.parts[0].removesuffix(".py") in sys.stdlib_module_names:
             raise BankError(f"{where} : {name} masque un module de la bibliothèque standard")
+    if set(files) & set(sources):
+        raise BankError(f"{where} : un fichier ne peut pas être à la fois demandé et fourni")
+    if set(editable) - set(sources):
+        raise BankError(f"{where} : organisation.modifiables contient un fichier non fourni")
     main = data.get("main")
     if main is not None and main not in files:
         raise BankError(f"{where} : {main} n'est pas dans organisation.fichiers")
-    return files, main
+    provided = tuple(_read_provided(name, sources[name], root, editable) for name in sources)
+    return _Layout(files, main, provided)
+
+
+def _read_provided(name: str, source: str, root: Path, editable: tuple[str, ...]) -> ProvidedFile:
+    """Locate a provided file, written « file » or « archive.zip::member »."""
+    path, _, member = source.partition("::")
+    return ProvidedFile(name, root / path, member or None, name in editable)
 
 
 def _read_function(data: dict, files: tuple[str, ...], where: str) -> FunctionSpec:
@@ -263,91 +222,3 @@ def _read_constraint_set(data: dict, function: str | None, where: str) -> Constr
             raise BankError(f"{where} : construction inconnue ({', '.join(sorted(unknown))})")
     values = {attribute: _strings(data, key, where) for key, attribute in keys.items()}
     return ConstraintSet(function=function, **values)
-
-
-def _read_visible(
-    data: dict, functions: tuple[FunctionSpec, ...], main: str | None, where: str
-) -> tuple[Case, ...]:
-    _check_keys(data, {"tests"}, where)
-    cases = []
-    for test in data.get("tests", []):
-        _check_keys(test, {"appel", "attendu", "entree", "sortie"}, where)
-        if "attendu" not in test and "sortie" not in test:
-            raise BankError(f"{where} : un test a besoin de « attendu » ou de « sortie »")
-        if "appel" not in test and "attendu" in test:
-            raise BankError(f"{where} : « attendu » a besoin de « appel »")
-        cases.append(
-            _build_case(
-                functions,
-                main,
-                where,
-                call=test.get("appel"),
-                stdin=_strings(test, "entree", where),
-                expected=test.get("attendu"),
-                output=test.get("sortie"),
-            )
-        )
-    if not cases:
-        raise BankError(f"{where} : aucun test")
-    return tuple(cases)
-
-
-def _read_hidden(
-    data: dict, functions: tuple[FunctionSpec, ...], main: str | None, where: str
-) -> tuple[Case, ...]:
-    _check_keys(data, {"groupes"}, where)
-    cases = []
-    for group in data.get("groupes", []):
-        _check_keys(group, {"theme", "appels", "entrees"}, where)
-        theme = _text(group, "theme", where)
-        for call in _strings(group, "appels", where):
-            cases.append(_build_case(functions, main, where, call=call, theme=theme))
-        for stdin in group.get("entrees", []):
-            lines = _strings({"entrees": stdin}, "entrees", where)
-            cases.append(_build_case(functions, main, where, stdin=lines, theme=theme))
-    return tuple(cases)
-
-
-def _build_case(
-    functions: tuple[FunctionSpec, ...],
-    main: str | None,
-    where: str,
-    *,
-    call: str | None = None,
-    stdin: tuple[str, ...] = (),
-    expected: str | None = None,
-    output: str | None = None,
-    theme: str | None = None,
-) -> Case:
-    try:
-        parsed = parse_call(call) if call is not None else None
-        value = parse_literal(expected) if expected is not None else None
-        function = _find_function(parsed, functions) if parsed else None
-    except LiteralError as error:
-        # A hidden test must not be revealed, even by an error message.
-        raise BankError(f"{where} : {'test illisible' if theme else error}") from error
-    if parsed is None and main is None:
-        raise BankError(f"{where} : un test sans « appel » a besoin de organisation.main")
-    return Case(
-        label=parsed.source if parsed else main,
-        function=function,
-        args=parsed.args if parsed else (),
-        kwargs=tuple(parsed.kwargs.items()) if parsed else (),
-        stdin=stdin,
-        has_value=expected is not None,
-        value=value,
-        output=output,
-        theme=theme,
-    )
-
-
-def _find_function(call: Call, functions: tuple[FunctionSpec, ...]) -> FunctionSpec:
-    matches = [
-        function
-        for function in functions
-        if function.name == call.function and call.module in (None, function.module)
-    ]
-    if len(matches) != 1:
-        problem = "inconnue" if not matches else "ambiguë (précise le module)"
-        raise LiteralError(f"fonction {problem} dans « {call.source} »")
-    return matches[0]

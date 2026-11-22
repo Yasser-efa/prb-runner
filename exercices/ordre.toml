@@ -35,4 +35,10 @@ ordre = [
     "taxi_drone_etapes",
     "nombre_base",
     "entier_hexa",
+    # Anciens examens (2 h à 2 h 30), du plus court au plus long.
+    "examen_slam",
+    "examen_quiestce",
+    "examen_poker",
+    "examen_damoiselles",
+    "examen_echecs",
 ]

@@ -6,16 +6,19 @@ runs the command is also the one who trains with the exercises.
 
 import os
 import re
+import shutil
+import tempfile
 from collections.abc import Iterator, Sequence
 from concurrent.futures import ThreadPoolExecutor
 from dataclasses import dataclass, field, replace
+from pathlib import Path
 
-from prb.bank import BankError, Case, Exercise, load_exercise, load_order
+from prb.bank import load_exercise, load_order
 from prb.literals import LiteralError, parse_call, parse_literal
+from prb.model import BankError, Case, Exercise
 from prb.paths import Paths
-from prb.runner import run_cases
 from prb.sources import list_files
-from prb.verdict import Verdict, judge, verify
+from prb.verdict import Verdict, judge, run_reference, verify
 
 MIN_HIDDEN_CASES = 6
 HINT_COUNTS = (2, 3)
@@ -72,7 +75,8 @@ def validate_exercise(paths: Paths, exercise_id: str) -> Validation:
     try:
         exercise = load_exercise(paths, exercise_id)
         result.hints = len(exercise.hints)
-        verdict = verify(exercise, exercise.reference_folder)
+        with tempfile.TemporaryDirectory(prefix="prb_", ignore_cleanup_errors=True) as name:
+            verdict = verify(exercise, assemble(exercise, Path(name) / exercise.id))
     except BankError as error:
         result.problems.append(str(error))
         return result
@@ -84,6 +88,21 @@ def validate_exercise(paths: Paths, exercise_id: str) -> Validation:
         result.problems += _check_examples(exercise)
         result.problems += _check_speed(exercise)
     return result
+
+
+def assemble(exercise: Exercise, folder: Path) -> Path:
+    """Copy the reference solution and the provided files, as a student would submit them.
+
+    :param exercise: the exercise
+    :param folder: the folder to create
+    :return: the same folder
+    """
+    shutil.copytree(exercise.reference_folder, folder)
+    for file in exercise.provided:
+        target = folder / file.name
+        target.parent.mkdir(parents=True, exist_ok=True)
+        target.write_bytes(file.read())
+    return folder
 
 
 def _check_verdict(verdict: Verdict) -> Iterator[str]:
@@ -107,26 +126,36 @@ def _check_content(exercise: Exercise) -> Iterator[str]:
         yield "il faut 2 ou 3 indices"
     for kind, cases in (("visible", exercise.visible_cases), ("caché", exercise.hidden_cases)):
         for function in exercise.functions:
-            if not any(case.function is function for case in cases):
+            # A function without parameters has only one possible call.
+            untestable = kind == "caché" and not function.parameters
+            if not untestable and not any(case.function is function for case in cases):
                 yield f"aucun test {kind} pour {function.name}"
         if exercise.kind == "programme" and not any(case.is_program for case in cases):
             yield f"aucun test {kind} pour le programme"
     extra = set(list_files(exercise.reference_folder)) - set(exercise.files)
     if extra:
         yield f"fichiers en trop dans la solution : {', '.join(sorted(extra))}"
-    known = {(case.label, case.stdin) for case in exercise.visible_cases}
-    duplicates = [case for case in exercise.hidden_cases if (case.label, case.stdin) in known]
+    known = {_key(case) for case in exercise.visible_cases}
+    hidden = [_key(case) for case in exercise.hidden_cases]
+    duplicates = [key for key in hidden if key in known]
     if duplicates:
         yield f"{len(duplicates)} test(s) caché(s) identique(s) à un test visible"
-    labels = [(case.label, case.stdin) for case in exercise.hidden_cases]
-    if len(set(labels)) != len(labels):
+    if len(set(hidden)) != len(hidden):
         yield "tests cachés en double"
+
+
+def _key(case: Case) -> tuple:
+    """Identify what a case does."""
+    name = case.function.name if case.function else None
+    return name, repr(case.args), repr(case.kwargs), case.stdin, case.seed
 
 
 def _check_statement(exercise: Exercise) -> Iterator[str]:
     """Check that the statement announces everything that is verified."""
-    expected = [name.rsplit("/", 1)[-1] for name in exercise.files if "__init__" not in name]
-    expected += [part for name in exercise.files for part in name.split("/")[:-1]]
+    files = [*exercise.files, *(file.name for file in exercise.provided)]
+    python = [name for name in files if name.endswith(".py") and "__init__" not in name]
+    expected = [name.rsplit("/", 1)[-1] for name in python]
+    expected += [part for name in files for part in name.split("/")[:-1]]
     expected += [function.name for function in exercise.functions]
     for constraint in exercise.constraints:
         expected += constraint.forbidden + constraint.required
@@ -174,7 +203,7 @@ def statement_examples(exercise: Exercise) -> list[Case]:
 
 def _check_examples(exercise: Exercise) -> Iterator[str]:
     cases = statement_examples(exercise)
-    report = run_cases(exercise.reference_folder, cases, exercise.main, exercise.timeout)
+    report = run_reference(exercise, cases, exercise.timeout)
     for result in judge(cases, report.outcomes):
         if not result.ok:
             yield f"exemple faux dans l'énoncé : {result.case.label}"
@@ -186,6 +215,6 @@ def _check_speed(exercise: Exercise) -> Iterator[str]:
     """Check that the solution is far from the time limit."""
     cases = [*exercise.visible_cases, *exercise.hidden_cases]
     limit = exercise.timeout / SPEED_MARGIN
-    report = run_cases(exercise.reference_folder, cases, exercise.main, limit)
+    report = run_reference(exercise, cases, limit)
     if any(outcome.status == "timeout" for outcome in report.outcomes):
         yield f"la solution met plus de {limit:g} s sur un test"

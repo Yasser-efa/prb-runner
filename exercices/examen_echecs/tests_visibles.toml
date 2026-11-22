@@ -1,0 +1,73 @@
+[[tests]]
+appel = "charger_depuis('fichiers/escalier.txt')"
+attendu = "{(0, 0): {'piece': 'TOUR', 'couleur': 'Noir'}, (1, 1): {'piece': 'TOUR', 'couleur': 'Noir'}, (4, 4): {'piece': 'ROI', 'couleur': 'Noir'}, (7, 0): {'piece': 'ROI', 'couleur': 'Blanc'}}"
+
+[[tests]]
+appel = "charger_depuis('chemin/vers/un/fichier/inexistant')"
+attendu = "{}"
+
+[[tests]]
+appel = "dessiner({})"
+controle = "echiquier_simplifie"
+attendu = '" . : . : . : . :\n : . : . : . : .\n . : . : . : . :\n : . : . : . : .\n . : . : . : . :\n : . : . : . : .\n . : . : . : . :\n : . : . : . : ."'
+
+[[tests]]
+appel = "dessiner({(0, 7): {'piece': 'ROI', 'couleur': 'Noir'}, (0, 5): {'piece': 'TOUR', 'couleur': 'Noir'}, (7, 6): {'piece': 'ROI', 'couleur': 'Blanc'}, (7, 1): {'piece': 'TOUR', 'couleur': 'Blanc'}, (5, 7): {'piece': 'DAME', 'couleur': 'Blanc'}, (2, 2): {'piece': 'FOU', 'couleur': 'Noir'}, (3, 2): {'piece': 'FOU', 'couleur': 'Noir'}, (1, 4): {'piece': 'TOUR', 'couleur': 'Blanc'}, (4, 7): {'piece': 'FOU', 'couleur': 'Blanc'}, (6, 7): {'piece': 'FOU', 'couleur': 'Blanc'}})"
+libelle = "dessiner(echiquiers.harry_potter)"
+controle = "echiquier_simplifie"
+attendu = '" . : . : .t: .r:\n : . : .T: . : .\n . :f. : . : . :\n : .f: . : . : .\n . : . : . : .F:\n : . : . : . :D.\n . : . : . : .F:\n :T. : . : .R: ."'
+
+[[tests]]
+appel = "cases_attaquees({(0, 7): {'piece': 'ROI', 'couleur': 'Noir'}, (0, 5): {'piece': 'TOUR', 'couleur': 'Noir'}, (7, 6): {'piece': 'ROI', 'couleur': 'Blanc'}, (7, 1): {'piece': 'TOUR', 'couleur': 'Blanc'}, (5, 7): {'piece': 'DAME', 'couleur': 'Blanc'}, (2, 2): {'piece': 'FOU', 'couleur': 'Noir'}, (3, 2): {'piece': 'FOU', 'couleur': 'Noir'}, (1, 4): {'piece': 'TOUR', 'couleur': 'Blanc'}, (4, 7): {'piece': 'FOU', 'couleur': 'Blanc'}, (6, 7): {'piece': 'FOU', 'couleur': 'Blanc'}}, (3, 2))"
+libelle = "cases_attaquees(echiquiers.harry_potter, (3, 2))"
+attendu = "{(2, 1), (6, 5), (4, 3), (5, 4), (1, 4), (2, 3), (7, 6), (5, 0), (1, 0), (4, 1)}"
+
+[[tests]]
+appel = "cases_attaquees({(0, 0): {'piece': 'TOUR', 'couleur': 'Noir'}, (0, 2): {'piece': 'ROI', 'couleur': 'Noir'}, (3, 0): {'piece': 'FOU', 'couleur': 'Blanc'}}, (0, 0))"
+attendu = "{(0, 1), (1, 0), (2, 0), (3, 0)}"
+
+[[tests]]
+appel = "roi_blanc_en_echec({})"
+attendu = "False"
+
+[[tests]]
+appel = "roi_blanc_en_echec({(0, 0): {'piece': 'TOUR', 'couleur': 'Noir'}, (1, 1): {'piece': 'TOUR', 'couleur': 'Noir'}, (4, 4): {'piece': 'ROI', 'couleur': 'Noir'}, (7, 0): {'piece': 'ROI', 'couleur': 'Blanc'}})"
+libelle = "roi_blanc_en_echec(echiquiers.escalier)"
+attendu = "True"
+
+[[tests]]
+libelle = "main.py"
+controle = "echiquier_simplifie"
+entree = ["fichiers/harry_potter.txt"]
+sortie = """
+-- Analyse d'échiquier --
+Chemin du fichier ? fichiers/harry_potter.txt
+ . : . : .t: .r:
+ : . : .T: . : .
+ . :f. : . : . :
+ : .f: . : . : .
+ . : . : . : .F:
+ : . : . : . :D.
+ . : . : . : .F:
+ :T. : . : .R: .
+Échec
+ ... et Mat !
+"""
+
+[[tests]]
+libelle = "main.py"
+controle = "echiquier_simplifie"
+entree = ["fichiers/jouable.txt"]
+sortie = """
+-- Analyse d'échiquier --
+Chemin du fichier ? fichiers/jouable.txt
+t. : . : . : . :
+ :t. : . : . : .
+ . : . : . : . :
+ : . : . : . : .
+ . : . :r. : . :
+ : . : . : . : .
+ . : . : . : . :
+ :R. : . : . : .
+Échec !
+"""

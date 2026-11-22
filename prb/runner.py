@@ -8,12 +8,12 @@ import subprocess
 import sys
 import tempfile
 from collections import Counter
-from collections.abc import Sequence
+from collections.abc import Mapping, Sequence
 from dataclasses import dataclass, field
 from pathlib import Path
 
-from prb.bank import Case
 from prb.literals import LiteralError, parse_literal
+from prb.model import Case
 from prb.sources import IGNORED_FOLDERS
 
 HARNESS = Path(__file__).with_name("harness.py")
@@ -50,6 +50,7 @@ class Outcome:
     error: RunError | None = None
     modified: tuple[int | str, ...] = ()
     during_import: bool = False
+    truth: bool | None = None
 
 
 @dataclass
@@ -61,7 +62,11 @@ class RunReport:
 
 
 def run_cases(
-    folder: Path, cases: Sequence[Case], main: str | None = None, timeout: float = 2.0
+    folder: Path,
+    cases: Sequence[Case],
+    main: str | None = None,
+    timeout: float = 2.0,
+    extra_files: Mapping[str, bytes] | None = None,
 ) -> RunReport:
     """Run some cases on a copy of a folder.
 
@@ -72,6 +77,7 @@ def run_cases(
     :param cases: the calls and programs to run
     :param main: path of the main program, relative to the folder
     :param timeout: maximum duration of one case, in seconds
+    :param extra_files: files added to the copy
     :return: one outcome per case, in the same order
     """
     with tempfile.TemporaryDirectory(prefix="prb_", ignore_cleanup_errors=True) as name:
@@ -81,6 +87,10 @@ def run_cases(
             shutil.copytree(folder, project, ignore=shutil.ignore_patterns(*IGNORED_FOLDERS))
         else:
             project.mkdir()
+        for file, content in (extra_files or {}).items():
+            target = project / file
+            target.parent.mkdir(parents=True, exist_ok=True)
+            target.write_bytes(content)
         session = _Session(workspace, project, main, timeout)
         calls = [index for index, case in enumerate(cases) if not case.is_program]
         session.run(cases, calls)
@@ -167,20 +177,7 @@ class _Session:
             "project": str(self.project),
             "main": self.main,
             "timeout": self.timeout,
-            "cases": [
-                {
-                    "index": index,
-                    "module": cases[index].function.module if cases[index].function else None,
-                    "function": cases[index].function.name if cases[index].function else None,
-                    "preserve": bool(
-                        cases[index].function and cases[index].function.preserve_arguments
-                    ),
-                    "args": cases[index].args,
-                    "kwargs": dict(cases[index].kwargs),
-                    "stdin": cases[index].stdin,
-                }
-                for index in indexes
-            ],
+            "cases": [_describe_case(index, cases[index]) for index in indexes],
         }
 
     def _read_events(self, events: list[dict]) -> tuple[int | None, str | None]:
@@ -243,6 +240,27 @@ class _Session:
                 self.outcomes[index] = stopped
 
 
+def _describe_case(index: int, case: Case) -> dict:
+    """Describe a case with plain values, for the harness."""
+    function, after = case.function, None
+    if case.after is not None:
+        if case.after in dict(case.kwargs):
+            after = ("kwargs", case.after)
+        else:
+            after = ("args", function.parameters.index(case.after))
+    return {
+        "index": index,
+        "module": function.module if function else None,
+        "function": function.name if function else None,
+        "preserve": bool(function and function.preserve_arguments),
+        "args": case.args,
+        "kwargs": dict(case.kwargs),
+        "stdin": case.stdin,
+        "after": after,
+        "seed": case.seed,
+    }
+
+
 def _target(case: Case) -> str:
     """Name of what a case runs."""
     return f"{case.function.module}.{case.function.name}" if case.function else "main"
@@ -266,4 +284,5 @@ def _read_outcome(event: dict) -> Outcome:
         error=error,
         modified=tuple(event.get("modified", ())),
         during_import=event.get("during_import", False),
+        truth=event.get("truth"),
     )

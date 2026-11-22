@@ -6,8 +6,8 @@ from pathlib import Path
 
 from prb import docstrings, loops
 from prb.admissibility import unexpected_files
-from prb.bank import Exercise
 from prb.linting import IGNORED_RULES, QUALITY_RULES, lint
+from prb.model import Exercise
 from prb.sources import Problem, SourceFile
 
 PEP8 = "PEP 8"
@@ -66,7 +66,7 @@ def _group(code: str) -> str:
         return IMPORTS
     if code.startswith("N"):
         return NAMING
-    if code.startswith(("F", "A")):
+    if code.startswith(("F", "A", "PL")):
         return PRACTICE
     return PEP8
 

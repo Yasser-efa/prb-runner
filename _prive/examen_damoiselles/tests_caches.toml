@@ -1,0 +1,89 @@
+[[groupes]]
+theme = "dessin"
+appels = [
+    "dessiner_damier({0: ' ○ ', 4: ' ● ', 5: ' ● ', 9: ' ○ ', 45: ' ○ ', 49: ' ● '})",
+    "dessiner_damier({10: ' ○ ', 25: ' ● ', 33: ' ○ '})",
+]
+
+[[groupes]]
+theme = "voisines au milieu"
+appels = ["voisines(12)", "voisines(17)", "voisines(26)", "voisines(31)", "voisines(42)", "voisines(8)"]
+
+[[groupes]]
+theme = "voisines au bord"
+appels = [
+    "voisines(1)",
+    "voisines(4)",
+    "voisines(5)",
+    "voisines(9)",
+    "voisines(14)",
+    "voisines(15)",
+    "voisines(24)",
+    "voisines(25)",
+    "voisines(44)",
+    "voisines(45)",
+    "voisines(47)",
+    "voisines(49)",
+]
+
+[[groupes]]
+theme = "arrivée d'une prise"
+appels = [
+    "arrivee_capture(27, 21)",
+    "arrivee_capture(27, 31)",
+    "arrivee_capture(27, 32)",
+    "arrivee_capture(22, 27)",
+    "arrivee_capture(18, 22)",
+    "arrivee_capture(11, 7)",
+    "arrivee_capture(0, 6)",
+    "arrivee_capture(49, 43)",
+    "arrivee_capture(20, 14)",
+]
+
+[[groupes]]
+theme = "prises impossibles"
+appels = [
+    "arrivee_capture(0, 5)",
+    "arrivee_capture(10, 5)",
+    "arrivee_capture(14, 9)",
+    "arrivee_capture(46, 40)",
+    "arrivee_capture(1, 0)",
+    "arrivee_capture(27, 27)",
+    "arrivee_capture(27, 0)",
+    "arrivee_capture(40, 45)",
+    "arrivee_capture(11, 5)",
+]
+
+[[groupes]]
+theme = "captures"
+appels = [
+    "captures_possibles({}, 27)",
+    "captures_possibles({22: ' ● '}, 27)",
+    "captures_possibles({27: ' ○ ', 22: ' ○ ', 21: ' ○ '}, 27)",
+    "captures_possibles({27: ' ○ ', 22: ' ● ', 18: ' ● '}, 27)",
+    "captures_possibles({27: ' ○ ', 22: ' ● ', 18: ' ○ '}, 27)",
+    "captures_possibles({22: ' ● ', 27: ' ○ ', 32: ' ○ '}, 22)",
+    "captures_possibles({6: ' ○ ', 0: ' ● ', 1: ' ● '}, 6)",
+    "captures_possibles({10: ' ○ ', 5: ' ● '}, 10)",
+    "captures_possibles({45: ' ○ ', 40: ' ● '}, 45)",
+]
+
+[[groupes]]
+theme = "captures multiples"
+appels = [
+    "captures_possibles({46: ' ○ ', 41: ' ● ', 32: ' ● ', 22: ' ● ', 12: ' ● '}, 46)",
+    "captures_possibles({27: ' ○ ', 22: ' ● ', 12: ' ● ', 11: ' ● ', 21: ' ● '}, 27)",
+    "captures_possibles({27: ' ○ ', 22: ' ● ', 13: ' ● ', 23: ' ● ', 32: ' ● ', 33: ' ● '}, 27)",
+    "captures_possibles({6: ' ● ', 11: ' ○ ', 22: ' ○ ', 33: ' ○ ', 21: ' ○ '}, 6)",
+]
+
+[[groupes]]
+theme = "programme"
+controle = "sans_lignes_vides"
+entrees = [
+    ["4"],
+    ["abc", "", "0", "4"],
+    ["3", "30", "1", "3", "30", "4"],
+    ["1", "2", "", "27", "2", "22", "", "3", "27", "3", "-1", "3", "2.5", "4"],
+    ["1", "2", "  41 32  22 12 ", "46", "3", "46", "1", "3", "46", "4"],
+]

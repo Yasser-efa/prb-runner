@@ -1,0 +1,5 @@
+indices = [
+    "Pour passer du numéro à la ligne, utilise la division entière par 5. La colonne dépend de la parité de la ligne : regroupe les colonnes par deux et regarde où tombe la case blanche de chaque paire. Une petite fonction dans chaque sens (numéro vers ligne et colonne, et l'inverse) sert partout.",
+    "voisines : calcule les quatre positions en diagonale (ligne ± 1, colonne ± 1) et garde celles qui sont dans le damier. arrivee_capture : l'arrivée est une voisine de la prise qui n'est ni le départ, ni sur la même ligne, ni dans la même colonne que lui. Vérifie d'abord que départ et prise sont voisins.",
+    "captures_possibles : attention, la case -1 n'est dans aucun dictionnaire, donc est_case_vide la considère comme vide. Suis l'algorithme ligne par ligne ; pop() retire la dernière liste, et etapes + [arrivee] crée une nouvelle liste sans modifier l'ancienne. Pour la meilleure prise, compte les x.",
+]

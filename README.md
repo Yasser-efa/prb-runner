@@ -50,8 +50,14 @@ Un exercice réussi revient après 3 jours, puis 7, puis 21 ; ensuite il est acq
 n'est pas réussie le jour même revient le lendemain et repart à 3 jours. Au début d'une révision,
 l'ancien code est rangé dans `mes_solutions/_archives/`.
 
-Le chrono additionne les séances d'un même exercice, plafonnées à 90 minutes chacune. Il compte
-jusqu'à ta dernière commande.
+Le chrono additionne les séances d'un même exercice, plafonnées à 90 minutes chacune (30 minutes
+de plus que la durée prévue pour les examens). Il compte jusqu'à ta dernière commande.
+
+### Les anciens examens
+
+Cinq anciens examens (`examen_...`) viennent à la fin de la banque. `du_jour` copie les fichiers
+fournis par le prof depuis `sources/anciens_examens/` ; comme à l'examen, les modifier rend le dépôt
+non recevable. Les tâches de tests unitaires sont retirées.
 
 ### Le verdict
 
@@ -91,9 +97,15 @@ timeout_secondes = 2.0             # facultatif
 fichiers = ["main.py", "tables/__init__.py", "tables/calculs.py"]
 main = "main.py"                   # facultatif : exige main() et le garde __main__
 
+modifiables = ["tables/exemples.py"]   # facultatif : fichiers fournis que l'on peut modifier
+
+[organisation.fournis]             # facultatif : copiés par du_jour, à laisser intacts
+"tables/outils.py" = "sources/outils.py"
+"tables/exemples.py" = "sources/archive.zip::exemples.py"
+
 [[fonctions]]
 module = "tables.calculs"
-signature = "table(nombre: int, taille: int = 10) -> list[int]"
+signature = "table(nombre: int, taille: int = 10) -> list[int]"   # « = ... » : valeur libre
 preserve_arguments = true          # facultatif : ne pas modifier les arguments
 
 [contraintes]                      # tout est facultatif
@@ -129,7 +141,14 @@ Nombre ? 3
 ```
 
 Une fonction qui affiche se teste avec `appel` et `sortie`. Les saisies apparaissent dans la
-sortie, comme dans la console de PyCharm.
+sortie, comme dans la console de PyCharm. Autres clés possibles :
+
+- `libelle` : le texte affiché à la place de l'appel ;
+- `apres` : le nom d'un paramètre, dont on compare la valeur après l'appel ;
+- `graine` : la graine de `random` ;
+- `controle` : une fonction qui extrait ce qu'il faut comparer. `booleen`, `signe` et
+  `sans_lignes_vides` existent ; un exercice peut définir les siennes dans
+  `_prive/<id>/controles.py`, sous la forme `def nom(outcome, case)`.
 
 ### `exercices/<id>/enonce.md`
 
@@ -146,8 +165,13 @@ puis le résultat) et les contraintes.
 theme = "valeurs limites"          # seuls le thème et le compte sont affichés
 appels = ["table(0)", "table(-2, 1)"]
 entrees = [["0"], ["-4"]]          # exécutions du programme
+tests = [{ appel = "lire('? ')", entree = ["3"] }]   # appel avec des saisies
+ignorer_sortie = true              # ne compare que la valeur renvoyée
 ```
 
+`apres`, `graine` et `controle` s'appliquent à tout un groupe.
+
+- `fichiers/` (facultatif) : des fichiers ajoutés au projet pendant les tests seulement.
 - `indices.toml` : `indices = ["premier indice", "deuxième", "troisième"]`.
 
 ### Vérifier l'exercice

@@ -1,0 +1,5 @@
+indices = [
+    "dessiner : deux boucles imbriquées sur les lignes et les colonnes ; la parité de leur somme donne la couleur de fond. Un retour à la ligne termine chaque rangée. get() avec une valeur par défaut évite de traiter la case vide à part.",
+    "cases_attaquees : pour chaque direction de la pièce, calculer_en_theorie donne les cases de la plus proche à la plus éloignée. Il faut s'arrêter dès qu'on sort de l'échiquier ou qu'on rencontre une pièce ; la case de cette pièce compte seulement si sa couleur est différente. Une boucle while avec un indice exprime bien cette condition d'arrêt.",
+    "Mat : cherche la position du roi, puis, pour chaque case qu'il peut atteindre, construis une COPIE de l'échiquier dans laquelle il s'y trouve (et n'est plus à son ancienne place) et demande si le roi y est en échec. Sans cette copie, le roi se cache derrière lui-même.",
+]

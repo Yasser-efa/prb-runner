@@ -1,0 +1,119 @@
+[[tests]]
+appel = "chercher_mots_ligne(['M', 'T', ' ', 'T', ' ', 'T', 'O', 'T'], 17, '###')"
+attendu = "[{'mot': ['M', 'T'], 'debut': (17, 0), 'note': '###'}, {'mot': ['T', 'O', 'T'], 'debut': (17, 5), 'note': '###'}]"
+
+[[tests]]
+appel = "chercher_mots_ligne([' ', ' ', ' '], 289, 'RAS')"
+attendu = "[]"
+
+[[tests]]
+appel = "chercher_mots_grille([[' ', ' ', ' '], [' ', 'A', 'B'], [' ', 'C', 'D']])"
+attendu = "[{'mot': ['A', 'B'], 'debut': (1, 1), 'note': 'H'}, {'mot': ['C', 'D'], 'debut': (2, 1), 'note': 'H'}, {'mot': ['A', 'C'], 'debut': (1, 1), 'note': 'V'}, {'mot': ['B', 'D'], 'debut': (2, 1), 'note': 'V'}]"
+
+[[tests]]
+appel = "chercher_mots_grille([[' ', ' ', ' '], [' ', ' ', ' '], [' ', ' ', ' ']])"
+attendu = "[]"
+
+[[tests]]
+appel = "numeroter_grille([[' ', ' ', ' '], [' ', 'A', 'B'], [' ', 'C', 'D']], [{'mot': ['A', 'B'], 'debut': (1, 1), 'note': 'H'}, {'mot': ['C', 'D'], 'debut': (2, 1), 'note': 'H'}, {'mot': ['B', 'D'], 'debut': (2, 1), 'note': 'V'}])"
+libelle = "numeroter_grille(grille, mots AB, CD et BD)"
+apres = "grille"
+attendu = "[[' ', ' ', '3'], ['1', 'A', 'B'], ['2', 'C', 'D']]"
+
+[[tests]]
+appel = "afficher_grille([['1', 'A', 'B'], ['2', 'C', 'D']], {(0, 2), (1, 1), (0, 0)})"
+sortie = """
+1_B
+2C_
+"""
+
+[[tests]]
+libelle = "main.py, partie gagnée"
+controle = "sans_lignes_vides"
+entree = ["4 FOR", "K 2000", "1 IF", "5 GOTO", "5 TUPLE", "2 IMPORT", "3 RANGE"]
+sortie = """
+Bienvenue dans Slam sur France 3 !
+Il y a 5 mots à trouver, vous avez 8 essais.
+      5
+      _
+  4   _
+1__2______
+  _   _
+ 3_____
+Entrez un numéro suivi d'un mot : 4 FOR
+      5
+      _
+  4   _
+1_F2______
+  O   _
+ 3R____
+Entrez un numéro suivi d'un mot : K 2000
+Entrez un numéro suivi d'un mot : 1 IF
+      5
+      _
+  4   _
+1IF2______
+  O   _
+ 3R____
+Entrez un numéro suivi d'un mot : 5 GOTO
+GOTO : ce mot n'est pas correct.
+Entrez un numéro suivi d'un mot : 5 TUPLE
+      5
+      T
+  4   U
+1IF2__P___
+  O   L
+ 3R___E
+Entrez un numéro suivi d'un mot : 2 IMPORT
+      5
+      T
+  4   U
+1IF2IMPORT
+  O   L
+ 3R___E
+Entrez un numéro suivi d'un mot : 3 RANGE
+      5
+      T
+  4   U
+1IF2IMPORT
+  O   L
+ 3RANGE
+Bravo, vous avez gagné !
+"""
+
+[[tests]]
+libelle = "main.py, partie perdue"
+controle = "sans_lignes_vides"
+entree = ["1 OR", "9 IF", "1 IF", "1 IF", "2 EXPORT", "3 RANGES", "4 FORT", "5 TUPLES"]
+sortie = """
+Bienvenue dans Slam sur France 3 !
+Il y a 5 mots à trouver, vous avez 8 essais.
+      5
+      _
+  4   _
+1__2______
+  _   _
+ 3_____
+Entrez un numéro suivi d'un mot : 1 OR
+OR : ce mot n'est pas correct.
+Entrez un numéro suivi d'un mot : 9 IF
+IF : ce mot n'est pas correct.
+Entrez un numéro suivi d'un mot : 1 IF
+      5
+      _
+  4   _
+1IF2______
+  _   _
+ 3_____
+Entrez un numéro suivi d'un mot : 1 IF
+IF : ce mot a déjà été trouvé.
+Entrez un numéro suivi d'un mot : 2 EXPORT
+EXPORT : ce mot n'est pas correct.
+Entrez un numéro suivi d'un mot : 3 RANGES
+RANGES : ce mot n'est pas correct.
+Entrez un numéro suivi d'un mot : 4 FORT
+FORT : ce mot n'est pas correct.
+Entrez un numéro suivi d'un mot : 5 TUPLES
+TUPLES : ce mot n'est pas correct.
+Dommage, vous avez perdu.
+"""

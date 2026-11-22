@@ -1,0 +1,47 @@
+titre = "Examen d'entrainement : Qui est-ce ?"
+reference = "entrainement"
+sorte = "programme"
+duree_minutes = 120
+
+[organisation]
+fichiers = ["main.py", "quiestce/__init__.py", "quiestce/personnages.py", "quiestce/questions.py"]
+main = "main.py"
+
+[organisation.fournis]
+"donnees/prenoms.txt" = "exercices/examen_quiestce/fournis/prenoms.txt"
+
+[[fonctions]]
+module = "quiestce.personnages"
+signature = "lire_lignes_fichier(chemin_fichier: str = ...) -> list[str]"
+
+[[fonctions]]
+module = "quiestce.personnages"
+signature = "creer_personnages(prenoms: list[str], attributs: tuple[str, ...]) -> list[dict[str, str]]"
+
+[[fonctions]]
+module = "quiestce.personnages"
+signature = "filtrer_personnages(personnages: list[dict[str, str]], attribut: str, valeur: str, conserver: bool) -> list[dict[str, str]]"
+preserve_arguments = true
+
+[[fonctions]]
+module = "quiestce.personnages"
+signature = "decrire_personnage(personnage: dict[str, str]) -> str"
+preserve_arguments = true
+
+[[fonctions]]
+module = "quiestce.questions"
+signature = "is_question_valide(question: str, attributs: set[str]) -> bool"
+
+[[fonctions]]
+module = "quiestce.questions"
+signature = "lire_question_utilisateur(invite: str, attributs: set[str]) -> tuple[str, str]"
+
+[contraintes]
+interdits = ["break", "continue", "while True"]
+appels_imposes = ["lire_lignes_fichier", "creer_personnages", "filtrer_personnages", "decrire_personnage", "lire_question_utilisateur"]
+
+[contraintes.fonctions.lire_lignes_fichier]
+imposes = ["compréhension", "try"]
+
+[contraintes.fonctions.lire_question_utilisateur]
+appels_imposes = ["is_question_valide"]

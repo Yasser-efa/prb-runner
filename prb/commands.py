@@ -7,9 +7,10 @@ from rich.console import Console
 from rich.text import Text
 
 from prb import pycharm, report, screens
-from prb.bank import BankError, Exercise, load_exercise, load_order
+from prb.bank import load_exercise, load_order
+from prb.model import BankError, Exercise
 from prb.paths import Paths
-from prb.progress import History, Progress
+from prb.progress import SESSION_MINUTES, History, Progress
 from prb.scheduler import (
     Choice,
     Stage,
@@ -20,10 +21,11 @@ from prb.scheduler import (
     elapsed_seconds,
     read_state,
 )
-from prb.sources import list_files
 from prb.validation import check_order, validate_bank
 from prb.verdict import verify
-from prb.workspace import archive_folder, prepare_folder
+from prb.workspace import archive_folder, own_files, prepare_folder
+
+EXTRA_MINUTES = 30
 
 
 class CommandError(Exception):
@@ -109,13 +111,14 @@ def _explain_nothing_to_do(context: Context, states: list[State], forced: str | 
 def _start(context: Context, choice: Choice) -> None:
     exercise = load_exercise(context.paths, choice.state.exercise_id)
     if choice.kind == "review":
-        archive = archive_folder(context.paths, exercise.id, context.now)
+        archive = archive_folder(context.paths, exercise, context.now)
         if archive is not None:
             name = archive.relative_to(context.paths.root).as_posix()
             context.console.print(Text(f"Ton code précédent est rangé dans {name}/", style="dim"))
-    prepare_folder(context.paths, exercise.id)
+    prepare_folder(context.paths, exercise, restore=True)
     pycharm.configure(context.paths.root, exercise.id)
-    context.progress.start_session(exercise.id, choice.kind, context.now)
+    limit = max(SESSION_MINUTES, exercise.minutes + EXTRA_MINUTES)
+    context.progress.start_session(exercise.id, choice.kind, context.now, limit)
     seconds = choice.state.seconds if choice.kind == "resume" else None
     screens.show_exercise(context.console, exercise, choice.kind, seconds, context.now)
 
@@ -128,12 +131,12 @@ def verify_exercise(context: Context, exercise_id: str | None) -> int:
     :return: the exit code, 0 if the exercise is passed
     """
     exercise = context.exercise(exercise_id)
-    folder = prepare_folder(context.paths, exercise.id)
+    folder = prepare_folder(context.paths, exercise)
     pycharm.configure(context.paths.root, exercise.id)
     before = context.state(exercise.id)
     verdict = verify(exercise, folder)
     footer = []
-    if list_files(folder):
+    if own_files(folder, exercise):
         seconds = None
         if before.stage is Stage.ACTIVE:
             context.progress.touch_session(exercise.id, context.now)

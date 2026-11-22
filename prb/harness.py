@@ -17,6 +17,7 @@ import importlib
 import io
 import os
 import pickle
+import random
 import runpy
 import sys
 import traceback
@@ -70,6 +71,8 @@ class Harness:
     def run(self):
         for case in self.cases:
             self.report(event="start", index=case["index"])
+            if case["seed"] is not None:
+                random.seed(case["seed"])
             if case["module"] is None:
                 result = self.run_program(case)
             else:
@@ -114,7 +117,11 @@ class Harness:
         before = copy.deepcopy((args, kwargs)) if case["preserve"] else None
 
         def call():
-            return getattr(module, case["function"])(*args, **kwargs)
+            value = getattr(module, case["function"])(*args, **kwargs)
+            if case["after"] is None:
+                return value
+            kind, key = case["after"]
+            return args[key] if kind == "args" else kwargs[key]
 
         result = self.observe(call, case["stdin"])
         if before is not None:
@@ -176,6 +183,10 @@ def describe_value(value):
     except Exception:
         shown = f"<{type(value).__name__}>"
     result["shown"] = shown[:MAX_MESSAGE]
+    try:
+        result["truth"] = bool(value)
+    except Exception:
+        result["truth"] = None
     return result
 
 

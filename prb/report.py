@@ -7,14 +7,14 @@ from rich.panel import Panel
 from rich.table import Table
 from rich.text import Text
 
-from prb.bank import Case
 from prb.comparison import normalize_output
+from prb.model import Case
 from prb.quality import GROUPS
 from prb.runner import Outcome, RunError
 from prb.sources import Problem
 from prb.verdict import CaseReport, Status, Verdict
 
-MAX_SHOWN = 300
+MAX_SHOWN = 1200
 _OK, _KO = Text("✓", style="bold green"), Text("✗", style="bold red")
 _PANELS = {
     Status.PASSED: ("RÉUSSI", "green"),
@@ -140,17 +140,22 @@ def _location(error: RunError | None) -> str:
 def _describe_case(case: Case) -> Text:
     if not case.is_program:
         text = Text(case.label)
+        if case.after:
+            text.append(f"\nvaleur de {case.after} après l'appel", style="dim")
         if case.stdin:
             text.append("\nsaisies : " + " ⏎ ".join(case.stdin), style="dim")
         return text
     typed = " ⏎ ".join(repr(line) if not line else line for line in case.stdin) or "aucune"
-    return Text.assemble(case.label, (f"\nsaisies : {typed}", "dim"))
+    details = f"\nsaisies : {typed}"
+    if case.seed is not None:
+        details += f"\ngraine aléatoire : {case.seed}"
+    return Text.assemble(case.label, (details, "dim"))
 
 
 def _describe_expected(case: Case) -> Text:
     parts = []
     if case.has_value:
-        parts.append(_shorten(repr(case.value)))
+        parts.append(_show_value(case.value))
     if case.output is not None:
         parts.append(_shorten(normalize_output(case.output)) or "(rien)")
     return Text("\n".join(parts))
@@ -161,7 +166,9 @@ def _describe_outcome(report: CaseReport) -> Text:
     if outcome.status != "value":
         return _describe_failure(outcome)
     parts = []
-    if case.has_value:
+    if case.control is not None:
+        parts.append(_show_value(report.observed))
+    elif case.has_value:
         parts.append(_shorten(outcome.shown))
         if not outcome.plain:
             parts.append(f"(objet {outcome.type_name})")
@@ -176,11 +183,17 @@ def _describe_outcome(report: CaseReport) -> Text:
     return text
 
 
+def _show_value(value: object) -> str:
+    """Write a value, as plain text if it spreads over several lines."""
+    if isinstance(value, str) and "\n" in value:
+        return _shorten(value)
+    return _shorten(repr(value))
+
+
 def _argument_name(case: Case, item: int | str) -> str:
     if isinstance(item, str):
         return item
-    arguments = case.function.node.args
-    names = [arg.arg for arg in [*arguments.posonlyargs, *arguments.args]]
+    names = case.function.parameters
     return names[item] if item < len(names) else str(item + 1)
 
 

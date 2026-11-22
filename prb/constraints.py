@@ -4,8 +4,8 @@ import ast
 from collections.abc import Iterator
 
 from prb.admissibility import find_function
-from prb.bank import ConstraintSet, Exercise
 from prb.constructs import CONSTRUCTS
+from prb.model import ConstraintSet, Exercise
 from prb.sources import Problem, SourceFile
 
 _Located = tuple[SourceFile, ast.AST]

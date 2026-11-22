@@ -1,0 +1,5 @@
+indices = [
+    "chercher_mots_ligne : sur ton dessin, un mot se termine quand on rencontre une espace… ou la fin de la ligne. Retiens l'index où commence le mot en cours. Ajouter une espace au bout d'une copie de la ligne évite de traiter la fin à part. N'oublie pas la longueur minimale.",
+    "numeroter_grille : le tuple 'debut' n'a pas le même sens selon la note. Pour un mot horizontal, c'est (ligne, colonne) ; pour un mot vertical, c'est (colonne, ligne). Déballe-le dans des variables bien nommées avant de calculer la case du numéro.",
+    "main : garde l'ensemble des numéros trouvés et l'ensemble des positions révélées (positions_mot renvoie un ensemble : pense à l'union). Une fonction qui redemande la saisie tant que re.fullmatch échoue rend la boucle principale simple. Compare la liste des lettres du mot à la proposition.",
+]

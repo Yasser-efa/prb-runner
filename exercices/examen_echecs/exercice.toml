@@ -1,0 +1,53 @@
+titre = "Examen de janvier 2026 : Échec"
+reference = "janv. 2026"
+sorte = "programme"
+duree_minutes = 150
+
+[organisation]
+fichiers = ["main.py", "echecs/__init__.py", "echecs/analyse.py"]
+main = "main.py"
+modifiables = ["echecs/echiquiers.py"]
+
+[organisation.fournis]
+"echecs/deplacements.py" = "sources/anciens_examens/Énoncé et sources-20261122/sources.zip::deplacements.py"
+"echecs/pieces.py" = "sources/anciens_examens/Énoncé et sources-20261122/sources.zip::pieces.py"
+"echecs/echiquiers.py" = "sources/anciens_examens/Énoncé et sources-20261122/sources.zip::echiquiers.py"
+"fichiers/couloir.txt" = "sources/anciens_examens/Énoncé et sources-20261122/sources.zip::fichiers/couloir.txt"
+"fichiers/escalier.txt" = "sources/anciens_examens/Énoncé et sources-20261122/sources.zip::fichiers/escalier.txt"
+"fichiers/harry_potter.txt" = "sources/anciens_examens/Énoncé et sources-20261122/sources.zip::fichiers/harry_potter.txt"
+"fichiers/illegal_mat.txt" = "sources/anciens_examens/Énoncé et sources-20261122/sources.zip::fichiers/illegal_mat.txt"
+"fichiers/jouable.txt" = "sources/anciens_examens/Énoncé et sources-20261122/sources.zip::fichiers/jouable.txt"
+"fichiers/nulle.txt" = "sources/anciens_examens/Énoncé et sources-20261122/sources.zip::fichiers/nulle.txt"
+"fichiers/pat.txt" = "sources/anciens_examens/Énoncé et sources-20261122/sources.zip::fichiers/pat.txt"
+
+[[fonctions]]
+module = "echecs.analyse"
+signature = "charger_depuis(chemin: str) -> dict[tuple[int, int], dict[str, str]]"
+
+[[fonctions]]
+module = "echecs.analyse"
+signature = "dessiner(echiquier: dict[tuple[int, int], dict[str, str]]) -> None"
+preserve_arguments = true
+
+[[fonctions]]
+module = "echecs.analyse"
+signature = "cases_attaquees(echiquier: dict[tuple[int, int], dict[str, str]], position: tuple[int, int]) -> set[tuple[int, int]]"
+preserve_arguments = true
+
+[[fonctions]]
+module = "echecs.analyse"
+signature = "roi_blanc_en_echec(echiquier: dict[tuple[int, int], dict[str, str]]) -> bool"
+preserve_arguments = true
+
+[contraintes]
+interdits = ["break", "continue", "while True"]
+appels_imposes = ["charger_depuis", "dessiner", "roi_blanc_en_echec"]
+
+[contraintes.fonctions.dessiner]
+appels_imposes = ["afficher"]
+
+[contraintes.fonctions.cases_attaquees]
+appels_imposes = ["calculer_en_theorie"]
+
+[contraintes.fonctions.roi_blanc_en_echec]
+appels_imposes = ["cases_attaquees"]

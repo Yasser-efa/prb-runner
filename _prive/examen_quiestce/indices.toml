@@ -1,0 +1,5 @@
+indices = [
+    "creer_personnages : le numéro de la ligne, écrit en binaire sur autant de chiffres qu'il y a d'attributs, donne directement les oui et les non. Il y a 2 ** (nombre d'attributs) lignes. Pour des prénoms au hasard sans homonymes, random propose une fonction qui tire plusieurs éléments distincts.",
+    "is_question_valide : l'expression régulière se construit avec '|'.join(attributs) entre parenthèses, et re.fullmatch exige que toute la chaine corresponde. lire_question_utilisateur : mets la saisie en minuscules avant de la vérifier, puis sépare-la autour du =.",
+    "main : le filtre utilise la valeur du personnage mystère pour l'attribut demandé, pas celle tapée par le joueur. La boucle continue tant qu'il reste plusieurs personnages ET des questions ; après la boucle, le nombre de personnages restants dit qui a gagné.",
+]

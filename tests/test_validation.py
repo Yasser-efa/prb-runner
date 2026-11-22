@@ -1,7 +1,8 @@
 import pytest
 
 from prb import cli
-from prb.bank import BankError, load_exercise
+from prb.bank import load_exercise
+from prb.model import BankError
 from prb.validation import statement_examples, validate_exercise
 from tests.conftest import FUNCTION, HIDDEN, SOLUTION
 

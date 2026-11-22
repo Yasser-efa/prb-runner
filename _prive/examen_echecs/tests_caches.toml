@@ -1,0 +1,73 @@
+[[groupes]]
+theme = "chargement"
+appels = [
+    "charger_depuis('fichiers/harry_potter.txt')",
+    "charger_depuis('fichiers/nulle.txt')",
+    "charger_depuis('fichiers/pat.txt')",
+    "charger_depuis('fichiers/secret_protege.txt')",
+    "charger_depuis('fichiers/secret_vide.txt')",
+    "charger_depuis('fichiers')",
+    "charger_depuis('')",
+]
+
+[[groupes]]
+theme = "dessin"
+controle = "echiquier_simplifie"
+appels = [
+    "dessiner({(0, 0): {'piece': 'DAME', 'couleur': 'Blanc'}, (7, 7): {'piece': 'DAME', 'couleur': 'Noir'}})",
+    "dessiner({(0, 1): {'piece': 'FOU', 'couleur': 'Blanc'}, (6, 0): {'piece': 'TOUR', 'couleur': 'Noir'}, (3, 3): {'piece': 'ROI', 'couleur': 'Blanc'}})",
+]
+
+[[groupes]]
+theme = "cases attaquées sans obstacle"
+appels = [
+    "cases_attaquees({(3, 3): {'piece': 'TOUR', 'couleur': 'Blanc'}}, (3, 3))",
+    "cases_attaquees({(3, 3): {'piece': 'FOU', 'couleur': 'Noir'}}, (3, 3))",
+    "cases_attaquees({(0, 0): {'piece': 'DAME', 'couleur': 'Noir'}}, (0, 0))",
+    "cases_attaquees({(3, 3): {'piece': 'ROI', 'couleur': 'Blanc'}}, (3, 3))",
+    "cases_attaquees({(7, 7): {'piece': 'ROI', 'couleur': 'Noir'}}, (7, 7))",
+    "cases_attaquees({(0, 4): {'piece': 'ROI', 'couleur': 'Noir'}}, (0, 4))",
+    "cases_attaquees({(7, 0): {'piece': 'FOU', 'couleur': 'Blanc'}}, (7, 0))",
+]
+
+[[groupes]]
+theme = "cases attaquées avec obstacles"
+appels = [
+    "cases_attaquees({(3, 3): {'piece': 'TOUR', 'couleur': 'Blanc'}, (3, 5): {'piece': 'FOU', 'couleur': 'Noir'}, (1, 3): {'piece': 'FOU', 'couleur': 'Blanc'}}, (3, 3))",
+    "cases_attaquees({(3, 3): {'piece': 'DAME', 'couleur': 'Noir'}, (4, 4): {'piece': 'ROI', 'couleur': 'Blanc'}, (3, 4): {'piece': 'ROI', 'couleur': 'Noir'}, (0, 0): {'piece': 'TOUR', 'couleur': 'Blanc'}}, (3, 3))",
+    "cases_attaquees({(3, 3): {'piece': 'TOUR', 'couleur': 'Blanc'}, (3, 5): {'piece': 'FOU', 'couleur': 'Noir'}, (3, 6): {'piece': 'FOU', 'couleur': 'Noir'}}, (3, 3))",
+    "cases_attaquees({(0, 0): {'piece': 'ROI', 'couleur': 'Blanc'}, (0, 1): {'piece': 'TOUR', 'couleur': 'Blanc'}, (1, 1): {'piece': 'TOUR', 'couleur': 'Noir'}}, (0, 0))",
+    "cases_attaquees({(0, 0): {'piece': 'TOUR', 'couleur': 'Noir'}, (0, 1): {'piece': 'TOUR', 'couleur': 'Noir'}, (1, 0): {'piece': 'TOUR', 'couleur': 'Noir'}}, (0, 0))",
+    "cases_attaquees({(5, 2): {'piece': 'FOU', 'couleur': 'Blanc'}, (3, 4): {'piece': 'TOUR', 'couleur': 'Noir'}, (6, 3): {'piece': 'TOUR', 'couleur': 'Blanc'}}, (5, 2))",
+]
+
+[[groupes]]
+theme = "échec"
+appels = [
+    "roi_blanc_en_echec({(0, 0): {'piece': 'DAME', 'couleur': 'Noir'}})",
+    "roi_blanc_en_echec({(0, 0): {'piece': 'ROI', 'couleur': 'Noir'}, (0, 5): {'piece': 'TOUR', 'couleur': 'Blanc'}})",
+    "roi_blanc_en_echec({(0, 0): {'piece': 'ROI', 'couleur': 'Blanc'}, (0, 5): {'piece': 'TOUR', 'couleur': 'Blanc'}})",
+    "roi_blanc_en_echec({(0, 0): {'piece': 'ROI', 'couleur': 'Blanc'}, (0, 5): {'piece': 'TOUR', 'couleur': 'Noir'}})",
+    "roi_blanc_en_echec({(0, 0): {'piece': 'ROI', 'couleur': 'Blanc'}, (0, 5): {'piece': 'TOUR', 'couleur': 'Noir'}, (0, 3): {'piece': 'FOU', 'couleur': 'Noir'}})",
+    "roi_blanc_en_echec({(0, 0): {'piece': 'ROI', 'couleur': 'Blanc'}, (5, 5): {'piece': 'FOU', 'couleur': 'Noir'}})",
+    "roi_blanc_en_echec({(0, 0): {'piece': 'ROI', 'couleur': 'Blanc'}, (5, 5): {'piece': 'TOUR', 'couleur': 'Noir'}})",
+    "roi_blanc_en_echec({(7, 7): {'piece': 'ROI', 'couleur': 'Blanc'}, (6, 6): {'piece': 'ROI', 'couleur': 'Noir'}})",
+    "roi_blanc_en_echec({(1, 2): {'piece': 'ROI', 'couleur': 'Blanc'}, (5, 5): {'piece': 'ROI', 'couleur': 'Noir'}})",
+]
+
+[[groupes]]
+theme = "programme"
+controle = "echiquier_simplifie"
+entrees = [
+    ["fichiers/escalier.txt"],
+    ["fichiers/couloir.txt"],
+    ["fichiers/illegal_mat.txt"],
+    ["fichiers/nulle.txt"],
+    ["fichiers/pat.txt"],
+    ["fichiers/secret_rayon.txt"],
+    ["fichiers/secret_capture.txt"],
+    ["fichiers/secret_protege.txt"],
+    ["fichiers/secret_bloque.txt"],
+    ["fichiers/secret_sans_roi.txt"],
+    ["fichiers/inexistant.txt"],
+]

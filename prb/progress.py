@@ -13,7 +13,7 @@ from pathlib import Path
 
 from prb.verdict import Status, Verdict
 
-SESSION_LIMIT = timedelta(minutes=90)
+SESSION_MINUTES = 90
 
 _SCHEMA = """
 CREATE TABLE IF NOT EXISTS attempts (
@@ -34,7 +34,8 @@ CREATE TABLE IF NOT EXISTS sessions (
     exercise_id TEXT NOT NULL,
     kind TEXT NOT NULL,
     started_at TEXT NOT NULL,
-    last_seen_at TEXT NOT NULL
+    last_seen_at TEXT NOT NULL,
+    limit_minutes INTEGER NOT NULL DEFAULT 90
 );
 CREATE INDEX IF NOT EXISTS sessions_by_exercise ON sessions (exercise_id, started_at);
 CREATE TABLE IF NOT EXISTS hints (
@@ -82,11 +83,13 @@ class Session:
     kind: str
     started_at: datetime
     last_seen_at: datetime
+    limit_minutes: int = SESSION_MINUTES
 
     @property
     def duration(self) -> timedelta:
         """Time spent, limited in case the student came back much later."""
-        return min(self.last_seen_at - self.started_at, SESSION_LIMIT)
+        limit = timedelta(minutes=self.limit_minutes)
+        return min(self.last_seen_at - self.started_at, limit)
 
 
 @dataclass(frozen=True)
@@ -116,6 +119,12 @@ class Progress:
         self.path = path
         with self._connect() as connection:
             connection.executescript(_SCHEMA)
+            columns = {row["name"] for row in connection.execute("PRAGMA table_info(sessions)")}
+            if "limit_minutes" not in columns:
+                connection.execute(
+                    "ALTER TABLE sessions"
+                    f" ADD COLUMN limit_minutes INTEGER NOT NULL DEFAULT {SESSION_MINUTES}"
+                )
 
     @contextmanager
     def _connect(self) -> Iterator[sqlite3.Connection]:
@@ -153,20 +162,24 @@ class Progress:
                 ),
             )
 
-    def start_session(self, exercise_id: str, kind: str, at: datetime) -> None:
+    def start_session(
+        self, exercise_id: str, kind: str, at: datetime, limit_minutes: int = SESSION_MINUTES
+    ) -> None:
         """Start the chronometer, or let it run if the exercise is resumed on the same day.
 
         :param exercise_id: the exercise
         :param kind: "new", "review" or "resume"
         :param at: current time
+        :param limit_minutes: longest time that the session can count for
         """
         if kind == "resume" and self.touch_session(exercise_id, at):
             return
         with self._connect() as connection:
             connection.execute(
-                "INSERT INTO sessions (exercise_id, kind, started_at, last_seen_at)"
-                " VALUES (?, ?, ?, ?)",
-                (exercise_id, kind, _write(at), _write(at)),
+                "INSERT INTO sessions"
+                " (exercise_id, kind, started_at, last_seen_at, limit_minutes)"
+                " VALUES (?, ?, ?, ?, ?)",
+                (exercise_id, kind, _write(at), _write(at), limit_minutes),
             )
 
     def touch_session(self, exercise_id: str, at: datetime) -> bool:
@@ -247,6 +260,7 @@ def _read_session(row: sqlite3.Row) -> Session:
         row["kind"],
         datetime.fromisoformat(row["started_at"]),
         datetime.fromisoformat(row["last_seen_at"]),
+        row["limit_minutes"],
     )
 
 

@@ -1,0 +1,97 @@
+[[groupes]]
+theme = "lecture"
+appels = [
+    "lire_lignes_fichier('donnees/prenoms.txt')",
+    "lire_lignes_fichier('donnees/secret_court.txt')",
+    "lire_lignes_fichier(chemin_fichier='donnees/secret_vide.txt')",
+    "lire_lignes_fichier('donnees')",
+    "lire_lignes_fichier('absent/prenoms.txt')",
+]
+
+[[groupes]]
+theme = "création"
+controle = "sans_prenoms"
+appels = [
+    "creer_personnages(['A', 'B'], ('lunettes',))",
+    "creer_personnages(['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'], ('x', 'y', 'z'))",
+    "creer_personnages(['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'], ('a', 'b', 'c'))",
+    "creer_personnages(['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q'], ('un', 'deux', 'trois', 'quatre'))",
+]
+
+[[groupes]]
+theme = "création sans attribut"
+appels = ["creer_personnages([], ())", "creer_personnages(['A'], ())"]
+
+[[groupes]]
+theme = "filtre"
+appels = [
+    "filtrer_personnages([], 'chapeau', 'oui', True)",
+    "filtrer_personnages([{'prenom': 'A', 'x': 'oui'}, {'prenom': 'B', 'x': 'non'}, {'prenom': 'C', 'x': 'oui'}], 'x', 'oui', True)",
+    "filtrer_personnages([{'prenom': 'A', 'x': 'oui'}, {'prenom': 'B', 'x': 'non'}, {'prenom': 'C', 'x': 'oui'}], 'x', 'oui', False)",
+    "filtrer_personnages([{'prenom': 'A', 'x': 'oui'}, {'prenom': 'B', 'x': 'non'}], 'x', 'non', False)",
+    "filtrer_personnages([{'prenom': 'A', 'x': 'oui'}, {'prenom': 'B', 'x': 'non'}], 'absent', 'oui', True)",
+    "filtrer_personnages([{'prenom': 'A', 'x': 'oui'}, {'prenom': 'B', 'x': 'non'}], 'absent', 'oui', False)",
+    "filtrer_personnages([{'prenom': 'A', 'x': 'oui'}], 'x', 'peut-être', True)",
+]
+
+[[groupes]]
+theme = "description"
+appels = [
+    "decrire_personnage({'prenom': 'Zoé', 'x': 'oui'})",
+    "decrire_personnage({'prenom': 'Zoé', 'x': 'oui', 'y': 'non', 'z': 'oui', 't': 'oui'})",
+    "decrire_personnage({'prenom': 'oui', 'x': 'non', 'y': 'non'})",
+    "decrire_personnage({'prenom': 'Seul'})",
+]
+
+[[groupes]]
+theme = "questions valides"
+controle = "booleen"
+appels = [
+    "is_question_valide('chapeau=oui', {'chapeau'})",
+    "is_question_valide('chapeau   =   non', {'chapeau', 'lunettes'})",
+    "is_question_valide('yeux clairs = oui', ('lunettes', 'yeux clairs'))",
+    "is_question_valide('lunettes =non', ['chapeau', 'lunettes'])",
+    "is_question_valide('écharpe=oui', {'écharpe'})",
+]
+
+[[groupes]]
+theme = "questions incorrectes"
+controle = "booleen"
+appels = [
+    "is_question_valide('', {'chapeau'})",
+    "is_question_valide('chapeau', {'chapeau'})",
+    "is_question_valide('chapeau oui', {'chapeau'})",
+    "is_question_valide('chapeau=', {'chapeau'})",
+    "is_question_valide('=oui', {'chapeau'})",
+    "is_question_valide('chapeau==oui', {'chapeau'})",
+    "is_question_valide('chapeau=ouinon', {'chapeau'})",
+    "is_question_valide('chapeau=oui non', {'chapeau'})",
+    "is_question_valide('grand chapeau=oui', {'chapeau'})",
+    "is_question_valide('lunettes=oui', {'chapeau'})",
+    "is_question_valide('chapeau=peut-être', {'chapeau', 'lunettes'})",
+]
+
+[[groupes]]
+theme = "lecture d'une question"
+ignorer_sortie = true
+tests = [
+    { appel = "lire_question_utilisateur('', {'chapeau'})", entree = ["chapeau=non"] },
+    { appel = "lire_question_utilisateur('? ', {'chapeau', 'lunettes'})", entree = ["a", "b=oui", "lunettes=peut-être", "Lunettes   =  NON"] },
+    { appel = "lire_question_utilisateur('? ', ('yeux clairs', 'chapeau'))", entree = ["yeux=oui", "Yeux Clairs =oui"] },
+    { appel = "lire_question_utilisateur('? ', ['écharpe'])", entree = ["ÉCHARPE = OUI"] },
+]
+
+[[groupes]]
+theme = "partie"
+controle = "partie_coherente"
+entrees = [
+    ["écharpe=non", "pilosité faciale=oui", "cheveux foncés=non", "yeux clairs=oui", "chapeau=oui", "lunettes=non"],
+    ["LUNETTES = OUI", "rien", "", "chapeau", "lunettes=oui", "lunettes=non", "lunettes=oui", "lunettes=non", "lunettes=oui"],
+    ["chapeau=oui", "lunettes=oui", "chapeau=non", "lunettes=non", "chapeau=oui", "lunettes=oui"],
+    ["chapeau=oui", "lunettes=oui", "écharpe=oui", "yeux clairs=oui", "pilosité faciale=oui", "cheveux foncés=oui"],
+    ["yeux clairs=non", "lunettes=non", "chapeau=non", "écharpe=non", "cheveux foncés=non", "pilosité faciale=non"],
+    ["pilosité faciale=oui", "écharpe=oui", "lunettes=non", "cheveux foncés=oui", "chapeau=non", "yeux clairs=non"],
+    ["cheveux foncés=non", "chapeau=oui", "pilosité faciale=non", "lunettes=oui", "yeux clairs=oui", "écharpe=non"],
+    ["écharpe=oui", "cheveux foncés=oui", "chapeau=non", "pilosité faciale=oui", "lunettes=oui", "yeux clairs=oui"],
+    ["chapo=oui", "chapeau=oui", "chapeau=oui", "chapeau=oui", "chapeau=oui", "chapeau=oui", "chapeau=oui"],
+]

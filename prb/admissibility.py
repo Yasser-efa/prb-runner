@@ -4,9 +4,9 @@ import ast
 import difflib
 from pathlib import Path, PurePosixPath
 
-from prb.bank import Exercise, FunctionSpec
 from prb.imports import check_imports
 from prb.linting import BLOCKING_RULES, lint
+from prb.model import Exercise, FunctionSpec
 from prb.sources import Problem, SourceFile, list_files
 
 
@@ -21,6 +21,7 @@ def check_admissibility(
     :return: the blocking problems, empty if the submission is admissible
     """
     problems = _check_layout(exercise, folder)
+    problems += _check_provided(exercise, folder)
     problems += [source.error for source in sources.values() if source.error]
     problems += _check_names(folder, sources)
     problems += check_imports(sources)
@@ -38,7 +39,7 @@ def unexpected_files(exercise: Exercise, folder: Path) -> list[Problem]:
     :param folder: the student's folder
     :return: one remark per extra file
     """
-    expected = {name.casefold() for name in exercise.files}
+    expected = {name.casefold() for name in (*exercise.files, *exercise.provided_names)}
     return [
         Problem("fichier non demandé : retire-le avant de créer le ZIP", name)
         for name in list_files(folder)
@@ -47,13 +48,27 @@ def unexpected_files(exercise: Exercise, folder: Path) -> list[Problem]:
 
 
 def _check_layout(exercise: Exercise, folder: Path) -> list[Problem]:
-    present = list_files(folder)
+    present = [name for name in list_files(folder) if name not in exercise.provided_names]
     if not present:
         return [Problem(f"le dossier mes_solutions/{exercise.id}/ est vide")]
     problems = []
     for name in exercise.files:
         if name not in present:
             problems.append(Problem(_describe_missing(name, present, exercise.files)))
+    return problems
+
+
+def _check_provided(exercise: Exercise, folder: Path) -> list[Problem]:
+    """Check that the provided files are there, and intact when they must be."""
+    present = set(list_files(folder))
+    problems = []
+    for file in exercise.provided:
+        if file.name not in present:
+            message = "fichier fourni manquant : relance du_jour pour le recopier"
+            problems.append(Problem(message, file.name))
+        elif not file.editable and not file.matches((folder / file.name).read_bytes()):
+            message = "fichier fourni modifié : c'est interdit (supprime-le et relance du_jour)"
+            problems.append(Problem(message, file.name))
     return problems
 
 
@@ -90,7 +105,7 @@ def _check_function(function: FunctionSpec, sources: dict[str, SourceFile]) -> l
     if found is None:
         return [_describe_missing_function(function, source, sources)]
     expected, obtained = _parameters(function.node), _parameters(found)
-    if expected != obtained:
+    if not _same_parameters(expected, obtained):
         message = (
             f"signature de {function.name} : l'énoncé demande "
             f"({', '.join(expected)}), tu as ({', '.join(obtained)})"
@@ -154,6 +169,16 @@ def _parameters(node: ast.FunctionDef) -> list[str]:
     if arguments.kwarg:
         result.append(f"**{arguments.kwarg.arg}")
     return result
+
+
+def _same_parameters(expected: list[str], obtained: list[str]) -> bool:
+    """Compare parameters. A default value written « ... » stands for any default value."""
+    if len(expected) != len(obtained):
+        return False
+    return all(
+        found.startswith(wanted[:-3]) if wanted.endswith("=...") else found == wanted
+        for wanted, found in zip(expected, obtained, strict=True)
+    )
 
 
 def _parameter(arg: ast.arg, default: ast.expr | None) -> str:

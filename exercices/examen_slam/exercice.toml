@@ -1,0 +1,43 @@
+titre = "Examen de janvier 2025 : Slam"
+reference = "janv. 2025"
+sorte = "programme"
+duree_minutes = 120
+
+[organisation]
+fichiers = ["main.py", "slam/__init__.py", "slam/grille_mots.py"]
+main = "main.py"
+modifiables = ["slam/exemples.py"]
+
+[organisation.fournis]
+"slam/colonnes_positions.py" = "sources/anciens_examens/Sources Python-20261122/colonnes_positions.py"
+"slam/fonctions.py" = "sources/anciens_examens/Sources Python-20261122/fonctions.py"
+"slam/exemples.py" = "sources/anciens_examens/Sources Python-20261122/exemples.py"
+
+[[fonctions]]
+module = "slam.grille_mots"
+signature = "chercher_mots_ligne(ligne: list[str], numero: int, note: str) -> list[dict]"
+preserve_arguments = true
+
+[[fonctions]]
+module = "slam.grille_mots"
+signature = "chercher_mots_grille(grille: list[list[str]]) -> list[dict]"
+preserve_arguments = true
+
+[[fonctions]]
+module = "slam.grille_mots"
+signature = "numeroter_grille(grille: list[list[str]], liste_mots: list[dict]) -> None"
+
+[[fonctions]]
+module = "slam.grille_mots"
+signature = "afficher_grille(grille: list[list[str]], positions_trouvees: set[tuple[int, int]]) -> None"
+preserve_arguments = true
+
+[contraintes]
+interdits = ["break", "continue", "while True"]
+appels_imposes = ["chercher_mots_grille", "numeroter_grille", "afficher_grille", "positions_mot"]
+
+[contraintes.fonctions.chercher_mots_grille]
+appels_imposes = ["chercher_mots_ligne", "obtenir_colonne"]
+
+[contraintes.fonctions.afficher_grille]
+appels_imposes = ["isalpha"]

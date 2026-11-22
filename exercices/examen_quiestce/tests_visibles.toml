@@ -1,0 +1,65 @@
+[[tests]]
+appel = "lire_lignes_fichier()"
+controle = "resume_lignes"
+attendu = "(80, 'Adam', 'Élise', 'Sofia')"
+
+[[tests]]
+appel = "lire_lignes_fichier('inconnu.txt')"
+attendu = "[]"
+
+[[tests]]
+appel = "creer_personnages(['A', 'B', 'C', 'D'], ('lunettes', 'chapeau'))"
+controle = "sans_prenoms"
+attendu = "[{'lunettes': 'non', 'chapeau': 'non'}, {'lunettes': 'non', 'chapeau': 'oui'}, {'lunettes': 'oui', 'chapeau': 'non'}, {'lunettes': 'oui', 'chapeau': 'oui'}]"
+
+[[tests]]
+appel = "creer_personnages(['A', 'B', 'C', 'D'], ())"
+attendu = "[]"
+
+[[tests]]
+appel = "filtrer_personnages([{'prenom': 'A', 'chapeau': 'non'}, {'prenom': 'B', 'chapeau': 'oui'}], 'chapeau', 'oui', True)"
+attendu = "[{'prenom': 'B', 'chapeau': 'oui'}]"
+
+[[tests]]
+appel = "filtrer_personnages([{'prenom': 'A', 'chapeau': 'non'}, {'prenom': 'B', 'chapeau': 'oui'}], 'chapeau', 'chinois', False)"
+attendu = "[{'prenom': 'A', 'chapeau': 'non'}, {'prenom': 'B', 'chapeau': 'oui'}]"
+
+[[tests]]
+appel = "decrire_personnage({'prenom': 'Sacha', 'lunettes': 'non', 'chapeau': 'oui', 'écharpe': 'oui'})"
+attendu = "'Sacha : chapeau, écharpe.'"
+
+[[tests]]
+appel = "decrire_personnage({'prenom': 'David', 'lunettes': 'non'})"
+attendu = "'David.'"
+
+[[tests]]
+appel = "is_question_valide('yeux = bleus', {'yeux', 'chapeau'})"
+controle = "booleen"
+attendu = "False"
+
+[[tests]]
+appel = "is_question_valide('chapeau= non', {'yeux', 'chapeau'})"
+controle = "booleen"
+attendu = "True"
+
+[[tests]]
+appel = "lire_question_utilisateur('Votre question > ', {'yeux', 'chapeau'})"
+entree = ["yeux = bleus", "chapeau= oui"]
+attendu = "('chapeau', 'oui')"
+
+[[tests]]
+appel = "lire_question_utilisateur('Votre question > ', {'yeux', 'chapeau'})"
+entree = ["", "YEUX = OUI"]
+attendu = "('yeux', 'oui')"
+
+[[tests]]
+libelle = "main.py, une question sur chaque attribut"
+controle = "partie_coherente"
+entree = ["lunettes = oui", "chapeau=non", "yeux clairs = oui", "cheveux foncés=oui", "pilosité faciale = non", "écharpe = oui"]
+attendu = "'partie gagnée et cohérente'"
+
+[[tests]]
+libelle = "main.py, toujours la même question"
+controle = "partie_coherente"
+entree = ["chapeau=oui", "chapeau=oui", "chapeau=oui", "chapeau=oui", "chapeau=oui", "chapeau=oui"]
+attendu = "'partie perdue et cohérente'"

@@ -1,0 +1,64 @@
+[[tests]]
+appel = "analyser_comptage({6: 5})"
+attendu = "(5, 6)"
+
+[[tests]]
+appel = "analyser_comptage({1: 1, 4: 1, 5: 1, 2: 2})"
+attendu = "(2, 2)"
+
+[[tests]]
+appel = "analyser_comptage({4: 2, 6: 1, 2: 2})"
+attendu = "(2, 4)"
+
+[[tests]]
+appel = "comparer_tirages([2, 2, 5, 4, 1], [5, 4, 3, 2, 1])"
+controle = "signe"
+attendu = "1"
+
+[[tests]]
+appel = "comparer_tirages([2, 2, 5, 4, 1], [4, 4, 6, 2, 2])"
+controle = "signe"
+attendu = "-1"
+
+[[tests]]
+appel = "comparer_tirages([4, 4, 6, 2, 1], [1, 4, 2, 3, 4])"
+controle = "signe"
+attendu = "0"
+
+[[tests]]
+appel = "detailler_tirage_des({2: 3, 1: 1, 5: 1})"
+attendu = "[1, 0, 2, 2, 2, 0, 5]"
+
+[[tests]]
+appel = "detailler_tirage_des({1: 1, 2: 1, 3: 1, 4: 1, 5: 1})"
+attendu = "[1, 0, 2, 0, 3, 0, 4, 0, 5]"
+
+[[tests]]
+appel = "afficher_tirage([2, 3, 1, 1, 5, 1])"
+sortie = "XV99R9"
+
+[[tests]]
+appel = "afficher_tirage([1, 0, 2, 0, 3, 0, 4, 0, 5])"
+sortie = "9 X V D R"
+
+[[tests]]
+appel = "selectionner_des([1, 0, 2, 0, 3, 0, 4, 0, 5])"
+entree = ["      - -"]
+attendu = "{4: 1, 5: 1}"
+
+[[tests]]
+appel = "selectionner_des([1, 0, 2, 2, 2, 0, 4, 0, 5])"
+entree = ["  ---   -"]
+attendu = "{2: 3, 5: 1}"
+
+[[tests]]
+libelle = "main.py"
+controle = "resume_partie"
+graine = 30
+entree = ["  --", "-", ""]
+sortie = """
+Tirage ordinateur : BRELAN de ROI
+Tirage joueur : 999 X D
+BRELAN de NEUF
+Vous perdez la partie.
+"""

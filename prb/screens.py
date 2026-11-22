@@ -13,7 +13,7 @@ from rich.table import Table
 from rich.text import Text
 from rich.tree import Tree
 
-from prb.bank import Exercise
+from prb.model import Exercise
 from prb.scheduler import INTERVALS, Stage, State
 from prb.sources import list_files
 from prb.validation import Validation
@@ -44,7 +44,10 @@ def show_exercise(
     console.rule(Text(f"{_KINDS[kind]} : {exercise.id}", style="bold"))
     console.print(Markdown(exercise.statement))
     console.print()
-    console.print(Text("Fichiers à créer toi-même", style="bold"))
+    title = "Fichiers à créer toi-même"
+    if exercise.provided:
+        title += " (les fichiers fournis sont déjà dans le dossier)"
+    console.print(Text(title, style="bold"))
     console.print(layout_tree(exercise))
     console.print()
     title = "Phase préparatoire d'abord"
@@ -65,7 +68,9 @@ def layout_tree(exercise: Exercise) -> Tree:
     """
     root = Tree(Text(f"mes_solutions/{exercise.id}/", style="cyan"))
     branches = {"": root}
-    for name in sorted(exercise.files, key=lambda item: (item.count("/") == 0, item)):
+    provided = {file.name: file.editable for file in exercise.provided}
+    names = [*exercise.files, *provided]
+    for name in sorted(names, key=lambda item: (item.count("/") == 0, item)):
         *folders, file = name.split("/")
         parent = ""
         for folder in folders:
@@ -73,7 +78,11 @@ def layout_tree(exercise: Exercise) -> Tree:
             if path not in branches:
                 branches[path] = branches[parent].add(Text(f"{folder}/", style="cyan"))
             parent = path
-        branches[parent].add(Text(file))
+        label = Text(file)
+        if name in provided:
+            rule = "modifiable" if provided[name] else "à ne pas modifier"
+            label = Text.assemble((file, "dim"), (f"  (fourni, {rule})", "dim"))
+        branches[parent].add(label)
     return root
 
 

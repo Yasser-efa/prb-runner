@@ -6,7 +6,8 @@ import pytest
 from rich.console import Console
 
 from prb import cli, pycharm
-from prb.bank import BankError, load_bank, load_exercise
+from prb.bank import load_bank, load_exercise
+from prb.model import BankError
 from prb.progress import Progress
 from prb.report import show_verdict
 from prb.verdict import Status, verify

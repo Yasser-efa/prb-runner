@@ -1,0 +1,55 @@
+[[groupes]]
+theme = "mots d'une ligne"
+appels = [
+    "chercher_mots_ligne(['A', 'B'], 0, 'H')",
+    "chercher_mots_ligne(['A'], 0, 'H')",
+    "chercher_mots_ligne([], 3, 'V')",
+    "chercher_mots_ligne([' '], 3, 'V')",
+    "chercher_mots_ligne(['A', ' ', 'B', ' '], 1, 'x')",
+    "chercher_mots_ligne([' ', 'L', 'E', ' ', ' ', 'C', 'H', 'A', 'T', ' '], 4, '')",
+    "chercher_mots_ligne(['U', 'N', ' ', 'D', 'E', 'U', 'X', ' ', 'A'], -1, 'H')",
+    "chercher_mots_ligne(['A', ' ', 'B', 'C'], 2, 'H')",
+    "chercher_mots_ligne([' ', ' ', 'O', 'K'], 9, 'V')",
+]
+
+[[groupes]]
+theme = "mots d'une grille"
+appels = [
+    "chercher_mots_grille([[' ', 'O', 'U', 'I']])",
+    "chercher_mots_grille([[' '], ['O'], ['N']])",
+    "chercher_mots_grille([[' ', ' ', ' ', ' '], [' ', 'A', ' ', 'B'], [' ', ' ', 'C', ' ']])",
+    "chercher_mots_grille([[' ', ' ', ' ', ' ', ' '], [' ', 'M', 'O', 'T', ' '], [' ', ' ', 'N', ' ', ' '], [' ', 'D', 'E', 'S', ' ']])",
+    "chercher_mots_grille([[' ', ' ', ' '], [' ', 'A', ' '], [' ', 'B', ' '], [' ', ' ', ' '], [' ', 'C', ' '], [' ', 'D', ' ']])",
+]
+
+[[groupes]]
+theme = "numérotation"
+apres = "grille"
+appels = [
+    "numeroter_grille([[' ', 'O', 'U', 'I']], [{'mot': ['O', 'U', 'I'], 'debut': (0, 1), 'note': 'H'}])",
+    "numeroter_grille([[' '], ['O'], ['N']], [{'mot': ['O', 'N'], 'debut': (0, 1), 'note': 'V'}])",
+    "numeroter_grille([[' ', ' ', ' '], [' ', 'A', 'B'], [' ', 'C', 'D']], [])",
+    "numeroter_grille([[' ', ' ', ' ', ' '], [' ', ' ', 'D', 'O'], [' ', ' ', 'E', ' ']], [{'mot': ['D', 'E'], 'debut': (2, 1), 'note': 'V'}, {'mot': ['D', 'O'], 'debut': (1, 2), 'note': 'H'}])",
+    "numeroter_grille([[' ', 'A', 'B', ' ', 'C', 'D'], [' ', ' ', ' ', ' ', ' ', ' '], [' ', 'E', 'F', ' ', ' ', ' ']], [{'mot': ['A', 'B'], 'debut': (0, 1), 'note': 'H'}, {'mot': ['C', 'D'], 'debut': (0, 4), 'note': 'H'}, {'mot': ['E', 'F'], 'debut': (2, 1), 'note': 'H'}])",
+]
+
+[[groupes]]
+theme = "affichage"
+appels = [
+    "afficher_grille([['A', 'b', ' ', '3'], ['?', 'Z', '1', ' ']], set())",
+    "afficher_grille([['A', 'B'], ['C', 'D']], {(0, 0), (0, 1), (1, 0), (1, 1)})",
+    "afficher_grille([['A', 'B'], ['C', 'D']], {(1, 0), (5, 5)})",
+    "afficher_grille([[' ', 'É', 'T', 'É']], {(0, 2)})",
+]
+
+[[groupes]]
+theme = "programme"
+controle = "sans_lignes_vides"
+entrees = [
+    ["1 IF", "2 IMPORT", "3 RANGE", "4 FOR", "5 TUPLE"],
+    ["5 TUPLE", "4 FOR", "3 RANGE", "2 IMPORT", "1 IF"],
+    ["AB", "", "1", "1IF", "0 IF", "12 IF", "1 I", "1 IF TUPLE", "1  IF", "1 IF", "2 IMPORT", "3 RANGE", "4 FOR", "5 TUPLE"],
+    ["1 XX", "1 XX", "1 XX", "1 XX", "1 XX", "1 XX", "1 XX", "1 XX"],
+    ["6 IF", "7 IF", "8 IF", "1 IF", "2 IMPORT", "3 RANGE", "4 FOR", "5 TUPLE"],
+    ["1 IF", "1 OR", "1 IF", "2 IF", "2 IMPORT", "2 IMPORT", "3 RANGE", "4 FOR"],
+]

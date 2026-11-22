@@ -6,11 +6,12 @@ from enum import Enum
 from pathlib import Path
 
 from prb.admissibility import check_admissibility
-from prb.bank import BankError, Case, Exercise
 from prb.comparison import same_output, same_value, type_difference
 from prb.constraints import check_constraints
+from prb.controls import apply_control
+from prb.model import BankError, Case, Exercise
 from prb.quality import IMPORTS, PRACTICE, check_quality, sort_remarks
-from prb.runner import Outcome, run_cases
+from prb.runner import Outcome, RunReport, run_cases
 from prb.sources import Problem, read_sources
 
 
@@ -30,6 +31,7 @@ class CaseReport:
     case: Case
     outcome: Outcome
     ok: bool
+    observed: object = None
 
 
 @dataclass
@@ -75,11 +77,12 @@ def verify(exercise: Exercise, folder: Path) -> Verdict:
     verdict.admissibility = check_admissibility(exercise, folder, sources)
     if verdict.admissibility:
         return verdict
-    verdict.constraints = check_constraints(exercise, sources)
+    own = {name: file for name, file in sources.items() if name not in exercise.provided_names}
+    verdict.constraints = check_constraints(exercise, own)
     if not verdict.constraints:
         noisy = _run_tests(exercise, folder, verdict)
         verdict.remarks += _test_remarks(verdict, noisy)
-    verdict.remarks = sort_remarks(verdict.remarks + check_quality(exercise, folder, sources))
+    verdict.remarks = sort_remarks(verdict.remarks + check_quality(exercise, folder, own))
     return verdict
 
 
@@ -92,26 +95,42 @@ def expected_hidden_cases(exercise: Exercise) -> list[Case]:
     """
     if not exercise.hidden_cases:
         return []
-    report = run_cases(
-        exercise.reference_folder, exercise.hidden_cases, exercise.main, exercise.timeout
-    )
-    completed = []
-    for case, outcome in zip(exercise.hidden_cases, report.outcomes, strict=True):
-        if outcome.status != "value" or not (case.is_program or outcome.plain):
-            raise BankError(
-                f"{exercise.id} : la solution de référence échoue sur un test caché "
-                "(lance « python -m prb valider »)"
-            )
-        shows = case.is_program or bool(outcome.output)
-        completed.append(
-            replace(
-                case,
-                has_value=not case.is_program,
-                value=outcome.value,
-                output=outcome.output if shows else None,
-            )
+    report = run_reference(exercise, exercise.hidden_cases, exercise.timeout)
+    return [
+        _complete(exercise, case, outcome)
+        for case, outcome in zip(exercise.hidden_cases, report.outcomes, strict=True)
+    ]
+
+
+def run_reference(exercise: Exercise, cases: Sequence[Case], timeout: float) -> RunReport:
+    """Run some cases on the reference solution, completed with the provided files.
+
+    :param exercise: the exercise
+    :param cases: the cases to run
+    :param timeout: maximum duration of one case, in seconds
+    :return: the outcomes
+    """
+    files = {file.name: file.read() for file in exercise.provided} | exercise.test_files()
+    return run_cases(exercise.reference_folder, cases, exercise.main, timeout, files)
+
+
+def _complete(exercise: Exercise, case: Case, outcome: Outcome) -> Case:
+    """Add to a hidden case what the reference solution gives."""
+    usable = case.is_program or outcome.plain or case.control is not None
+    if outcome.status != "value" or not usable:
+        raise BankError(
+            f"{exercise.id} : la solution de référence échoue sur un test caché "
+            "(lance « python -m prb valider »)"
         )
-    return completed
+    if case.control is not None:
+        return replace(case, has_value=True, value=apply_control(case, outcome))
+    shows = case.compare_output and (case.is_program or bool(outcome.output))
+    return replace(
+        case,
+        has_value=not case.is_program,
+        value=outcome.value,
+        output=outcome.output if shows else None,
+    )
 
 
 def judge(cases: Sequence[Case], outcomes: Sequence[Outcome]) -> list[CaseReport]:
@@ -121,25 +140,32 @@ def judge(cases: Sequence[Case], outcomes: Sequence[Outcome]) -> list[CaseReport
     :param outcomes: what happened for each case
     :return: one report per case
     """
-    return [
-        CaseReport(case, outcome, _is_ok(case, outcome))
-        for case, outcome in zip(cases, outcomes, strict=True)
-    ]
+    reports = []
+    for case, outcome in zip(cases, outcomes, strict=True):
+        observed = outcome.value
+        if case.control is not None and outcome.status == "value":
+            observed = apply_control(case, outcome)
+        reports.append(CaseReport(case, outcome, _is_ok(case, outcome, observed), observed))
+    return reports
 
 
 def _run_tests(exercise: Exercise, folder: Path, verdict: Verdict) -> list[str]:
     hidden = expected_hidden_cases(exercise)
     cases = [*exercise.visible_cases, *hidden]
-    report = run_cases(folder, cases, exercise.main, exercise.timeout)
+    report = run_cases(
+        folder, cases, exercise.main, exercise.timeout, exercise.test_files()
+    )
     judged = judge(cases, report.outcomes)
     count = len(exercise.visible_cases)
     verdict.visible, verdict.hidden = judged[:count], judged[count:]
     return report.noisy_modules
 
 
-def _is_ok(case: Case, outcome: Outcome) -> bool:
+def _is_ok(case: Case, outcome: Outcome, observed: object) -> bool:
     if outcome.status != "value" or outcome.modified:
         return False
+    if case.control is not None:
+        return same_value(case.value, observed)
     if case.has_value and not (outcome.plain and same_value(case.value, outcome.value)):
         return False
     return case.output is None or same_output(case.output, outcome.output)
@@ -161,10 +187,12 @@ def _test_remarks(verdict: Verdict, noisy_modules: list[str]) -> list[Problem]:
         if function is None or not report.ok or function.name in seen:
             continue
         message = None
-        if report.case.has_value and not function.returns_float:
+        controlled = report.case.control is not None
+        if report.case.has_value and not function.returns_float and not controlled:
             difference = type_difference(report.case.value, outcome.value)
             message = difference and f"{report.case.label} {difference}"
-        if message is None and report.case.output is None and outcome.output:
+        silent = report.case.output is None and not report.case.stdin and not controlled
+        if message is None and silent and outcome.output:
             message = f"{function.name} affiche du texte au lieu de seulement renvoyer une valeur"
         if message:
             seen.add(function.name)

@@ -1,0 +1,43 @@
+titre = "Examen de juin 2025 : Les Damoiselles"
+reference = "juin 2025"
+sorte = "programme"
+duree_minutes = 150
+
+[organisation]
+fichiers = ["main.py", "damoiselles/__init__.py", "damoiselles/damier.py"]
+main = "main.py"
+
+[organisation.fournis]
+"damoiselles/pions.py" = "sources/anciens_examens/Sources-20261122/pions.py"
+
+[[fonctions]]
+module = "damoiselles.damier"
+signature = "dessiner_damier(positions_pions: dict[int, str]) -> None"
+preserve_arguments = true
+
+[[fonctions]]
+module = "damoiselles.damier"
+signature = "position_depart() -> dict[int, str]"
+
+[[fonctions]]
+module = "damoiselles.damier"
+signature = "voisines(numero_case: int) -> set[int]"
+
+[[fonctions]]
+module = "damoiselles.damier"
+signature = "arrivee_capture(depart: int, prise: int) -> int"
+
+[[fonctions]]
+module = "damoiselles.damier"
+signature = "captures_possibles(positions_pions: dict[int, str], depart: int) -> set[str]"
+preserve_arguments = true
+
+[contraintes]
+interdits = ["break", "continue", "while True"]
+appels_imposes = ["position_depart", "dessiner_damier", "captures_possibles"]
+
+[contraintes.fonctions.arrivee_capture]
+appels_imposes = ["voisines"]
+
+[contraintes.fonctions.captures_possibles]
+appels_imposes = ["voisines", "arrivee_capture", "sont_couleurs_differentes", "est_case_vide"]
