@@ -5,7 +5,7 @@ success. A success plans the next review after 3 days, then 7, then 21. A review
 passed on the day it was started goes back to the first interval.
 """
 
-from collections.abc import Sequence
+from collections.abc import Collection, Sequence
 from dataclasses import dataclass
 from datetime import date, datetime, time, timedelta
 from enum import Enum
@@ -117,7 +117,7 @@ def choose(
     An unfinished exercise comes first. Otherwise one review is proposed after two new
     exercises, as long as both exist.
 
-    :param states: the state of every exercise, in the order of the bank
+    :param states: the state of the exercises that may be proposed, in order
     :param histories: their histories
     :param today: the current date
     :param wanted: "new" or "review" to force the choice
@@ -143,16 +143,22 @@ def choose(
     return new[0] if new else None
 
 
-def current_exercise(states: Sequence[State]) -> str | None:
+def current_exercise(states: Sequence[State], exams: Collection[str] = ()) -> str | None:
     """Find the exercise the student is working on.
 
     :param states: the state of every exercise
+    :param exams: the old exams, which stop being current once another exercise is seen
     :return: the unfinished exercise seen last, or else the exercise seen last
     """
     seen = [state for state in states if state.last_seen is not None]
     if not seen:
         return None
-    active = [state for state in seen if state.stage is Stage.ACTIVE]
+    last = max(seen, key=lambda state: state.last_seen)
+    active = [
+        state
+        for state in seen
+        if state.stage is Stage.ACTIVE and (state is last or state.exercise_id not in exams)
+    ]
     return max(active or seen, key=lambda state: state.last_seen).exercise_id
 
 

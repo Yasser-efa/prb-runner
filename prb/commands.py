@@ -7,7 +7,7 @@ from rich.console import Console
 from rich.text import Text
 
 from prb import pycharm, report, screens
-from prb.bank import load_exercise, load_order
+from prb.bank import load_daily_order, load_exams, load_exercise, load_order
 from prb.model import BankError, Exercise
 from prb.paths import Paths
 from prb.progress import SESSION_MINUTES, History, Progress
@@ -53,14 +53,14 @@ class Context:
         """Load an exercise, by default the one the student is working on."""
         if exercise_id is None:
             states = [self.state(name) for name in load_order(self.paths)]
-            exercise_id = current_exercise(states)
+            exercise_id = current_exercise(states, load_exams(self.paths))
             if exercise_id is None:
                 raise CommandError("aucun exercice en cours : lance d'abord « du_jour »")
         return load_exercise(self.paths, exercise_id)
 
 
 def show_today(context: Context, wanted: str | None, exercise_id: str | None = None) -> int:
-    """Start or resume the exercise of the day.
+    """Start or resume the exercise of the day. An old exam is never proposed, only chosen.
 
     :param context: the paths, the terminal and the progress
     :param wanted: "new", "review", "next" or None to let the tool decide
@@ -69,7 +69,7 @@ def show_today(context: Context, wanted: str | None, exercise_id: str | None = N
     """
     if exercise_id is not None:
         return _start_chosen(context, exercise_id)
-    histories = [context.history(name) for name in load_order(context.paths)]
+    histories = [context.history(name) for name in load_daily_order(context.paths)]
     states = [read_state(history) for history in histories]
     today = context.now.date()
     active = any(state.stage is Stage.ACTIVE for state in states)

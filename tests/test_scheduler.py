@@ -217,3 +217,10 @@ def test_current_exercise():
     states = [planned("a", 3, last_seen=at(1)), make("b", Stage.ACTIVE, last_seen=at(0))]
     assert current_exercise(states) == "b"
     assert current_exercise(states[:1]) == "a"
+
+
+def test_an_unfinished_exam_is_current_only_until_another_exercise_is_seen():
+    exam = make("e", Stage.ACTIVE, last_seen=at(0))
+    assert current_exercise([make("a"), exam], {"e"}) == "e"
+    assert current_exercise([planned("a", 3, last_seen=at(1)), exam], {"e"}) == "a"
+    assert current_exercise([make("a", Stage.ACTIVE, last_seen=at(-1)), exam], {"e"}) == "e"

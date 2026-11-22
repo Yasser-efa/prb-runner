@@ -32,18 +32,43 @@ class _Layout:
 
 
 def load_order(paths: Paths) -> list[str]:
-    """Read the order in which new exercises are proposed.
+    """Read the identifiers of the whole bank, old exams last.
+
+    :param paths: the project folders
+    :return: the identifiers
+    """
+    daily, exams = _read_order(paths)
+    return [*daily, *exams]
+
+
+def load_daily_order(paths: Paths) -> list[str]:
+    """Read the exercises that the tool may propose by itself.
 
     :param paths: the project folders
     :return: the identifiers, first exercise first
     """
+    return list(_read_order(paths)[0])
+
+
+def load_exams(paths: Paths) -> set[str]:
+    """Read the old exams, which are started on demand only.
+
+    :param paths: the project folders
+    :return: the identifiers
+    """
+    return set(_read_order(paths)[1])
+
+
+def _read_order(paths: Paths) -> tuple[tuple[str, ...], tuple[str, ...]]:
     data = _read_toml(paths.exercises / "ordre.toml")
-    _check_keys(data, {"ordre"}, "ordre.toml")
-    order = list(_strings(data, "ordre", "ordre.toml"))
-    duplicates = {name for name in order if order.count(name) > 1}
+    _check_keys(data, {"ordre", "examens"}, "ordre.toml")
+    daily = _strings(data, "ordre", "ordre.toml")
+    exams = _strings(data, "examens", "ordre.toml")
+    names = [*daily, *exams]
+    duplicates = {name for name in names if names.count(name) > 1}
     if duplicates:
         raise BankError(f"ordre.toml : identifiants en double ({', '.join(sorted(duplicates))})")
-    return order
+    return daily, exams
 
 
 def load_bank(paths: Paths) -> list[Exercise]:

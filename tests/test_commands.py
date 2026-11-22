@@ -88,6 +88,60 @@ def test_chosen_exercise(two_exercises, workshop, run):
     assert "Nouvel exercice : demo" in run("du_jour demo", days=1, minutes=7)
 
 
+@pytest.fixture
+def exam(two_exercises, workshop):
+    """Make the second exercise an old exam."""
+    text = 'ordre = ["demo"]\nexamens = ["autre"]\n'
+    workshop.write(workshop.paths.exercises, {"ordre.toml": text})
+    return workshop.paths.solutions / "autre"
+
+
+def test_an_exam_is_started_on_demand_only(exam, workshop, run):
+    run("du_jour")
+    workshop.submit(SOLUTION)
+    run("verifier", minutes=20)
+    assert "Rien à faire aujourd'hui. Prochaine révision : demo" in run("du_jour --suivant")
+    assert "plus de nouvel exercice" in run("du_jour --nouveau")
+    assert "Nouvel exercice : autre" in run("du_jour autre", minutes=30)
+
+
+def test_an_unfinished_exam_is_never_resumed_without_its_name(exam, workshop, run):
+    run("du_jour autre")
+    workshop.write(exam, {"tables.py": WRONG})
+    assert "tentative n° 1" in run("verifier", minutes=10)
+    output = run("du_jour", days=1)
+    assert "Nouvel exercice : demo" in output and "Aussi en cours : autre" in output
+    workshop.submit(SOLUTION)
+    assert "RÉUSSI" in run("verifier", days=1, minutes=20)
+    assert "tentative n° 2" in run("verifier", days=1, minutes=21)
+    assert "Déjà réussi aujourd'hui : demo" in run("du_jour", days=1, minutes=22)
+    assert "Suite : autre" in run("du_jour autre", days=1, minutes=30)
+    assert "TESTS RATÉS" in run("verifier", days=1, minutes=40)
+
+
+def test_a_passed_exam_neither_counts_as_the_exercise_of_the_day_nor_comes_back(
+    exam, workshop, run
+):
+    run("du_jour autre")
+    workshop.write(exam, {"tables.py": SOLUTION})
+    run("verifier", minutes=20)
+    assert "Nouvel exercice : demo" in run("du_jour", minutes=30)
+    workshop.submit(SOLUTION)
+    run("verifier", minutes=40)
+    assert "Révision : demo" in run("du_jour", days=3)
+    workshop.submit(SOLUTION)
+    run("verifier", days=3, minutes=10)
+    assert "Prochaine révision : demo" in run("du_jour --suivant", days=4)
+    assert "Révision : demo" in run("du_jour --revision", days=4, minutes=1)
+    assert "Révision : autre" in run("du_jour autre", days=4, minutes=2)
+
+
+def test_an_identifier_cannot_be_both_daily_and_on_demand(exam, workshop, run):
+    text = 'ordre = ["demo", "autre"]\nexamens = ["autre"]\n'
+    workshop.write(workshop.paths.exercises, {"ordre.toml": text})
+    assert "identifiants en double (autre)" in run("du_jour")
+
+
 def test_time_spent_on_another_exercise_does_not_count(two_exercises, workshop, run):
     run("du_jour")
     workshop.submit(WRONG)

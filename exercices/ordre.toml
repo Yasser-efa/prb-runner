@@ -35,7 +35,9 @@ ordre = [
     "taxi_drone_etapes",
     "nombre_base",
     "entier_hexa",
-    # Anciens examens (2 h à 2 h 30), du plus court au plus long.
+]
+# Anciens examens (2 h à 2 h 30), du plus court au plus long : seulement avec du_jour <id>.
+examens = [
     "examen_slam",
     "examen_quiestce",
     "examen_poker",

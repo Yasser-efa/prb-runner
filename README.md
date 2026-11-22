@@ -47,9 +47,9 @@ Sans `<id>`, les commandes prennent l'exercice en cours.
 2. Un exercice réussi après avoir vu la solution : il revient le lendemain.
 3. Sinon, une révision due pour deux nouveaux exercices, dans l'ordre de `exercices/ordre.toml`.
 
-`du_jour <id>` passe outre cet ordre. L'exercice choisi devient l'exercice en cours, donc `du_jour`
-le reprend tant qu'il n'est pas réussi ; `du_jour --nouveau` continue la liste sans lui. Les autres
-exercices en cours sont rappelés sous l'énoncé.
+`du_jour <id>` passe outre cet ordre. Les anciens examens ne sortent que de cette façon : sans `<id>`,
+`du_jour` ne les propose, ne les reprend et ne les révise jamais. Les autres exercices en cours sont
+rappelés sous l'énoncé.
 
 Un exercice réussi revient après 3 jours, puis 7, puis 21 ; ensuite il est acquis. Une révision qui
 n'est pas réussie le jour même revient le lendemain et repart à 3 jours. Au début d'une révision,
@@ -61,10 +61,10 @@ passé sur un autre exercice.
 
 ### Les anciens examens
 
-Cinq anciens examens (`examen_...`) viennent à la fin de la banque. Pour ne pas attendre, choisis-en
-un : `python -m prb du_jour examen_slam`. `du_jour` copie les fichiers fournis par le prof depuis
-`sources/anciens_examens/` ; comme à l'examen, les modifier rend le dépôt non recevable. Les tâches
-de tests unitaires sont retirées.
+Cinq anciens examens (`examen_...`) se lancent à la demande, par exemple avec
+`python -m prb du_jour examen_slam` ; relance la même commande pour les reprendre. `du_jour` copie
+les fichiers fournis par le prof depuis `sources/anciens_examens/` ; comme à l'examen, les modifier
+rend le dépôt non recevable. Les tâches de tests unitaires sont retirées.
 
 ### Le verdict
 
@@ -98,7 +98,8 @@ l'icône rouge sans la remplacer : en cas de doute, regarde celle de l'éditeur.
 
 ## Ajouter un exercice
 
-Choisis un identifiant en minuscules (`ma_table`), puis ajoute-le dans `exercices/ordre.toml`.
+Choisis un identifiant en minuscules (`ma_table`), puis ajoute-le dans `exercices/ordre.toml` : dans
+`ordre` pour `du_jour`, ou dans `examens` pour un exercice lancé seulement à la demande.
 
 ### `exercices/<id>/exercice.toml`
 
