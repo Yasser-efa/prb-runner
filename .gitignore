@@ -1,13 +1,17 @@
-# Course material and personal files (not mine to publish)
+# Course material (not mine to publish)
 /sources/
 /*.pdf
-/mes_solutions/*
-!/mes_solutions/.gitkeep
-/progression.sqlite3*
 
-# Local environment
+# My solutions and my progress ARE synced between my two PCs (mes_solutions/, progression.sqlite3).
+# Only SQLite's temporary files stay local.
+/progression.sqlite3-journal
+/progression.sqlite3-wal
+/progression.sqlite3-shm
+
+# Local environment (specific to each PC)
 /.venv/
 /.idea/
 __pycache__/
+*.pyc
 .pytest_cache/
 .ruff_cache/
